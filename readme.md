@@ -62,4 +62,4 @@ This project is licensed under the MIT License. You are free to use, modify, and
 
 ---
 
-For any questions or suggestions, please open an issue or contact [Tom Mitchell] at [tmitch@terpmail.umd.edu].
+For any questions or suggestions, please open an issue or contact me at [tmitch@terpmail.umd.edu].

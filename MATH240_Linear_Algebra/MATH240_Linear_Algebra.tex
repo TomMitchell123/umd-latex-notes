@@ -1,0 +1,4396 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage[english]{babel}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{siunitx}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{algorithmicx}
+\usepackage{amsthm}
+\usepackage{natbib}
+
+\title{Linear Algebra Notes}
+\author{Tom Mitchell}
+\date{Wiseley Wong - Spring 2024}
+
+\begin{document}
+
+\maketitle
+
+\section{Lecture 1, 1/24/2024}
+
+A system of linear equations is a collection of linear equations. For example, 
+
+\begin{align*}
+    3x_1 - 2x_2 + 4x_3 &= -29 \\
+    x_1 - x_2 + x_3 &= 3 \\
+    5x_1 - x_3 &= -2
+\end{align*}
+
+\textbf{Definition:} A solution to the system consists of variables $x_1, \ldots , x_n$ that satisfy all the equations of the system.
+
+For instance, $x_1=-1, x_2=7, x_3=-3$ is a solution.
+
+\textbf{Theorem:} A system of linear equations satisfies exactly one of the following:
+\begin{enumerate}
+    \item A unique solution - consistent system
+    \item Infinite solutions - consistent system
+    \item No solution - inconsistent system
+\end{enumerate}
+
+\textit{Cannot have exactly 2 answers.}
+
+\textbf{Definition:} An $m \times n$ matrix is an array of elements (often numbers) containing $m$ rows and $n$ columns.
+
+We sometimes say "real matrix" to indicate that the entries are real numbers.
+
+\[
+\begin{bmatrix}
+    1 & 2 & 3 \\
+    4 & 5 & 6 \\
+\end{bmatrix}
+\]
+
+Consider the system
+
+\begin{align*}
+    x_1 + 2x_2 - 3x_3 &= 11 \\
+    3x_1 + 6x_2 - 8x_3 &= 32 \\
+    -2x_1 - x_2 &= -7
+\end{align*}
+
+\textbf{Definition:} The augmented matrix of the system is:
+
+\[
+\begin{bmatrix}
+    1 & 2 & -3 & | & 11 \\
+    3 & 6 & -8 & | & 32 \\
+    -2 & -1 & 0 & | & -7 \\
+\end{bmatrix}
+\]
+
+The coefficient matrix is on the left of the vertical line.
+
+We "reduce" the augmented matrix to find the solution.
+
+We apply elementary row operations on an augmented matrix:
+
+\begin{enumerate}
+    \item Interchange 2 rows (equations)
+    \item Multiply a row by a non-zero constant
+    \item Add a multiple of one equation to another equation
+\end{enumerate}
+
+For example, consider the system:
+
+
+\begin{align*}
+    3x + 4y &= 10 \\
+    6x - y &= 3
+\end{align*}
+
+
+Two augmented matrices are row equivalent if a sequence of row operations transforms one into the other. These two systems will be equivalent, meaning they have the same solution set.
+
+\textbf{Main Idea}
+\[
+\begin{bmatrix}
+    - & - & - & | & - \\
+    - & - & - & | & - \\
+    - & - & - & | & -
+\end{bmatrix}
+\quad \rightarrow \quad
+\begin{bmatrix}
+    1 & 0 & 0 & | & 7 \\
+    0 & 1 & 0 & | & 3 \\
+    0 & 0 & 1 & | & 4
+\end{bmatrix}
+\]
+
+This represents the system of equations:
+
+\begin{align*}
+    x_1 &= 7 \\
+    x_2 &= 3 \\
+    x_3 &= 4
+\end{align*}
+
+So, the solution is \(x_1 = 7\), \(x_2 = 3\), and \(x_3 = 4\).
+
+Going back to our earlier example...
+
+\begin{align*}
+    x_1 + 2x_2 - 3x_3 &= 11 \\
+    3x_1 + 6x_2 - 8x_3 &= 32 \\
+    -2x_1 - x_2 &= -7
+\end{align*}
+
+\[
+\begin{bmatrix}
+    1 & 2 & -3 & | & 11 \\
+    3 & 6 & -8 & | & 32 \\
+    -2 & -1 & 0 & | & -7 \\
+\end{bmatrix}
+\] 
+
+The first row stays the same, and the second row changes during each operation.
+
+Apply the operation \( -3R_1 + R_2 \). 
+
+
+\[
+\begin{bmatrix}
+    1 & 2 & -3 & | & 11 \\
+    0 & 0 & 1 & | & -1 \\
+    -2 & -1 & 0 & | & -7 \\
+\end{bmatrix}
+\] 
+
+Apply the operation \( 2R_1 + R_3 \).
+
+\[
+\begin{bmatrix}
+    1 & 2 & -3 & | & 11 \\
+    0 & 0 & 1 & | & -1 \\
+    0 & 3 & -6 & | & 15 \\
+\end{bmatrix}
+\] 
+
+Apply the operation \(\frac{1}{3}R_3\).
+
+\[
+\begin{bmatrix}
+    1 & 2 & -3 & | & 11 \\
+    0 & 0 & 1 & | & -1 \\
+    0 & 1 & -2 & | & 5 \\
+\end{bmatrix}
+\] 
+
+Apply the operation \(R_2 \leftrightarrow R_3\).
+
+\[
+\begin{bmatrix}
+    1 & 2 & -3 & | & 11 \\
+    0 & 1 & -2 & | & 5 \\
+    0 & 0 & 1 & | & -1 \\
+\end{bmatrix}
+\] 
+
+
+Apply the operation \(-2R2+R1\)
+
+
+\[
+\begin{bmatrix}
+    1 & 0 & 1 & | & 1 \\
+    0 & 1 & -2 & | & 5 \\
+    0 & 0 & 1 & | & -1 \\
+\end{bmatrix}
+\] 
+
+
+
+Apply the operation 2R3+R2 and -R3+R1
+
+\[
+\begin{bmatrix}
+    1 & 0 & 0 & | & 2 \\
+    0 & 1 & 0 & | & 3 \\
+    0 & 0 & 1 & | & -1 \\
+\end{bmatrix}
+\] 
+
+\textbf{Unique Solution}
+
+We have found that the system of equations has a unique solution:
+
+\[
+\begin{aligned}
+    x_1 &= 2 \\
+    x_2 &= 3 \\
+    x_3 &= -1
+\end{aligned}
+\]
+
+Now, let's plug in these values and check:
+
+\[
+\begin{aligned}
+    2 + 2(3) - 3(-1) &= 11 \\
+    3(2) + 6(3) - 8(-1) &= 32 \\
+    -2(2) - (3) &= -7
+\end{aligned}
+\]
+
+If you say you checked and the answer is wrong (false equation), you will lose fewer points.
+
+
+\section{Lecture 2, 1/26/2024}
+
+Continuing from last lecture.
+
+\textbf{What are we ``reducing'' to}
+
+\textbf{Definition:} A matrix is in reduced row echelon form (\textbf{RREF}) if all the following hold:
+
+\begin{enumerate}
+  \item Any rows of zeros are at the bottom
+  \[
+  \begin{bmatrix}
+    \vdots \\
+    \vdots \\
+    0 \ 0 \ 0 \ 0 \ 0 \ 0
+  \end{bmatrix}
+  \]
+
+  \item The first non-zero entry (\textbf{leading entry}) is to the right of the preceding row's leading entry.
+  
+  \[
+  \begin{bmatrix}
+    0 & 0 & 3 & 4 & 1 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 7 & 7 & 7 \\
+    0 & 0 & 0 & 0 & 0 & 0 & 2
+  \end{bmatrix}
+  \]
+
+  \item All entries below a leading entry are 0.
+
+  \item The leading entry in each (non-zero) row is a 1.
+
+  \item Each leading 1 is the only non-zero value in the column.
+
+\end{enumerate}
+
+(Note: 3 is implied by 2)
+
+\medskip
+
+If only 1, 2, 3 hold, it is in echelon form.
+
+\medskip
+
+\textbf{Example:}
+
+\textbf{a)}
+
+\[
+\begin{bmatrix}
+  0 & 0 & 2 & 1 & 1 \\
+  0 & 0 & 0 & 0 & 7 \\
+  0 & 0 & 0 & 0 & 0
+\end{bmatrix}
+\qquad \text{(Echelon form, not RREF)}
+\]
+
+\textbf{b)}
+
+\[
+\begin{bmatrix}
+  1 & 8 & 8 & 0 & 3 \\
+  0 & 0 & 0 & 1 & 4 \\
+  0 & 0 & 0 & 0 & 0
+\end{bmatrix}
+\qquad \text{(RREF)}
+\]
+
+
+\textbf{c)}
+
+\[
+\begin{bmatrix}
+  0 & 1 & 2 & 3 \\
+  0 & 0 & 1 & 0 \\
+  0 & 0 & 0 & 0
+\end{bmatrix}
+\qquad \text{(Echelon form, not RREF)}
+\]
+
+\medskip
+
+\textbf{Theorem:} Any matrix has a unique RREF.
+
+\medskip
+
+We apply row operations on an augmented matrix of a system of linear equations to get it in RREF.
+
+\medskip
+
+\textbf{Example:}
+
+
+\begin{align*}
+2x_3 - 2x_4 &= 2 \\
+3x_1 + 3x_2 - 3x_3 + 9x_4 &= 12 \\
+4x_1 + 4x_2 - 2x_3 + 11x_4 &= 12
+\end{align*}
+
+
+\[
+\begin{bmatrix}
+    0 & 0 & 2 & -2 & | & 2 \\
+    3 & 3 & -3 & 9 & | & 12 \\
+    4 & 4 & -2 & 11 & | & 12 \\
+\end{bmatrix}
+\] 
+
+
+1. Interchange rows to have a non-zero element in the top row of the rfirst non-zero column
+
+$R1 \leftrightarrow R2$
+
+\[
+\begin{bmatrix}
+    3 & 3 & -3 & 9 & | & 12 \\
+    0 & 0 & 2 & -2 & | & 2 \\
+    4 & 4 & -2 & 11 & | & 12 \\
+\end{bmatrix}
+\] 
+
+2. Convert, if \textbf{efficient*}, the first non-zero entry, called \textbf{pivot}, to a 1, and apply row operations to create zeros in all other entries in the column
+
+
+$\frac{1}{3}$R1
+
+\[
+\begin{bmatrix}
+    1 & 1 & -1 & 3 & | & 4 \\
+    0 & 0 & 2 & -2 & | & 2 \\
+    4 & 4 & -2 & 11 & | & 12 \\
+\end{bmatrix}
+\] 
+
+-4R1+R3
+
+
+\[
+\begin{bmatrix}
+    1 & 1 & -1 & 3 & | & 4 \\
+    0 & 0 & 2 & -2 & | & 2 \\
+    0 & 0 & 2 & -1 & | & -4 \\
+\end{bmatrix}
+\] 
+
+\textbf{3. Cover the row that you worked with (and all rows above), and repeat steps 1 and 2}
+
+\textit{$\frac{1}{2}$R2}
+
+\[
+\begin{bmatrix}
+    1 & 1 & 0 & 2 & | & 5 \\
+    0 & 0 & 1 & -1 & | & 1 \\
+    0 & 0 & 0 & 1 & | & -6 \\
+\end{bmatrix}
+\] 
+
+\textit{R2+R1}
+
+\[
+\begin{bmatrix}
+    1 & 1 & 0 & 2 & | & 5 \\
+    0 & 0 & 1 & -1 & | & 1 \\
+    0 & 0 & 0 & 1 & | & -6 \\
+\end{bmatrix}
+\]
+
+\textit{-2R2+R3}
+
+\[
+\begin{bmatrix}
+    1 & 1 & 0 & 2 & | & 5 \\
+    0 & 0 & 1 & -1 & | & 1 \\
+    0 & 0 & 0 & 1 & | & -8 \\
+\end{bmatrix}
+\]
+
+\textit{-2R3+R1}
+
+\[
+\begin{bmatrix}
+    1 & 1 & 0 & 0 & | & 17 \\
+    0 & 0 & 1 & 0 & | & -5 \\
+    0 & 0 & 0 & 1 & | & -6 \\
+\end{bmatrix}
+\]
+
+\textit{R3+R2}
+
+\[
+\begin{bmatrix}
+    1 & 1 & 0 & 0 & | & 17 \\
+    0 & 0 & 1 & 0 & | & -5 \\
+    0 & 0 & 0 & 1 & | & -6 \\
+\end{bmatrix}
+\]
+
+\textbf{RREF of original matrix}
+
+\medskip
+
+This is called Gauss-Jordan elimination.
+
+\medskip
+
+\textbf{efficient*}
+
+\[
+\begin{bmatrix}
+    3 & 7 & 5 & | & 1 \\
+    -6 & 2 & 3 & | & 0 \\
+    -3 & 1 & 4 & | & 0 \\
+\end{bmatrix}
+\]
+
+\medskip
+
+Using original rules gives us fractions \( \frac{7}{3} \), \( \frac{5}{3} \), \( \frac{1}{3} \).
+
+\medskip
+
+\textit{2R1+R2 and R1+R3}
+
+\[
+\begin{bmatrix}
+    3 & - & - & | & - \\
+    0 & - & - & | & - \\
+    0 & - & - & | & -
+\end{bmatrix}
+\]
+
+\textit{Do \( \frac{1}{3} \)R1 later; it's easier!}
+
+\medskip
+
+What does the RREF of an augmented matrix tell us?
+
+\medskip
+
+\textbf{a)} If at any point during row operations you obtain a false equation, STOP.
+
+\medskip
+
+The system has NO solution. Explain why!
+
+\[
+\begin{bmatrix}
+    1 & 0 & 0 & 0 & 3 & | & 1 \\
+    0 & 0 & 0 & 0 & 0 & | & 4 \\
+    0 & 0 & 0 & 0 & 0 & | & 0 \\
+\end{bmatrix}
+\]
+
+\medskip
+
+In the second row, \(0 = 4\) is a contradiction, which implies no solution since we would require \(0 = 4\), which is false.
+
+\medskip
+
+\textbf{b)} If the RREF yields a unique solution, simply write down the solution.
+
+\medskip
+
+\textbf{c)} In the case of infinite solutions (not case (a) or (b)), we find a general solution in terms of 
+
+\medskip
+
+\textbf{Last Example:}
+
+\[
+\begin{bmatrix}
+    1 & 1 & 0 & 0 & | & 17 \\
+    0 & 0 & 1 & 0 & | & -5 \\
+    0 & 0 & 0 & 1 & | & -6 \\
+\end{bmatrix}
+\]
+
+Write as equations:
+
+\[
+\begin{aligned}
+    x_1 + x_2 &= 17 \\
+    x_3 &= -5 \\
+    x_4 &= -6 \\
+\end{aligned}
+\]
+
+The columns corresponding to the \textbf{pivots} are the leading/basic variables (\(x_1, x_3, x_4\)). The others are free variables (\(x_2\)). The general solution expresses the leading variables in terms of the free variables (when applicable).
+
+\[\rightarrow \text{General solution is}\]
+
+\[
+\begin{cases}
+    x_1 &= -x_2 + 17 \\
+    x_2 & \text{is free or} \ x_2 \in \mathbb{R} \ (\text{where } \mathbb{R} \text{ represents the set of real numbers}) \\
+    x_3 &= -5 \\
+    x_4 &= -6 \\
+\end{cases}
+\]
+
+
+\section{Lecture 3, 1/29/2024}
+
+Last Time: General Solution
+
+\[
+\begin{cases}
+    x_1 &= 17-x_2  \\
+    x_2 & \text{is free or} \ x_2 \in \mathbb{R} \ (\text{where } \mathbb{R} \text{ represents the set of real numbers}) \\
+    x_3 &= -5 \\
+    x_4 &= -6 \\
+\end{cases}
+\]
+
+\medskip
+prob 1 is general solution
+\medskip
+prob 2 is do raw operations and find solution. check answer using substitution
+\medskip
+\newline
+Ex: Solve 
+
+\begin{equation}
+    \begin{aligned}
+        3x_1 + 6x_2 - 2x_3 &= 10 \\
+        -2x_1 - 4x_2 - 3x_3 &= -1 \\
+        x_1 + 2x_2 - x_3 &= 2 \\
+    \end{aligned}
+\end{equation}
+
+
+
+
+\text{Solve} 
+\begin{equation}
+    \begin{aligned}
+    x_1 + 2x_2 + 4x_3 & = 0 \\
+    -2x_1 - 4x_2 + 3x_3 - 2x_4 & = 0 \\
+    \end{aligned}
+\end{equation}
+
+\[
+\begin{bmatrix}
+    1 & 2 & 0 & 4 & | & 0 \\
+    -2 & -4 & 3 & -2 & | & 0 \\
+\end{bmatrix}
+\]
+
+Performing the operation \(2R_1 + R_2\):
+
+\[
+\begin{bmatrix}
+    1 & 2 & 0 & 4 & | & 0 \\
+    0 & 0 & 3 & 6 & | & 0 \\
+\end{bmatrix}
+\]
+
+Performing the operation \(\frac{1}{3}R2\):
+
+\[
+\begin{bmatrix}
+    1 & 2 & 0 & 4 & | & 0 \\
+    0 & 0 & 1 & 2 & | & 0 \\
+\end{bmatrix}
+\]
+
+This leads to the system of equations:
+
+\[
+\begin{cases}
+    x_1 + 2x_2 + 4x_4 &= 0 \\
+    x_3 + 2x_4 &= 0 \\
+\end{cases}
+\]
+
+Expressing \(x_1\) and \(x_3\) in terms of free variables \(x_2\) and \(x_4\):
+
+\[
+\begin{cases}
+    x_1 &= -2x_2 - 4x_4 \\
+    x_3 &= -2x_4 \\
+\end{cases}
+\]
+
+The general solution is given by:
+
+\[
+\begin{cases}
+    x_1 &= -2x_2 - 4x_4  \\
+    x_2 &\in \mathbb{R} \\
+    x_3 &= -2x_4 \\
+    x_4 &\in \mathbb{R} \\
+\end{cases}
+\]
+
+\textbf{Section 1.3: Vector Equations}
+
+Note: ":" means "such that"
+
+\textbf{Definition:} Let \(\mathbb{R} = \{(a_1, a_2, \ldots, a_n) : a_1, a_2, \ldots, a_n \in \mathbb{R}\}\)
+
+Where:
+\(a_1\) is a real number,
+\(a_2\) is a real number,
+\(\ldots\),
+\(a_n\) is a real number.
+
+This set consists of ordered elements (n-tuples) where each entry is a real number.
+
+\(\mathbb{R} \to (x, y) \to\) xy-plane
+
+\(\mathbb{R}^2\)
+
+An \(n \times 1\) \([1 \times n]\) matrix is a column [row] vector. In either case, these are elements of \(\mathbb{R}^n\).
+
+\textbf{Example:}
+(Column vector)
+\[
+\begin{bmatrix}
+    \sqrt{2} \\
+    0 \\
+    1 \\
+\end{bmatrix}
+\in \mathbb{R}^3
+\]
+
+(Row vector)
+\[
+\begin{bmatrix}
+    4 & \pi & 7 \\
+\end{bmatrix}
+\in \mathbb{R}^3
+\]
+
+When the context is clear (usually column), we write \((\sqrt{2}, 0, 1)\) and \((4, \pi, 7)\).
+
+For matrices (vectors) to be the same, the dimensions and entries must match.
+
+\[
+\begin{bmatrix}
+    0 & 1 \\
+\end{bmatrix}
+\neq
+\begin{bmatrix}
+    0 \\
+    1 \\
+\end{bmatrix}
+\]
+
+--------------------------------------------------------------------------------------------------
+
+Note: "\(\epsilon\)" means "in"
+
+Let \(\vec{u}, \vec{v} \in \mathbb{R}^n\) (let \(\vec{u}\) and \(\vec{v}\) be vectors in \(\mathbb{R}^n\)). Addition is done entry/component-wise.
+
+\[
+\begin{bmatrix}
+    1 \\
+    2 \\
+\end{bmatrix}
++
+\begin{bmatrix}
+    3 \\
+    4 \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+    4 \\
+    6 \\
+\end{bmatrix}
+\]
+
+For a vector \(\vec{u} \in \mathbb{R}^n\), and a scalar \(c \in \mathbb{R}\), \(c\vec{u}\) is the vector obtained by scaling each entry of \(\vec{u}\) by \(c\).
+
+\[
+7 \cdot
+\begin{bmatrix}
+    1 \\
+    2 \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+    7 \\
+    14 \\
+\end{bmatrix}
+\]
+
+\textbf{Definition:} The zero vector, denoted \(\vec{0}\), is the vector whose entries are all 0.
+
+$\rightarrow$ Context determines dimensions
+
+\[
+\begin{bmatrix}
+    1 \\
+    2 \\
+\end{bmatrix}
++
+\vec{0}
+=
+\begin{bmatrix}
+    1 \\
+    2 \\
+\end{bmatrix}
+\]
+
+So, \(\vec{0}\) is
+
+\[
+\begin{bmatrix}
+    0 \\
+    0 \\
+\end{bmatrix}
+\]
+
+See page 27 in the textbook for basic properties.
+
+\(\vec{u} + \vec{v} = \vec{v} + \vec{u}\)
+
+
+\textbf{Definition:} Let \(\vec{v_1}, \ldots, \vec{v_m} \in \mathbb{R}^n\) and \(c_1, c_2, \ldots, c_m \in \mathbb{R}\). Then the vector
+\[
+\vec{y} = c_1\vec{v_1} + c_2\vec{v_2} + \ldots + c_m\vec{v_m} = \sum_{i=1}^{m} c_i\vec{v_i}
+\]
+is a linear combination of \(\vec{v_1}, \ldots, \vec{v_m}\).
+
+Given \(\vec{v_1}, \ldots, \vec{v_m}\) and some vector \(\vec{z}\), is \(\vec{z}\) a linear combination of \(\vec{v_1}, \ldots, \vec{v_m}\)?
+
+\[
+\vec{v_1} = \begin{bmatrix} 1 \\ 0 \end{bmatrix}, \quad \vec{v_2} = \begin{bmatrix} 2 \\ 0 \end{bmatrix}, \quad \vec{z} = \begin{bmatrix} 0 \\ 1 \end{bmatrix}
+\]
+
+\textbf{Claim:} It is impossible to write \(\vec{z}\) in terms of \(\vec{v_1}\) and \(\vec{v_2}\) as a linear combination.
+
+\textbf{Example:} Can we write 
+\[
+\begin{bmatrix}
+    7 \\
+    9 \\
+    15 \\
+\end{bmatrix}
+\]
+as a linear combination of 
+\[
+\begin{bmatrix}
+    1 \\
+    1 \\
+    2 \\
+\end{bmatrix}, \quad
+\begin{bmatrix}
+    1 \\
+    2 \\
+    1 \\
+\end{bmatrix}, \quad
+\text{and} \quad
+\begin{bmatrix}
+    2 \\
+    3 \\
+    4 \\
+\end{bmatrix}?
+\]
+
+Answer: \(\vec{z}\) cannot be expressed as a linear combination of the given vectors.
+
+\textbf{Desired Expression:} Find \(c_1, c_2, c_3\) where
+\[
+\begin{bmatrix}
+    7 \\
+    9 \\
+    15 \\
+\end{bmatrix}
+=
+c_1
+\begin{bmatrix}
+    1 \\
+    1 \\
+    2 \\
+\end{bmatrix},
+\quad
+c_2
+\begin{bmatrix}
+    1 \\
+    2 \\
+    1 \\
+\end{bmatrix},
+\quad
+c_3
+\begin{bmatrix}
+    2 \\
+    3 \\
+    4 \\
+\end{bmatrix}
+\]
+
+\textbf{Resultant Matrix Equation:}
+\[
+\begin{bmatrix}
+    7 \\
+    9 \\
+    15 \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+    c_1 + c_2 + 2c_3 \\
+    c_1 + 2c_2 + 3c_3 \\
+    2c_1 + c_2 + 4c_3 \\
+\end{bmatrix}
+\]
+
+\textbf{Solving a Linear System:}
+
+Performing row reduction:
+
+\[
+\begin{bmatrix}
+    1 & 1 & 2 & | & 7 \\
+    1 & 2 & 3 & | & 9 \\
+    2 & 1 & 4 & | & 15 \\
+\end{bmatrix}
+\]
+
+Row reducing to echelon form:
+
+\[
+\begin{bmatrix}
+    1 & 0 & 0 & | & 2 \\
+    0 & 1 & 0 & | & -1 \\
+    0 & 0 & 1 & | & 3 \\
+\end{bmatrix}
+\]
+
+Thus, a combination is:
+
+\[
+\begin{bmatrix}
+    7 \\
+    9 \\
+    15 \\
+\end{bmatrix}
+=
+2 \begin{bmatrix}
+    1 \\
+    1 \\
+    2 \\
+\end{bmatrix}
+-1 \begin{bmatrix}
+    1 \\
+    2 \\
+    1 \\
+\end{bmatrix}
++3 \begin{bmatrix}
+    2 \\
+    3 \\
+    4 \\
+\end{bmatrix}
+\]
+
+
+\textbf{More generally:} If \(\vec{y}\) is a linear combination of \(\vec{v_1}, \ldots, \vec{v_m}\), say \(\vec{y} = c_1\vec{v_1} + c_2\vec{v_2} + \ldots + c_m\vec{v_m} = \sum_{i=1}^{m} c_i\vec{v_i}\), then we row reduce the augmented matrix:
+
+\[
+\begin{bmatrix}
+    \vec{v_1} & \vec{v_2} & \ldots & \vec{v_m} & | & \vec{y} \\
+    \downarrow &  \downarrow &  \downarrow &  \downarrow & | & \downarrow & \\
+\end{bmatrix}
+\]
+
+to obtain the constants \(c_1, c_2, \ldots, c_m\).
+
+\textbf{Definition:} Let \(\vec{v_1}, \vec{v_2}, \ldots, \vec{v_m} \in \mathbb{R}^n\). The set of all linear combinations of \(\vec{v_1}, \vec{v_2}, \ldots, \vec{v_m}\) is the span of \(\vec{v_1}, \vec{v_2}, \ldots, \vec{v_m}\), denoted \(\text{span}(\{\vec{v_1}, \vec{v_2}, \ldots, \vec{v_m}\})\).
+
+
+\section{Lecture 4, 1/31/2024}
+
+Recall from last lecture: \(\vec{v_1}, \vec{v_2}, \ldots, \vec{v_m}\) is the span of \(\vec{v_1}, \vec{v_2}, \ldots, \vec{v_m}\), denoted \(\text{span}(\{\vec{v_1}, \vec{v_2}, \ldots, \vec{v_m}\})\).
+
+The span of vectors \( \vec{v_1}, \ldots, \vec{v_m} \) is denoted as:
+\[ \text{span}(\vec{v_1}, \ldots, \vec{v_m}) = \left\{ \sum_{i=1}^{m} c_i\vec{v_i} \mid c_1, \ldots, c_m \in \mathbb{R} \right\} \]
+
+\textbf{Remark:} The vector \( \vec{0} \) is always in the span.
+
+\textbf{Example:}
+\[ \text{span}(\vec{v}) \] represents a line in the direction of \( \vec{v} \).
+
+
+If \( \vec{r}(t) = t\vec{v} \), it represents a parameterization of the line.
+
+Let's consider \( \vec{v} = (1, 2, 3) \) and introduce \( \vec{u} = (2, 4, 6) \).
+
+\[ \text{span}(\vec{v}, \vec{u}) \]
+
+Note: \( \vec{u} = 2\vec{v} \), indicating that \( \vec{u} \) is a scalar multiple of \( \vec{v} \), and therefore, it still represents the line in the direction of \( \vec{v} \).
+
+The question arises: What is the fewest number of vectors needed to span the same space?
+
+
+---------------------------------------------------------------------------------------------------
+
+\textbf{Matrix Equation} \( A\vec{x} = \vec{b} \)
+
+\textbf{Section 1.4: Matrix Equation} \(A\vec{x} = \vec{b}\)
+
+Given the system of equations:
+
+\[
+\begin{aligned}
+7x_1 - 3x_2 + 4x_3 &= 2 \\
+x_1 - x_2 &= 4 \\
+-x_1 + 2x_2 - 3x_3 &= 1
+\end{aligned}
+\]
+
+We can express this system as a matrix product in Chapter 2:
+
+Coefficient matrix \(A\):
+
+\[
+A = \begin{bmatrix}
+7 & -3 & 4 \\
+1 & -1 & 0 \\
+-1 & 2 & -3
+\end{bmatrix}
+\]
+
+Column vector \(\vec{x}\):
+
+\[
+\vec{x} = \begin{bmatrix}
+x_1 \\
+x_2 \\
+x_3
+\end{bmatrix}
+\]
+
+\[
+\vec{b} = \begin{bmatrix}
+2 \\
+4 \\
+1
+\end{bmatrix}
+\]
+
+\(\vec{x}\) is the column vector of variables, and \(\vec{b}\) is the column vector of RHS (right-hand side) values of the equations.
+
+\(A\vec{x} = \vec{b}\) is the matrix equation of the system.
+
+
+\textbf{Equivalently, if} \( A = \)
+
+\[
+\begin{bmatrix}
+    \vec{v_1} & \vec{v_2} & \ldots & \vec{v_m} \\
+    \downarrow & \downarrow & \downarrow & \downarrow \\
+\end{bmatrix}
+\]
+
+\textbf{and} \(\vec{x} = \)
+
+\[
+\begin{bmatrix}
+    x_1 \\
+    \vdots \\
+    x_n
+\end{bmatrix}
+\]
+
+\textbf{then} \( A\vec{x} = \)
+
+\[
+\begin{bmatrix}
+    \vec{v_1} & \vec{v_2} & \ldots & \vec{v_m} \\
+    \downarrow & \downarrow & \downarrow & \downarrow \\
+\end{bmatrix}
+\quad
+\begin{bmatrix}
+    x_1 \\
+    \vdots \\
+    x_n
+\end{bmatrix}
+\]
+
+\[ x_1\vec{v_1} + x_2\vec{v_2} + \ldots + x_n\vec{v_n} = \vec{b} \]
+
+\textbf{Therefore, we can see} \( A\vec{x} = \vec{b} \) as:
+
+1. Solving a system of linear equations.
+2. Checking whether \(\vec{b}\) is a linear combination of \(\vec{v_1}, \ldots, \vec{v_n}\), i.e., whether \(\vec{b}\) is in the span \(\text{span}(\vec{v_1}, \ldots, \vec{v_n})\).
+
+
+\textbf{Theorem:} The following statements are equivalent (either all true or all false) for an \(m \times n\) matrix \(A\):
+
+\begin{enumerate}
+    \item Equation \(A\vec{x} = \vec{b}\) has a solution for all \(\vec{b} \in \mathbb{R}^m\).
+    \item The columns (column vectors) of \(A\) span \(\mathbb{R}^m\).
+    \item Every row in \(A\) has a pivot.
+\end{enumerate}
+
+\textbf{Example:}
+\[ A = \begin{bmatrix}
+    1 & 2 & 0 \\
+    0 & 1 & 1 \\
+    0 & 1 & 1
+\end{bmatrix} \]
+
+Performing row operations:
+\[
+-2R_2 + R_1 \quad \text{and} \quad -R_2 + R_3
+\]
+
+Results in the row-echelon form:
+\[
+\begin{bmatrix}
+    1 & 0 & -2 \\
+    0 & 1 & 1 \\
+    0 & 0 & 0
+\end{bmatrix}
+\]
+
+Since the row-echelon form does not have a pivot in every row, statement 3 is false. Therefore, statements 1 and 2 are also false.
+
+Ex: 
+
+\[
+\begin{bmatrix}
+    0 & 1 & 0 & 0 & \vert & 3 \\
+    0 & 0 & 1 & 0 & \vert & 2 \\
+    0 & 0 & 0 & 1 & \vert & 4 \\
+    0 & 0 & 0 & 0 & \vert & 0 \\
+\end{bmatrix}
+\]
+
+This is the augmented matrix of the system.
+
+Solutions:
+\[
+\begin{aligned}
+    x_2 &= 3 \\
+    x_3 &= 2 \\
+    x_4 &= 4 \\
+    x_1 & \text{ is free}
+\end{aligned}
+\]
+
+The system has infinitely many solutions.
+
+Does every row have a pivot? No.
+
+This does NOT violate the theorem!
+
+For some \(\vec{b}\), there may still be solutions. However, if statement 3 fails (pivot in every row), there exists some \(\vec{b}\) where \(A\vec{x} = \vec{b}\) has NO solutions.
+
+\[ A\vec{x} = \begin{bmatrix} 1 \\ 2 \\ 3 \\ 4 \end{bmatrix} \]
+
+\[\Rightarrow \vec{x} = \begin{bmatrix} 5 \\ 6 \\ 7 \\ 8 \end{bmatrix} \]
+
+Ex:
+
+\[
+\begin{bmatrix}
+    -1 & 2 \\
+    4 & 3 \\
+    2 & 2 
+\end{bmatrix}
+\begin{bmatrix}
+    x_1 \\
+    x_2
+\end{bmatrix}
+=
+\begin{bmatrix}
+    5 \\
+    0 \\
+    14
+\end{bmatrix}
+\]
+
+Is \(\begin{bmatrix} 5 \\ 0 \\ 14 \end{bmatrix}\) a linear combination of \(\begin{bmatrix} -1 \\ 4 \\ 2 \end{bmatrix}\) and \(\begin{bmatrix} 2 \\ -3 \\ 2 \end{bmatrix}\)? 
+\(\Rightarrow\) \(x_1 = 3\), \(x_2 = 4\). Yes, but we cannot conclude whether the columns span \(\mathbb{R}^3\) (Condition 1 is not satisfied yet).
+
+
+\section{Lecture 5, 2/2/2024}
+
+Last time: 
+
+\[
+\begin{bmatrix}
+    -1 & 2 \\
+    4 & 3 \\
+    2 & 2 
+\end{bmatrix}
+\begin{bmatrix}
+    x_1 \\
+    x_2
+\end{bmatrix}
+=
+\begin{bmatrix}
+    5 \\
+    0 \\
+    14
+\end{bmatrix}
+\]
+
+\[
+\begin{bmatrix}
+    -1 & 2 & \vert & 5 \\
+    4 & 3 & \vert & 0 \\
+    2 & 2 & \vert & 14
+\end{bmatrix}
+\rightarrow
+\begin{bmatrix}
+    1 & 0 & \vert & 3 \\
+    0 & 1 & \vert & 4 \\
+    0 & 0 & \vert & 0
+\end{bmatrix}
+\]
+
+\[x_1 = 3, \quad x_2 = 4\]
+
+\textbf{Section 1.5: Solution Sets of Linear Equations}
+
+\textbf{Definition:} A system of linear equations \(A\vec{x} = \vec{b}\) is homogeneous if \(\vec{b} = \vec{0}\) (zero vector). Observe that \(\vec{x} = \vec{0}\) is always a solution (called "trivial"). Does there exist non-trivial solutions?
+
+\textbf{Example:}
+\[
+\begin{aligned}
+    x_1 - x_2 + x_3 - 2x_4 &= 0 \\
+    x_1 - 3x_3 + 2x_4 &= 0 \\
+    2x_1 - x_2 - 2x_3 + 4x_4 &= 0
+\end{aligned}
+\]
+
+Row reducing the augmented matrix yields the Reduced Row Echelon Form (RREF):
+
+\[
+\begin{bmatrix}
+    1 & 0 & -3 & 2 & \vert & 0 \\
+    0 & 1 & -4 & 0 & \vert & 0 \\
+    0 & 0 & 0 & 0 & \vert & 0
+\end{bmatrix}
+\]
+\medskip
+\[
+\begin{aligned}
+    x_1 &= 3x_3 - 2x_4 \\
+    x_2 &= 4x_3 \\
+    x_3 &= x_3 \\
+    x_4 &= x_4
+\end{aligned}
+\]
+
+The solution is of the form:
+
+\[
+\vec{x} = 
+\begin{bmatrix}
+    x_1 \\
+    x_2 \\
+    x_3 \\
+    x_4
+\end{bmatrix}
+= x_3
+\begin{bmatrix}
+    3 \\
+    4 \\
+    1 \\
+    0
+\end{bmatrix}
++ x_4
+\begin{bmatrix}
+    -2 \\
+    0 \\
+    0 \\
+    1
+\end{bmatrix}
+\]
+
+where \(x_3\) and \(x_4\) are real numbers (\(x_3, x_4 \in \mathbb{R}\)).
+
+
+\[
+\text{{span}}\left(
+\left\{
+\begin{bmatrix}
+    3 \\
+    4 \\
+    1 \\
+    0
+\end{bmatrix},
+\begin{bmatrix}
+    -2 \\
+    0 \\
+    0 \\
+    1
+\end{bmatrix}
+\right\}
+\right)
+\]
+
+The above is called the parametric vector form of the solutions.
+
+What if the system is non-homogeneous?
+
+\textbf{Example:}
+\[
+\begin{aligned}
+    -2x_1 + 3x_2 + x_3 &= 2 \\
+    -x_1 + 3x_2 + 11x_3 &= 19 \\
+    x_1 - x_2 + 3x_3 &= 5
+\end{aligned}
+\]
+
+Row reducing the augmented matrix:
+\[
+\begin{bmatrix}
+    1 & 0 & 10 & \vert & 17 \\
+    0 & 1 & 7 & \vert & 12 \\
+    0 & 0 & 0 & \vert & 0
+\end{bmatrix}
+\]
+
+The solution is given by:
+\[x_1 = -10x_3 + 17x_2, 
+\quad x_2 = -7x_3 + 12x_3, 
+\quad x_3 = x_3\]
+
+The solution in parametric vector form is:
+
+\[
+\vec{x} = 
+\begin{bmatrix}
+    x_1 \\
+    x_2 \\
+    x_3 
+\end{bmatrix}
+= x_3
+\begin{bmatrix}
+    -10 \\
+    -7 \\
+    1 
+\end{bmatrix}
++
+\begin{bmatrix}
+    17 \\
+    12 \\
+    0 
+\end{bmatrix}
+\]
+
+where \(x_3 \in \mathbb{R}\).
+
+This can also be expressed as \(x_3\vec{v} + \vec{p} \), which is equivalent to \(\vec{p}_0 + t\vec{v}\), representing a line through \(\vec{p}_0\) in the direction of \(\vec{v}\).
+
+
+
+\[
+\vec{x} = x_3 \vec{v}
+\]
+
+where \(x_3 \in \mathbb{R}\). This can be interpreted as a line through the origin in the direction of \(\vec{v}\).
+
+
+\textbf{Example: (two ex. ago, now NOT homogeneous)}
+
+\[
+\begin{aligned}
+    x_1 - x_2 + x_3 - 2x_4 &= 4 \\
+    x_1 - 3x_3 + 2x_4 &= 1 \\
+    2x_1 - x_2 - 2x_3 + 4x_4 &= 5
+\end{aligned}
+\]
+Solving this, we find:
+
+\[
+\begin{aligned}
+    x_1 &= 3x_3 - 2x_4 + 1 \\
+    x_2 &= 4x_3 - 3 \\
+    x_3 &= x_3 \\
+    x_4 &= x_4
+\end{aligned}
+\]
+
+where 
+\[
+\vec{x} = 
+ x_3
+\begin{bmatrix}
+    3 \\
+    4 \\
+    1 \\
+    0
+\end{bmatrix}
++ x_4
+\begin{bmatrix}
+    -2 \\
+    0 \\
+    0  \\
+    1
+\end{bmatrix}
++
+\begin{bmatrix}
+    1 \\
+    -3 \\
+    0  \\
+    0
+\end{bmatrix}
+\]
+
+where \(x_3, x_4 \in \mathbb{R}\).
+
+\textbf{Theorem:} Suppose the system \(A\vec{x} = \vec{b}\) is consistent. Let \(\vec{p}\) be a solution (may not be unique). Then the solution set to \(A\vec{x} = \vec{b}\) is given by all vectors \(\vec{x} = \vec{p} + \vec{v}_h\), where \(\vec{v}_h\) is ANY solution to the homogeneous system \(A\vec{x} = \vec{0}\).
+
+---------------------------------------------------------------------------------------------------
+
+\textbf{Section 1.7: Linear Independence}
+
+\textbf{Definition:} The set of vectors \(\{\vec{v}_1, \ldots, \vec{v}_m\}\) in \(\mathbb{R}^n\) is linearly independent if \(a_1\vec{v}_1 + a_2\vec{v}_2 + \ldots + a_m\vec{v}_m = \vec{0}\) is true only if \(a_1 = a_2 = \ldots = a_m = 0\). Otherwise, the set is linearly dependent, meaning there exist constants \(c_1, c_2, \ldots, c_m \in \mathbb{R}\) not all zero, such that \(c_1\vec{v}_1 + c_2\vec{v}_2 + \ldots + c_m\vec{v}_m = \vec{0}\).
+\[
+2\begin{bmatrix}
+    1 \\
+    2 \\
+    3
+\end{bmatrix}
+-1
+\begin{bmatrix}
+    2 \\
+    4 \\
+    6  
+\end{bmatrix}
+= \vec{0}
+\]
+
+To check if \(\{\vec{v}_1, \ldots, \vec{v}_m\}\) is linearly independent, verify if \(\vec{0}\) is a unique solution to the system \(a_1\vec{v}_1 + a_2\vec{v}_2 + \ldots + a_m\vec{v}_m = \vec{0}\). Row reduce the augmented matrix:
+
+\[
+\begin{bmatrix}
+    \vec{v}_1 & \vec{v}_2 & \ldots & \vec{v}_m & | & \vec{0} \\
+    \downarrow &  \downarrow &  \downarrow &  \downarrow & | & \downarrow \\
+\end{bmatrix}
+\]
+
+If the solution is unique, then the column vectors \(\vec{v}_1, \ldots, \vec{v}_m\) form a linearly independent set.
+
+
+\section{Lecture 6, 2/5/2024}
+
+
+\textbf{Example:} Is \{(1,2,3), (-2,0,1), (4,-4,-9)\} linearly independent?
+
+$\Rightarrow$ Solve for constants \(c_1, c_2, c_3\) where
+\[c_1(1,2,3) + c_2(-2,0,1) + c_3(4,-4,-9) = (0,0,0)\]
+
+$\Rightarrow$
+\[
+\begin{cases}
+    c_1 - 2c_2 + 4c_3 &= 0 \\
+    2c_1 - 4c_3 &= 0 \\
+    3c_1 + c_2 - 9c_3 &= 0 \\
+\end{cases}
+\]
+
+$\Rightarrow$ Row reduce the augmented matrix:
+\[
+\begin{bmatrix}
+    1 & -2 & 4 & | & 0 \\
+    2 & 0 & -4 & | & 0 \\
+    3 & 1 & -9 & | & 0 \\
+\end{bmatrix}
+\rightarrow
+\begin{bmatrix}
+    1 & -2 & 4 & | & 0 \\
+    0 & 4 & -12 & | & 0 \\
+    0 & 7 & -21 & | & 0 \\
+\end{bmatrix}
+\rightarrow
+\begin{bmatrix}
+    1 & -2 & 4 & | & 0 \\
+    0 & 1 & -3 & | & 0 \\
+    0 & 0 & 0 & | & 0 \\
+\end{bmatrix}
+\rightarrow
+\begin{bmatrix}
+    1 & 0 & 2 & | & 0 \\
+    0 & 1 & -3 & | & 0 \\
+    0 & 0 & 0 & | & 0 \\
+\end{bmatrix}
+\]
+
+$\Rightarrow$ The system is consistent, and it has infinitely many solutions, indicating that the vectors are linearly dependent.
+
+
+
+Given:
+\[
+\begin{cases}
+    c_1 - 2c_3 &= 0 \\
+    c_2 - 3c_3 &= 0 \\
+    c_3 &\in \mathbb{R}
+\end{cases}
+\]
+
+Find a linear dependent relationship.
+
+Let \(c_3 = 2\):
+\[
+\begin{cases}
+    c_1 - 2(2) &= 0 \implies c_1 = 4 \\
+    c_2 - 3(2) &= 0 \implies c_2 = 6
+\end{cases}
+\]
+
+So, \[4(1,2,3) + 6(-2,0,1) + 2(4,-4,-9) = (0,0,0)\]
+
+Thus, there exist constants \(c_1, c_2, c_3\) (not all zero) forming a linear combination of \(\vec{0}\).
+
+\(\Rightarrow\) The set is linearly dependent.
+
+Suppose we have a linear dependence: \(c_1\vec{v_1} + \ldots + c_m\vec{v_m} = \vec{0}\) (\(c_1, \ldots, c_m\) not all zero).
+
+Suppose \(c_1 \neq 0\):
+
+\[
+\begin{aligned}
+    &c_2\vec{v_2} + \ldots + c_m\vec{v_m} = -c_1\vec{v_1} \\
+    &\vec{v_1} = -\frac{c_2}{c_1}\vec{v_2} + \ldots -\frac{c_m}{c_1}\vec{v_m} \\
+    &\vec{v_1} \text{ is a linear combination of the other vectors.}
+\end{aligned}
+\]
+
+Linear dependence implies a vector is a linear combination of others.
+
+Consider \(\vec{v_1} = \begin{bmatrix} 1 \\ 0 \end{bmatrix}\), \(\vec{v_2} = \begin{bmatrix} 2 \\ 0 \end{bmatrix}\), \(\vec{v_3} = \begin{bmatrix} 0 \\ 1 \end{bmatrix}\).
+
+
+\(\Rightarrow \vec{v_3}\) is NOT a linear combination of \(\vec{v_1}\) and \(\vec{v_2}\), but \(\vec{v_1}\) IS a linear combination of \(\vec{v_2}\) and \(\vec{v_3}\).
+
+
+\textbf{Theorem:} The set \(\{\vec{v_1}, \ldots , \vec{v_m}\}\) is linearly dependent if and only if at least one vector ("there exists") in the set is a linear combination of the others.
+
+\textbf{Example:} Consider \(\{\vec{v_1}, \vec{v_2}\}\), where \(c_1\vec{v_1} + c_2\vec{v_2} = \vec{0}\).
+
+\(\Rightarrow \vec{v_1} = \frac{-c_2}{c_1}\vec{v_2}\), \(c_1, c_2 \neq 0\).
+
+Since there are multiples of each other, the set is linearly dependent.
+
+Now, consider the set \(\{\begin{bmatrix} 1 \\ 0 \end{bmatrix}, \begin{bmatrix} 0 \\ 1 \end{bmatrix}, \begin{bmatrix} 1 \\ 1 \end{bmatrix}\}\).
+
+\(\begin{bmatrix} 1 \\ 1 \end{bmatrix} = \begin{bmatrix} 1 \\ 0 \end{bmatrix} + \begin{bmatrix} 0 \\ 1 \end{bmatrix}\).
+
+This implies the set must be linearly dependent. However, note that no vector in the set is a multiple of another.
+
+
+\textbf{Example:} Consider the set \(\{\vec{0}, \vec{v_1}, \vec{v_2}, \vec{v_3}\}\).
+
+\[c_1(\vec{0}+0\vec{v_1}+0\vec{v_2}+0\vec{v_3}) = \vec{0}\]
+
+\(c_1\) can be non-zero, implying that any set containing \(\vec{0}\) is linearly dependent.
+
+
+\textbf{Example:} Let \(\vec{v_1} = \begin{bmatrix} 1 \\ 2 \\ 3 \end{bmatrix}\), \(\vec{v_2} = \begin{bmatrix} 1 \\ 0 \\ 0 \end{bmatrix}\), \(\vec{v_3} = \begin{bmatrix} 0 \\ 0 \\ 1 \end{bmatrix}\), \(\vec{v_4} = \begin{bmatrix} -1 \\ 1 \\ -1 \end{bmatrix}\).
+
+Are \(\vec{v_1}, \vec{v_2}, \vec{v_3}, \vec{v_4}\) linearly independent or linearly dependent?
+
+Row reduce:
+\[
+\begin{bmatrix}
+    1 & 1 & 0 & -1 \\
+    2 & 0 & 0 & -1 \\
+    3 & 0 & 1 & -1 \\
+\end{bmatrix}
+\]
+
+We know the system is consistent, and there can only be 3 pivots, but with 4 columns, \(A\vec{x}=\vec{0}\) must have a free variable. So there are infinite ways to write \(\vec{0}\) as a linear combination of \(\vec{v_1}, \vec{v_2}, \vec{v_3}, \vec{v_4}\), implying a linearly dependent set.
+
+\textbf{Theorem:} Let \(\{\vec{v_1}, \ldots, \vec{v_m}\}\) be vectors in \(\mathbb{R}^n\). Suppose \(m > n\). Then the set of vectors is linearly dependent.
+
+
+Ex: Suppose m $\leq$ n. Then no conclusion.
+
+
+
+\section{Lecture 7, 2/7/2024}
+
+\textbf{Section 1.8: Introduction to Linear Transformation}
+
+\textbf{Definition:} A transformation \(T\) from \(\mathbb{R}^n\) to \(\mathbb{R}^m\) is a rule assigning each vector \(\vec{x} \in \mathbb{R}^n\) to a unique vector \(T(\vec{x})\) in \(\mathbb{R}^m\). We define \(\mathbb{R}^n\) to be the domain of \(T\), and \(\mathbb{R}^m\) as the codomain. The vector \(\vec{y} = T(\vec{x})\) is the image of \(\vec{x}\) under \(T\). The range is the set of all images \(T(\vec{x})\), where \(\vec{x} \in \mathbb{R}^n\), i.e., \(\{T(\vec{x}): \vec{x} \in \mathbb{R}^n\}\).
+
+\textbf{Example:}
+
+\textbf{Example:}
+\[ A = \begin{bmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \end{bmatrix} \quad * \vec{x} = \begin{bmatrix} 4 \\ 5 \\ 6 \end{bmatrix} \quad = \vec{b} = \begin{bmatrix} 32 \\ 77 \end{bmatrix} \]
+
+
+This is a "transformation" \(\mathbb{R}^3 \rightarrow \mathbb{R}^2\).
+\medskip
+
+\textbf{Example:} \(T\left( \begin{bmatrix} x \\ y \end{bmatrix} \right) = k \begin{bmatrix} x \\ y \end{bmatrix} = \begin{bmatrix} kx \\ ky \end{bmatrix}\)
+
+If \(k > 1\), it is a dilation.
+
+If \(0 < k < 1\), it is a contraction.
+
+\[
+\begin{bmatrix}
+    k & 0 \\
+    0 & k
+\end{bmatrix} \begin{bmatrix} x \\ y \end{bmatrix} = \begin{bmatrix} kx \\ ky \end{bmatrix}
+\]
+
+\textbf{Example:} \(T\left( \begin{bmatrix} x \\ y \end{bmatrix} \right) = \begin{bmatrix} -x \\ y \end{bmatrix} \)
+
+Reflects along the x-axis. More generally, given \(A\) is \(m \times n\), this can be seen as a transformation:
+\[
+\begin{bmatrix}
+    ---\\
+\end{bmatrix}
+\begin{bmatrix}
+    \mathbb{R}^n \\
+\end{bmatrix} = \begin{bmatrix}
+    \mathbb{R}^m \\
+\end{bmatrix} \text{from} \ \mathbb{R}^n \ \text{to} \ \mathbb{R}^m.
+\]
+
+We write \(A: \mathbb{R}^n \rightarrow \mathbb{R}^m\). Alternatively, we write \(\vec{x} \mapsto A\vec{x}\).
+
+Ex: Let 
+\[
+A = 
+\begin{bmatrix}
+    -1 & 2 \\
+    2 & 3 \\
+    0 & 2 
+\end{bmatrix}
+\]
+
+\(a: \mathbb{R}^2 \rightarrow \mathbb{R}^3\)
+
+a) What is the domain and range?
+
+Domain is \(\mathbb{R}^2\).
+
+Range? \(A\vec{x}\)?
+\[
+\begin{bmatrix}
+    -1 & 2 \\
+    2 & 3 \\
+    0 & 2 \\
+\end{bmatrix}\vec{x}
+\]
+
+\[
+\begin{bmatrix}
+    -1 & 2 \\
+    2 & 3 \\
+    0 & 2 \\
+\end{bmatrix}\begin{bmatrix}
+    x_1 \\
+    x_2 \\
+\end{bmatrix} =
+x_1\begin{bmatrix}
+    -1 \\
+    2 \\
+    0 \\
+\end{bmatrix} + x_2\begin{bmatrix}
+    2 \\
+    3 \\
+    2 \\
+\end{bmatrix}
+\]
+
+\[
+\Rightarrow \text{range is } \text{span}\left( \left\{ \begin{bmatrix} -1 \\ 2 \\ 0 \end{bmatrix}, \begin{bmatrix} 2 \\ 3 \\ 2 \end{bmatrix} \right\} \right)
+\]
+
+b) Is \(\begin{bmatrix} -1 \\ 3 \\ 4 \end{bmatrix}\) in the range?
+
+Since the range is given by \(\text{span}\left( \left\{ \begin{bmatrix} -1 \\ 2 \\ 0 \end{bmatrix}, \begin{bmatrix} 2 \\ 3 \\ 2 \end{bmatrix} \right\} \right)\), we need to check if the given vector can be written as a linear combination of these vectors. We get No solution. Thus the columns do NOT span \(\mathbb{R}^3\).
+
+
+\textbf{Definition:} Let $\vec{u}, \vec{v} \in \mathbb{R}^n$ and $c \in \mathbb{R}$. A transformation $T$ is a linear transformation if:
+\begin{enumerate}
+    \item $T(\vec{u} + \vec{v}) = T\vec{u} + T\vec{v}$
+    \item $cT(\vec{u}) = T(c\vec{u})$
+\end{enumerate}
+
+\textbf{Example:} Let $T([x_1][x_2][x_3]) = [xy][z]$. Show it is NOT a linear transformation. To show it is NOT, find explicit vectors where a property fails. Let $c = 2$, $\vec{u} = \begin{bmatrix} 1 \\ 1 \\ 1 \end{bmatrix}$.
+
+Property 2? $2T\left(\begin{bmatrix} 1 \\ 1 \\ 1 \end{bmatrix}\right) = 2\begin{bmatrix} 1 \\ 1 \end{bmatrix} = \begin{bmatrix} 2 \\ 2 \end{bmatrix}$.
+
+(Determining if $2T(\vec{u}) = T(2\vec{u})$)
+Now $T(2\begin{bmatrix} 1 \\ 1 \\ 1 \end{bmatrix}) = T\left(\begin{bmatrix} 2 \\ 2 \\ 2 \end{bmatrix}\right) = \begin{bmatrix} 4 \\ 2 \end{bmatrix}$, which is not equal to $2T\left(\begin{bmatrix} 1 \\ 1 \\ 1 \end{bmatrix}\right) = \begin{bmatrix} 2 \\ 2 \end{bmatrix}$. 
+
+Hence, $T(2\vec{u}) \neq 2T(\vec{u})$, indicating that the transformation does not satisfy property 2, and therefore, it is not a linear transformation.
+
+Now let's try property 1:
+$\vec{u} = \begin{bmatrix} 1 \\ 1 \\ 0 \end{bmatrix}$, $\vec{v} = \begin{bmatrix} 1 \\ 0 \\ 0 \end{bmatrix}$. We will check if $T(\vec{u} + T(\vec{v})) = T(\vec{u} + \vec{v})$.
+
+
+\textbf{Properties:} Let $T$ be a linear transformation.
+\begin{enumerate}
+    \item $T(\vec{0}) = \vec{0}$
+    \item $T(c_1\vec{v_1} + c_2\vec{v_2}) = c_1T(\vec{v_1}) + c_2T(\vec{v_2})$
+\end{enumerate}
+
+
+\section{Lecture 8, 2/9/2024}
+
+\textbf{Example:} 
+
+Suppose \( T(1,4) = (7,2,3) \) (equivalent to \( T\left(\begin{bmatrix} 1 \\ 4 \end{bmatrix}\right) = \begin{bmatrix} 7 \\ 2 \\ 3 \end{bmatrix} \)).
+ Given that $T: \mathbb{R}^2 \rightarrow \mathbb{R}^3$ and $T$ is a linear transformation, by inspection, find $T(4,7)$.
+\medskip
+
+Observe that $2(1,4) + (-2,1) = (4,7)$, which is a linear combination of $(1,4)$ and $(2,-1)$. According to the linear transformation property:
+
+\[ T(2(1,4)+(2,-1)) = 2T(1,4) + 1T(2,-1) = 2(7,2,3)+1(6,1,1) = (20,5,7) = T(4,7) \].
+
+\(\rightarrow\) We found \( T(4,7) \) without knowing the mapping \( T \) explicitly.
+
+\textbf{Section 1.9: The Matrix of a Linear Transformation}
+
+\textbf{Definition:} Let \( \vec{e_i} \in \mathbb{R}^m \) denote the \( i^{th} \) standard basis vector in \( \mathbb{R}^m \), the vector whose \( i^{th} \) entry is 1, and 0 elsewhere. For example, \( \vec{e_2} \) is \( \begin{bmatrix} 0 \\ 1 \\ 0 \end{bmatrix} \).
+
+Suppose \( T(\begin{bmatrix} x \\ y \end{bmatrix}) = \begin{bmatrix} x+y \\ x-y \end{bmatrix} \). Can we find a matrix \( A \) such that \( A\begin{bmatrix} x \\ y \end{bmatrix} = \begin{bmatrix} x+y \\ x-y \end{bmatrix} \)?
+
+\textbf{Example:} Suppose \( T(\begin{bmatrix} 1 \\ 0 \end{bmatrix}) = \begin{bmatrix} 4 \\ 5 \\ 6 \end{bmatrix} \) and \( T(\begin{bmatrix} 0 \\ 1 \end{bmatrix}) = \begin{bmatrix} -1 \\ 2 \\ -3 \end{bmatrix} \).
+
+Now let \( \begin{bmatrix} x \\ y \end{bmatrix} = x\begin{bmatrix} 1 \\ 0 \end{bmatrix} + y\begin{bmatrix} 0 \\ 1 \end{bmatrix} \). Then \( T(\begin{bmatrix} x \\ y \end{bmatrix}) = T(x\begin{bmatrix} 1 \\ 0 \end{bmatrix} + y\begin{bmatrix} 0 \\ 1 \end{bmatrix}) = xT(\begin{bmatrix} 1 \\ 0 \end{bmatrix}) + yT(\begin{bmatrix} 0 \\ 1 \end{bmatrix}) \), by the property of a linear transformation.
+
+
+\[
+= x\begin{bmatrix} 4 \\ 5 \\ 6 \end{bmatrix} + y\begin{bmatrix} -1 \\ 2 \\ -3 \end{bmatrix} = \begin{bmatrix} 4 & -1 \\ 5 & 2 \\ 6 & -3 \end{bmatrix} \begin{bmatrix} x \\ y \end{bmatrix} \sim A\vec{x}
+\]
+
+
+Matrix A is determined by how $\vec{e}_1$, $\vec{e}_2$, $\ldots$, $\vec{e}_m$ map (standard basis vectors). 
+
+\textbf{Theorem:} Let $T: \mathbb{R}^n \rightarrow \mathbb{R}^m$ be a linear transformation. Then there is a unique matrix $A$ such that $T(\vec{x}) = A\vec{x}$ for all $\vec{x} \in \mathbb{R}^n$. Moreover, the matrix $A$ is given by:
+\[ A = \begin{bmatrix}
+    T\vec{e}_1 & T\vec{e}_2 & \ldots & T\vec{e}_n \\
+    \downarrow & \downarrow & \downarrow & \downarrow \\
+\end{bmatrix} \]
+(the $j$th column is $T(\vec{e}_j)$), called the standard matrix of the linear transformation $T$.
+
+\textbf{Example:} Counterclockwise rotation of $\theta$ degrees about the origin. We want to find the standard matrix $A$ for the counterclockwise rotation of $\theta$ degrees.
+
+We simply need $T\left(\begin{bmatrix} 1 \\ 0 \end{bmatrix}\right) = \begin{bmatrix} x' \\ y'' \end{bmatrix}$, where $\vec{e}_1 = \begin{bmatrix} 1 \\ 0 \end{bmatrix}$ is the standard basis vector along the $x$-axis, and $T\left(\begin{bmatrix} 0 \\ 1 \end{bmatrix}\right) = \begin{bmatrix} x' \\ y'' \end{bmatrix}$.
+
+\[
+\Rightarrow \cos \theta = \frac{x'}{1} \Rightarrow x' = \cos \theta \quad \text{and} \quad \sin \theta = \frac{y''}{1} \Rightarrow y'' = \sin \theta
+\]
+\[
+\Rightarrow T\left(\begin{bmatrix} 1 \\ 0 \end{bmatrix}\right) = \begin{bmatrix} \cos \theta \\ \sin \theta \end{bmatrix} \quad \rightarrow \text{first column of } A!
+\]
+\[
+\Rightarrow T\left(\begin{bmatrix} 0 \\ 1 \end{bmatrix}\right) = \begin{bmatrix} x' \\ y'' \end{bmatrix}
+\]
+\[
+\sin \theta = -\frac{x'}{1} \Rightarrow x' = -\sin \theta
+\]
+\[
+\text{Similarly, } \cos \theta = \frac{y''}{1} \Rightarrow y'' = \cos \theta \quad \text{so} \quad T\left(\begin{bmatrix} 0 \\ 1 \end{bmatrix}\right) = \begin{bmatrix} -\sin \theta \\ \cos \theta \end{bmatrix}
+\]
+
+Thus, the standard matrix in $\mathbb{R}^2$ for a counterclockwise rotation of $\theta$ radians is:
+\[ A = \begin{bmatrix} \cos \theta & -\sin \theta \\ \sin \theta & \cos \theta \end{bmatrix} \]
+
+
+\[
+\text{What about clockwise? Use } -\theta \text{ on the c.c.w matrix, which becomes } \begin{bmatrix} \cos \theta & \sin \theta \\ -\sin \theta & \cos \theta \end{bmatrix}
+\]
+
+
+Ex: 1) Reflection along y=x
+
+\[ A = \begin{bmatrix} 1 & k \\ 0 & 1 \end{bmatrix} \]
+(swaps x and y)
+
+2) horizontal shear by K units 
+\[ A = \begin{bmatrix} 1 & k \\ 0 & 1 \end{bmatrix} \]
+\[\begin{bmatrix} 1 & k \\ 0 & 1 \end{bmatrix} \begin{bmatrix} x \\ y \end{bmatrix} = \begin{bmatrix} x+ky \\ y \end{bmatrix}\]
+
+
+
+\section{Lecture 9, 2/12/2024}
+
+\textbf{Definition:} A mapping $T: \mathbb{R}^n \rightarrow \mathbb{R}^m$ is one-to-one, or injective, if for each $\vec{b} \in \mathbb{R}^m$, there is at most one $\vec{x} \in \mathbb{R}^n$ such that $T(\vec{x}) = \vec{b}$.
+
+Example: Consider $T(\begin{bmatrix} x \\ y \end{bmatrix}) = \begin{bmatrix} x + y \\ 0 \end{bmatrix}$. 
+
+Here, $T(\begin{bmatrix} -1 \\ 1 \end{bmatrix}) = \begin{bmatrix} 0 \\ 0 \end{bmatrix}$ and $T(\begin{bmatrix} -2 \\ 2 \end{bmatrix}) = \begin{bmatrix} 0 \\ 0 \end{bmatrix}$. 
+
+Thus, there are multiple vectors $\vec{x} \in \mathbb{R}^n$ mapping to $\vec{b} = \begin{bmatrix} 0 \\ 0 \end{bmatrix}$. 
+
+Hence, $T$ is not one-to-one (injective).
+
+\textbf{Equivalently}, $T$ is not one-to-one (injective) if $T(\vec{x}_1) = T(\vec{x}_2)$ implies $\vec{x}_1 = \vec{x}_2$.
+
+
+\textbf{Definition:} A mapping $T: \mathbb{R}^n \rightarrow \mathbb{R}^m$ is onto, or surjective, if for each $\vec{b} \in \mathbb{R}^m$, there is at least one $\vec{x} \in \mathbb{R}^n$ such that $T(\vec{x}) = \vec{b}$.
+
+
+
+
+To show \textbf{NOT one-to-one}: Show that there exist $\vec{x}_1, \vec{x}_2 \in \mathbb{R}^n$ such that $T(\vec{x}_1) = T(\vec{x}_2)$.
+
+To show \textbf{NOT onto}: Show that there exists $\vec{z} \in \mathbb{R}^m$ such that no element maps to $\vec{z}$.
+
+$(A\vec{x} = \vec{b}$ has no solution)
+
+\textbf{Example:} Is $T : \mathbb{R}^3 \rightarrow \mathbb{R}^2$ injective with matrix representation
+
+\[ A = \begin{bmatrix} 1 & 0 & 3 \\ 0 & 1 & 4 \end{bmatrix} \]
+
+``forces columns to be linearly dependent"
+
+``Theorem: Let $A$ be the matrix of a linear transformation. Then the transformation is one-to-one (injective) if and only if the columns of $A$ form a linearly independent set, i.e., $A\vec{x} = \vec{0}$ has only the trivial solution. Equivalently, one-to-one if and only if there is a pivot in every column."
+
+"Theorem: Let $T: \mathbb{R}^n \to \mathbb{R}^m$ be a linear transformation with matrix representation $A$. Then $T$ is onto/surjective if and only if the columns of $A$ span $\mathbb{R}^m$. Equivalently, $T$ is onto/surjective if and only if $A$ has a pivot in every row."
+
+
+Example: Let $T: \mathbb{R}^2 \to \mathbb{R}^3$ be the linear transformation defined by $T\left(\begin{bmatrix} x \\ y \end{bmatrix}\right) = \begin{bmatrix} x+y \\ -3x \\ 2x-7y \end{bmatrix}$. We want to determine if $T$ is one-to-one or onto.
+
+First, we find the standard matrix:
+\[ T\left(\begin{bmatrix} 1 \\ 0 \end{bmatrix}\right) = \begin{bmatrix} 1 \\ -3 \\ 2 \end{bmatrix}, \quad T\left(\begin{bmatrix} 0 \\ 1 \end{bmatrix}\right) = \begin{bmatrix} 1 \\ 0 \\ -7 \end{bmatrix} \]
+So, the standard matrix is:
+\[ A = \begin{bmatrix} 1 & 1 \\ -3 & 0 \\ 2 & -7 \end{bmatrix} \]
+Observing the two column vectors, we see that one vector is not a multiple of the other, indicating that the column vectors form a linearly independent set. Therefore, $T$ is one-to-one.
+
+To confirm, we row reduce $A$:
+\[ \begin{bmatrix} 1 & 1 \\ -3 & 0 \\ 2 & -7 \end{bmatrix} \rightarrow \begin{bmatrix} 1 & 1 \\ 0 & 3 \\ 0 & 5 \end{bmatrix} \rightarrow \begin{bmatrix} 1 & 0 \\ 0 & 1 \\ 0 & 0 \end{bmatrix} \]
+Since there is a not a pivot in every row, the transformation is NOT onto.
+
+Theorem: (One-to-One Condition): A linear transformation $T: \mathbb{R}^n \to \mathbb{R}^m$ is one-to-one (injective) if and only if $T(\vec{x}) = \vec{0}$ holds true only when $\vec{x} = \vec{0}$.
+
+Given a set of vectors check lineary dependency
+
+% Question 1: state independence and why that holds if dependent show example and why it holds 
+
+
+
+
+\section{Lecture 10, 2/14/2024}
+
+\textbf{Section 2.1: Matrix Operations}
+
+Given two matrices of the same dimensions (size), we define addition entry-wise and scalar multiplication by scaling each entry.
+
+\textbf{Example:}
+\[ A = \begin{bmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \end{bmatrix}, \quad B = \begin{bmatrix} -1 & -3 & 0 \\ -4 & 2 & 2 \end{bmatrix} \]
+
+\[ A + B = \begin{bmatrix} 0 & -1 & 3 \\ 0 & 7 & 8 \end{bmatrix}, \quad 3A = \begin{bmatrix} 3 & 6 & 9 \\ 12 & 15 & 18 \end{bmatrix} \]
+
+\textbf{Properties:} Let \( A \) and \( B \) be matrices of the same size, \( c \in \mathbb{R} \):
+
+1) \( A + B = B + A \)
+2) \( A + 0 = A \) (where \( 0 \) is the zero matrix of appropriate size)
+3) \( k(A + B) = kA + kB = Ak + Bk \)
+
+\textbf{Matrix Multiplication}
+
+Let \( A \) be an \( m \times k \) matrix, and \( B \) be a \( k \times n \) matrix. Then the product \( AB \) is an \( m \times n \) matrix whose \( ij \)th entry is the dot product of row \( i \) of \( A \) (as a vector) with column \( j \) of \( B \) (as a vector).
+
+That is,
+\[ A = \begin{bmatrix} a_{11} & a_{12} & \cdots & a_{1k} \\ a_{21} & a_{22} & \cdots & a_{2k} \\ \vdots & \vdots & \ddots & \vdots \\ a_{i1} & a_{i2} & \cdots & a_{ik} \end{bmatrix} \]
+
+\[ B = \begin{bmatrix} b_{11} & b_{12} & \cdots & b_{1j} & \cdots & b_{1n} \\ b_{21} & b_{22} & \cdots & b_{1j} & \cdots & b_{2n} \\ \vdots & \vdots & \ddots & \vdots & \ddots & \vdots \\ b_{i1} & b_{i2} & \cdots & b_{ij} & \cdots & b_{in} \end{bmatrix} \]
+
+\medskip
+
+The \(ij\)th entry \(= (AB)_{ij} = a_{i1}b_{1j} + a_{i2}b_{2j} + \cdots + a_{ik}b_{kj}\)
+
+\medskip
+\textbf{Example:}
+\[
+\begin{bmatrix}
+-1 & 3 \\
+4 & 7 \\
+0 & 2
+\end{bmatrix}
+\begin{bmatrix}
+1 & 4 \\
+-2 & -2
+\end{bmatrix}
+=
+\begin{bmatrix}
+-7 & -10 \\
+-10 & 2 \\
+-4 & -4
+\end{bmatrix}
+\]
+
+What about
+
+\[
+\begin{bmatrix}
+1 & 4 \\
+-2 & -2
+\end{bmatrix}
+\begin{bmatrix}
+-1 & 3 \\
+4 & 7 \\
+0 & 2
+\end{bmatrix}
+\]
+
+
+Does not exist
+
+$\text{Suppose } A \text{ is } m \times k, B \text{ is } k \times n, \text{ and } \vec{x} = \begin{bmatrix} x_1 \\ \vdots \\ x_n \end{bmatrix}. \\
+\text{ Then } AB\vec{x} = A \begin{bmatrix} \vec{b_1} & \vec{b_2} & \cdots & \vec{b_n} \\
+\downarrow & \downarrow & \cdots & \downarrow
+\end{bmatrix} 
+\begin{bmatrix} x_1 \\ \vdots \\ x_n \end{bmatrix} \\
+= A(x_1\vec{b_1} + x_2\vec{b_2} + \cdots + x_n\vec{b_n})$
+
+
+\begin{align*}
+AB\vec{x} &= A(x_1\vec{b_1} + x_2\vec{b_2} + \cdots + x_n\vec{b_n}) \\
+&= x_1(A\vec{b_1}) + x_2(A\vec{b_2}) + \cdots + x_n(A\vec{b_n}) \\
+&= \begin{bmatrix} A\vec{b_1} & A\vec{b_2} & \cdots & A\vec{b_n} \\
+\downarrow & \downarrow & \cdots & \downarrow \end{bmatrix} 
+\begin{bmatrix} x_1 \\ \vdots \\ x_n \end{bmatrix}
+\end{align*}
+
+\textbf{Example:} Let $A = \begin{bmatrix} 1 & 2 & 3 & 4 \\ 0 & -1 & -1 & 7 \end{bmatrix}$ and $B = \begin{bmatrix} 0 & -1 & 1 \\ 0 & -2 & 2 \\ 1 & 0 & 0 \\ 2 & 0 & 1 \end{bmatrix}$. Then $AB = \begin{bmatrix} 11 & -5 & 9 \\ 9 & 5 & 5 \end{bmatrix} = 1\begin{bmatrix} 1 & 0 \\ 2 & -1 \end{bmatrix} + 2\begin{bmatrix} 3 & 4 \\ 6 & 8 \\ 9 & 12 \end{bmatrix}$ (columns of $A$).
+
+\textbf{Example:} Let $A = \begin{bmatrix} 1 \\ 2 \\ 3 \end{bmatrix}$ and $B = \begin{bmatrix} 3 & 4 \end{bmatrix}$. Since $AB$ is defined ($3 \times 2$), $AB = \begin{bmatrix} 3 & 4 \\ 6 & 8 \\ 9 & 12 \end{bmatrix}$.
+
+\textbf{Definition:} A matrix $A$ is square if the number of rows equals the number of columns. For any non-negative integer $k$, $A^k = A * A * A * A * A$ (multiplied $k$ times).
+
+Moreover, $A^0 = I$, called the identity matrix. 
+
+$I = \begin{bmatrix} 1 & 0 & 0 & \cdots \\ 0 & 1 & 0 & \cdots \\ 0 & 0 & \ddots & 0 \\ \vdots & \vdots & 0 & 1 \end{bmatrix}$
+
+
+The identity matrix, denoted \( I \), has ones on the diagonal and zeros elsewhere. It satisfies, for any square matrix \( A \) of the same size, \( IA = AI = A \), and for a vector of appropriate size, say \( \vec{x} \), \( I\vec{x} = \vec{x} \).
+
+
+Definition: Let \( A \) be an \( m \times k \) matrix. The transpose of \( A \), denoted \( A^T \) or \( A^t \), is the \( k \times m \) matrix where the \( ij \)th entry of \( A^T \) is \( (A^T)_{ij} = A_{ji} \).
+
+i.e., the rows \[ \text{columns} \] of \( A^T \) are the columns \[ \text{rows} \] of \( A \).
+
+
+Example: Let \( A = \begin{bmatrix} 1 & 2 & 3 & 4 \\ 5 & 6 & 7 & 8 \end{bmatrix} \). Then \( A^T = \begin{bmatrix} 1 & 5 \\ 2 & 6 \\ 3 & 7 \\ 4 & 8 \end{bmatrix} \).
+
+
+\section{Lecture 11, 2/16/2024}
+
+Properties of transpose:
+
+\begin{enumerate}
+    \item \( (A^T)^T = A \)
+    \item \( (A + B)^T = A^T + B^T \)
+    \item \( (kA)^T = kA^T \)
+    \item \( (AB)^T = B^TA^T \)
+\end{enumerate}
+
+
+
+Section 2.2: Matrix Inverse
+
+Let \( A\vec{x} = \vec{b} \) be a linear system, \( 3x = 5 \). We want to isolate \( \vec{x} \).
+
+Def: Let \( A \) be \( n \times n \). We say matrix \( A \) is invertible if there is a matrix \( C \) such that \( AC = CA = I = I_n \), where
+
+\[ I = \begin{bmatrix} 1 & 0 & 0 & \cdots \\ 0 & 1 & 0 & \cdots \\ 0 & 0 & \ddots & 0 \\ \vdots & \vdots & 0 & 1 \end{bmatrix} \]
+
+The matrix \( C \) is the inverse of \( A \), denoted \( A^{-1} \).
+
+We say \( A \) is invertible. If no inverse exists, we say \( A \) is singular. If it does exist, \( A^{-1} \) is unique. Now given \( A\vec{x} = \vec{b} \), if \( A^{-1} \) exists, \( A^{-1}(A\vec{x}) = A^{-1}\vec{b} \Rightarrow (A^{-1}A\vec{x}) = A^{-1}\vec{b} \Rightarrow I\vec{x} = \vec{x} = A^{-1}\vec{b} \).
+
+\textbf{Theorem:} Let \( A\vec{x} = \vec{b} \) be a system of linear equations. If \( A^{-1} \) exists, then the solution is unique, given by \( \vec{x} = A^{-1}\vec{b} \).
+
+\textbf{Example:} Suppose 
+\[ 
+A = \begin{bmatrix} 
+1 & -1 & -2 \\ 
+2 & -3 & -5 \\ 
+-1 & 3 & 5 
+\end{bmatrix} 
+\]
+which is \( A^{-1} \): 
+\[ 
+A^{-1} = \begin{bmatrix} 
+0 & 1 & 1 \\ 
+5 & -3 & -1 \\ 
+-3 & 2 & 1 
+\end{bmatrix} 
+\]
+or 
+\[ 
+A^{-1} = \begin{bmatrix} 
+1 & 3 & 4 \\ 
+0 & 1 & 0 \\ 
+0 & 1 & 2 
+\end{bmatrix} 
+\]
+
+\textbf{Does \( AA^{-1} = I \)?} Just check if \( AA^{-1} \) outputs the identity matrix. 
+\[ 
+AA^{-1} = \begin{bmatrix} 
+1 & -1 & -2 \\ 
+2 & -3 & -5 \\ 
+-1 & 3 & 5 
+\end{bmatrix} 
+\begin{bmatrix} 
+0 & 1 & 1 \\ 
+5 & -3 & -1 \\ 
+-3 & 2 & 1 
+\end{bmatrix} 
+= \begin{bmatrix} 
+1 & 0 & 0 \\ 
+0 & 1 & 0 \\ 
+0 & 0 & 1 
+\end{bmatrix} 
+\]
+is \( A^{-1} \).
+
+\textbf{Properties:} Let \( A \) and \( B \) be invertable matrices and \( k \neq 0 \), both \( n \times n \).
+\begin{enumerate}
+    \item \( (A^{-1})^{-1} = A \)
+    \item \( (kA)^{-1} = \frac{1}{k} (A)^{-1} \)
+    \item \( (A^m)^{-1} = (A^{-1})^m \) (where \( m \) is a positive integer)
+    \item \( (A^T)^{-1} = (A^{-1})^T \)
+    \item \( (AB)^{-1} = B^{-1}A^{-1} \)
+\end{enumerate}
+
+\textbf{How to find \( A^{-1} \)}: To find \( A^{-1} \), solve the equation \( A\begin{bmatrix} \vec{x_1} & \vec{x_2} & \ldots & \vec{x_n} \\
+\downarrow & \downarrow & \ldots & \downarrow \end{bmatrix} = I \).
+
+We need \( A\vec{x}_1 = \begin{bmatrix} 1 \\ 0 \\ \vdots \\ 0 \end{bmatrix} \), \( A\vec{x}_2 = \begin{bmatrix} 0 \\ 1 \\ 0 \\ \vdots \\ 0 \end{bmatrix} \), and so on, up to \( A\vec{x}_n = \begin{bmatrix} 0 \\ 0 \\ \vdots \\ 1 \end{bmatrix} \). 
+
+The identity matrix simultaneously solves all these systems.
+
+\textbf{Algorithm for \( A^{-1} \):}
+
+Let \( A \) be an \( n \times n \) matrix.
+
+\begin{enumerate}
+    \item Create the augmented matrix \( [A|I_n] \).
+    \item Row reduce to row-echelon form (REF).
+    \item If we reduce it to \( [I_n|C] \), where \( C \) is the inverse of \( A \), then \( C \) is \( A^{-1} \).
+\end{enumerate}
+
+\textbf{Example:} Find \( A^{-1} \) if \( A = \begin{bmatrix} 0 & 1 & -1 \\ 2 & -2 & -1 \\ -1 & 1 & 1 \end{bmatrix} \).
+
+\begin{align*}
+\begin{bmatrix}
+    0 & 1 & -1 & \vert & 1 & 0 & 0 \\
+    2 & -2 & -1 & \vert & 0 & 1 & 0 \\
+    -1 & 1 & 1 & \vert & 0 & 0 & 1
+\end{bmatrix} &\implies
+\begin{bmatrix}
+    -1 & 1 & 1 & \vert & 0 & 0 & 1 \\
+    2 & -2 & -1 & \vert & 0 & 1 & 0 \\
+    0 & 1 & -1 & \vert & 1 & 0 & 0
+\end{bmatrix} \implies \\
+&\implies
+\begin{bmatrix}
+    -1 & 1 & 1 & \vert & 0 & 0 & 1 \\
+    0 & 0 & 1 & \vert & 0 & 1 & 2 \\
+    0 & 1 & -1 & \vert & 1 & 0 & 0
+\end{bmatrix} \implies
+\begin{bmatrix}
+    -1 & 1 & 1 & \vert & 0 & 0 & 1 \\
+    0 & 1 & -1 & \vert & 1 & 0 & 0 \\
+    0 & 0 & 1 & \vert & 0 & 1 & 2
+\end{bmatrix}
+\end{align*}
+
+
+
+
+\[
+\Rightarrow
+\begin{bmatrix}
+    -1 & 1 & 1 & \vert & 0 & 0 & 1 \\
+    0 & 1 & -1 & \vert & 1 & 0 & 0 \\
+    0 & 0 & 1 & \vert & 0 & 1 & 2
+\end{bmatrix} \Rightarrow
+\begin{bmatrix}
+    -1 & 0 & 2 & \vert & -1 & 0 & 1 \\
+    0 & 1 & 0 & \vert & 1 & 1 & 2 \\
+    0 & 0 & 1 & \vert & 0 & 1 & 2
+\end{bmatrix} \Rightarrow
+\begin{bmatrix}
+    1 & 0 & 0 & \vert & 1 & 2 & 3 \\
+    0 & 1 & 0 & \vert & 1 & 1 & 2 \\
+    0 & 0 & 1 & \vert & 0 & 1 & 2
+\end{bmatrix}
+\]
+
+Therefore, \( A^{-1} = \begin{bmatrix} 1 & 2 & 3 \\ 1 & 1 & 2 \\ 0 & 1 & 2 \end{bmatrix} \).
+
+
+\textbf{Example:} If \( A = \begin{bmatrix} a & b \\ c & d \end{bmatrix} \), then \( A^{-1} = \frac{1}{ad-bc} \begin{bmatrix} d & -b \\ -c & a \end{bmatrix} \).
+
+
+
+\textbf{Section 2.3: Characterizations of Invertible Matrices}
+
+\textbf{Theorem (Invertible Matrix):} Let \( A \) be \( n \times n \). The following are equivalent:
+
+\begin{enumerate}
+    \item \( A \) is invertible
+    \item \( A \) is row equivalent to \( I_n \) (identity matrix)
+    \item \( A \) has \( n \) pivots
+    \item System \( A\vec{x} = \vec{b} \) has a unique solution
+    \item The columns of \( A \) are linearly independent and span \( \mathbb{R}^n \)
+    \item The linear transformation \( \vec{x} \mapsto A\vec{x} \) is one-to-one AND onto (injective and surjective).
+\end{enumerate}
+
+
+
+\section{Lecture 12, 2/19/2024}
+
+Ex: True of False:
+
+If \( A \) is the matrix representation of a linear transformation \( \mathbb{R}^n \rightarrow \mathbb{R}^n \), then \( A \) has \( n \) pivots. 
+
+\textbf{FALSE}: This statement is incorrect as it doesn't specify how many pivots \( A \) has. A simple counterexample is the zero matrix \( \begin{bmatrix} 0 & 0 \\ 0 & 0 \end{bmatrix} \), which represents a linear transformation from \( \mathbb{R}^2 \) to \( \mathbb{R}^2 \) but has no pivots.
+
+\textbf{Example:} Let \( A \) be a \( 2 \times 3 \) matrix, and assume \( A \) has 2 pivots. Then \( A\vec{x}=\vec{b} \) has a unique solution for any \( \vec{b} \in \mathbb{R}^2 \). However, this statement is false. 
+
+\textbf{Counterexample:} Consider the augmented matrix
+\[ \left[ \begin{array}{ccc|c}
+1 & 0 & 3 & 5 \\
+0 & 1 & 4 & 6 \\
+\end{array} \right] \]
+
+The system \( A\vec{x}=\vec{b} \) represented by this matrix has infinite solutions. Thus, the statement is false.
+
+\textbf{Inverses and Linear Transformation:}
+
+Let \( A \) be the standard matrix of a linear transformation \( T: \mathbb{R}^n \rightarrow \mathbb{R}^n \).
+
+We say \( T \) is invertible if there is a transformation \( S \) such that \( S(T(\vec{x})) = \vec{x} = T(S(\vec{x})) \) for all \( \vec{x} \in \mathbb{R}^n \), where \( S = T^{-1} \). Also, \( A^{-1} \) will be the standard matrix for \( T^{-1} \).
+
+\textbf{Section 3.1: Introduction to Determinants}
+
+\textbf{Definition:} The determinant of \( A = \begin{bmatrix} a_{11} & a_{12} \\ a_{21} & a_{22} \end{bmatrix} \) is defined as \( \det(A) = a_{11} \cdot a_{22} - a_{12} \cdot a_{21} \) (a number). 
+
+For a \( 3 \times 3 \) matrix, \( A = \begin{bmatrix} a_{11} & a_{12} & a_{13} \\ a_{21} & a_{22} & a_{23} \\ a_{31} & a_{32} & a_{33} \end{bmatrix} \), we have 
+
+\[ \det(A) = a_{11} \cdot (a_{22} \cdot a_{33} - a_{23} \cdot a_{32}) - a_{12} \cdot (a_{21} \cdot a_{33} - a_{23} \cdot a_{31}) + a_{13} \cdot (a_{21} \cdot a_{32} - a_{22} \cdot a_{31}). \]
+
+\textbf{Definition:} The minor of element \( a_{ij} \) in matrix \( A \), denoted \( M_{ij} \), is the determinant of the remaining matrix after deleting row \( i \) and column \( j \). The cofactor of \( a_{ij} \) is \( c_{ij} = (-1)^{i+j} \cdot M_{ij} \). 
+
+From the definition, we have \( \det(A) = a_{11} \cdot c_{11} + a_{12} \cdot c_{12} + a_{13} \cdot c_{13} \).
+
+\textbf{Example:} For matrix \( A = \begin{bmatrix} 6 & 3 & -2 \\ 7 & 0 & 4 \\ 1 & 3 & 3 \end{bmatrix} \):
+\[ M_{12} = 7 \cdot 3 - 4 \cdot 1 = 21 - 4 = 17 \]
+\[ c_{12} = (-1)^{1+2}(7 \cdot 3 - 4 \cdot 1) = -17 \]
+
+\textbf{Definition:} The determinant of an \( n \times n \) matrix is given by \( |A| = \det(A) = a_{11} \cdot c_{11} + a_{12} \cdot c_{12} + \ldots + a_{1n} \cdot c_{1n} \).
+
+\textbf{Definition:} Call the cofactor expansion "row 1 entries".
+
+\textbf{Theorem:} The cofactor expansion can be applied to any row or any column. That is,
+\[ \det(A) = \text{det}(A) = a_{i1} \cdot c_{i1} + a_{i2} \cdot c_{i2} + \ldots + a_{in} \cdot c_{in} = a_{1j} \cdot c_{1j} + a_{2j} \cdot c_{2j} + \ldots + a_{nj} \cdot c_{nj} \]
+
+\textbf{Intuition:} Expand on a row/column with lots of zeros.
+
+How to know what to do with $(-1)^{i+j} c_{ij}$:
+\[
+\begin{bmatrix}
++ & - & + & - & + & \ldots \\
+- & + & - & + & - & \ldots \\
++ & - & + & - & + & \ldots \\
+\end{bmatrix}
+\]
+Signs always alternate in cofactor expansion.
+
+\textbf{Example:} 
+\[
+\begin{bmatrix}
+7 & -1 & 3 & 0 \\
+0 & 1 & 0 & 3 \\
+-5 & 0 & -4 & 2 \\
+1 & 0 & 5 & 0 \\
+\end{bmatrix} = A, \text{expand on row 2.}
+\]
+
+\[
+\text{det}(A) = 0 + (-1)^{2+2} \cdot 1 \cdot \text{det}
+\begin{pmatrix}
+7 & 3 & 0 \\
+-5 & -4 & 1 \\
+1 & 5 & 0 \\
+\end{pmatrix}
++ 0 + (-1)^{2+4} \cdot 3 \cdot \text{det} 
+\begin{pmatrix}
+7 & -1 & 3 \\
+-5 & 0 & -4 \\
+1 & 0 & 5 \\
+\end{pmatrix}
+\]
+\[
+= 1 \cdot (-2 \cdot \text{det} 
+\begin{pmatrix}
+7 & 3 \\
+1 & 5 \\
+\end{pmatrix}) 
++3(-(-1) \cdot \text{det} 
+\begin{pmatrix}
+-5 & -4 \\
+1 & 5 \\
+\end{pmatrix}) 
+\]
+\[
+= -2 \cdot (35-3)+3\cdot(-25-(-4)) 
+= -127
+\]
+
+
+
+\section{Lecture 13, 2/21/2024}
+
+\textbf{Section 3.2: Properties of Determinants}
+
+How do row operations affect the determinant?
+
+\textbf{Theorem:} Let \( A \) be \( n \times n \), \( k \) be a scalar.
+
+Then:
+
+\begin{itemize}
+    \item[a)] If matrix \( B \) is obtained from \( A \) by interchanging two rows [columns], then \( \det(B) = -\det(A) \) i.e \( |B| = -|A| \)
+    
+    \item[b)] If \( B \) is obtained from \( A \) by multiplying the elements of a row [column] by \( k \), then \( \det(B) = k \det(A) \)
+    
+    \item[c)] If \( B \) is obtained from \( A \) by adding a multiple of one row [column] to another row [column], then \( \det(B) = \det(A) \)
+\end{itemize}
+
+\textbf{Note:} row [column] means row or column but must be consistent
+
+\textbf{Example:} Evaluate \( \begin{vmatrix} 4 & 9 & -3 \\ 5 & -3 & 1 \\ 1 & 2 & 4 \end{vmatrix} \) 
+
+Multiply column 3 by 3, add to column 2
+
+Result: \( \begin{vmatrix} 4 & 0 & -3 \\ 5 & 0 & 1 \\ 1 & 14 & 4 \end{vmatrix} \)
+
+Now, perform cofactor expansion on column 2.
+
+\[
+= -14 \cdot \begin{vmatrix} 4 & -3 \\ 5 & 1 \end{vmatrix} + 0 + 0
+\]
+\[
+= -14(4 - (-15)) = -14 \cdot 19 = -266
+\]
+
+
+\textbf{Example:} \[
+\text{Evaluate} \begin{vmatrix}
+3 & 3 & -9 & 9 \\
+-1 & 2 & 4 & -6 \\
+2 & 2 & -8 & 10 \\
+1 & 1 & -3 & 8
+\end{vmatrix} = 3 \cdot \begin{vmatrix}
+1 & 1 & -3 & 3 \\
+-1 & 2 & 4 & -6 \\
+2 & 2 & -8 & 10 \\
+1 & 1 & -3 & 8
+\end{vmatrix}
+\]
+
+\[
+\text{Row operations? Applying row operations,} = 3 \cdot \begin{vmatrix}
+1 & 1 & -3 & 3 \\
+0 & 3 & 1 & -3 \\
+0 & 0 & -2 & 4 \\
+0 & 0 & 0 & 5
+\end{vmatrix}
+\]
+
+\[= 3 \cdot (1) \cdot (3) \cdot ((-2)(5) - (4)(0)) = 90\]
+
+This is the product of the diagonal entries. We multiply by the diagonal because the matrix is in REF so we will always be subtracting by 0 in the determinant.
+
+\textbf{Definition:} An upper (or lower) triangular matrix is a square matrix whose entries below (or above) the main diagonal are zero. 
+
+\textbf{Example:} 
+\[
+\begin{bmatrix}
+1 & 4 & 5 \\
+0 & 0 & 3 \\
+0 & 0 & 4
+\end{bmatrix}
+\]
+
+\textbf{Theorem:} The determinant of an upper (or lower) triangular matrix is the product of the diagonal entries.
+
+---------------------------------------------------------------------------------------------------------------------
+
+\textbf{Given} matrix \( A \), if we apply row operations and get a zero on the diagonal (assuming it's upper triangular), then the determinant will be zero.
+
+\begin{itemize}
+    \item If we apply the inverse algorithm, we cannot reach \( [I0 | ??] \) (zero on diagonal).
+    \item Therefore, it won't be invertible, and the determinant is the product of diagonal entries, thus the determinant is zero.
+\end{itemize}
+
+\textbf{Theorem:} Matrix \( A \) is invertible if and only if \( \text{det}(A) \neq 0 \).
+
+Given that $\det(A) = 5$, if $A$ is the matrix of a linear transformation, the transformation is one-to-one and onto by Section 2.3.
+
+\medskip
+
+\textbf{Properties:} Let \( A \) and \( B \) be \( n \times n \) matrices, and \( c \in \mathbb{R} \). Then:
+
+1) \( \det(cA) = c^n \cdot \det(A) \).
+2) \( \det(AB) = \det(A)\det(B) \).
+3) \( \det(A) = \det(A^T) \).
+4) \( \det(A^{-1}) = \frac{1}{\det(A)} \) (provided \( A^{-1} \) exists).
+
+\medskip
+
+\textbf{Ex:} Suppose \( \det(A) = 3 \), \( \det(B) = 12 \). Let \( A, B \) be the same size. Find \( \det((A^2B^{-1})^T) \).
+
+\[
+\begin{aligned}
+\det((A^2B^{-1})^T) &= \det(A^2B^{-1}) \\
+&= \det(A^2)\det(B^{-1}) \\
+&= (\det(A))^2 \cdot \frac{1}{\det(B)} \\
+&= (3)^2 \cdot \frac{1}{12} \\
+&= \frac{9}{12} \\
+&= \frac{3}{4}
+\end{aligned}
+\]
+
+
+\section{Lecture 14, 2/23/2024}
+
+\textbf{Ex:} Suppose there exists a positive integer \( k \) such that \( A^k = 0 \) matrix. Show \( \det(A) = 0 \Rightarrow \det(A^k) = (\det(A))^k \).
+
+We have:
+
+\[
+\begin{aligned}
+\det(A^k) &= (\det(A))^k \\
+&= (0)^k \\
+&= 0
+\end{aligned}
+\]
+
+Thus, \( \det(A^k) = (\det(A))^k = 0^k = 0 \). Taking the \( k \)-th root of both sides, we get \( \det(A) = \sqrt[k]{0} = 0 \), as claimed.
+
+Generally, \( \det(A^k) = (\det(A))^k \).
+
+\medskip
+
+\textbf{Section 3.3: Volume and Linear Transformations}
+
+Suppose \( \vec{v}_1 \) and \( \vec{v}_2 \) form the sides of a parallelogram. We can represent this as a matrix \( A = \begin{bmatrix} 
+\vec{v}_1 & \vec{v}_2 \\
+\downarrow & \downarrow \\
+\end{bmatrix} \) where:
+
+\[
+A = \begin{bmatrix} a & 0 \\ 0 & b \end{bmatrix}
+\]
+
+We can then row reduce and add multiples of one row to another row.
+
+The area is given by \( a \cdot b = \det(A) = \begin{vmatrix} a & 0 \\ 0 & b \end{vmatrix} \).
+
+
+Determinant stays the same with this row operation.
+
+
+\textbf{Theorem:} If a parallelogram is determined by \( \vec{v}_1 \) and \( \vec{v}_2 \) (not multiples of each other), then the area is \( |\det(A)| \) (absolute value), where 
+
+\[ A = \begin{bmatrix} \vec{v}_1 & \vec{v}_2 \\ \downarrow & \downarrow \end{bmatrix} \].
+
+
+
+Similarly, in \( \mathbb{R}^3 \), if a parallelepiped is determined by \( \vec{v}_1, \vec{v}_2, \vec{v}_3 \) (assuming the vectors are linearly independent), then the volume is \( |\det(A)| \), where 
+
+\[ A = \begin{bmatrix} 
+\vec{v}_1 & \vec{v}_2 & \vec{v}_3 \\
+\downarrow & \downarrow & \downarrow \\
+\end{bmatrix} \].
+
+\textbf{Example:} Find the area of the parallelogram with vertices \((-1,0)\), \((3,0)\), \((2,2)\), and \((6,2)\).
+
+Vectors formed: \((2-(-1), 2-0) = (3,2)\) and \((6-2, 2-2) = (4,0)\).
+
+The parallelogram is formed by the vectors:
+
+\[
+A = \begin{bmatrix} 
+3 & 4 \\
+2 & 0 \\
+\end{bmatrix}
+\]
+
+The area is given by \(|\det(A)| = |(3)(0)-(2)(4)| = |-8| = 8\).
+
+
+Let \( S = \{ a_1\vec{v}_1 + a_2\vec{v}_2 : 0 \leq a_1, a_2 \leq 1 \} \) be the points on or inside a parallelogram formed by \( \vec{v}_1 \) and \( \vec{v}_2 \).
+
+Let \( T \) be a linear transformation with standard matrix \( A \). Then \( T(A) \) (which means transforming all points of a parallelogram) will be vectors of the form:
+
+\[
+T(a_1\vec{v}_1 + a_2\vec{v}_2) = T(a_1\vec{v}_1) + T(a_2\vec{v}_2) = a_1T(\vec{v}_1) + a_2T(\vec{v}_2) = a_1(A\vec{v}_1) + a_2(A\vec{v}_2)
+\]
+
+\[
+\Rightarrow \text{parallelogram formed by } A\vec{v}_1 \text{ and } A\vec{v}_2 \Rightarrow \text{Area of } T(S) = \text{area of parallelogram formed by } A\vec{v}_1, A\vec{v}_2 
+\]
+\[
+= \left| \det \left( \begin{bmatrix} A\vec{v}_1 & A\vec{v}_2 \\ \downarrow & \downarrow \end{bmatrix} \right) \right| 
+= \left| \det \left( A \right) \cdot \det \left( \begin{bmatrix} \vec{v}_1 & \vec{v}_2 \\ \downarrow & \downarrow \end{bmatrix} \right) \right| 
+= \left| \det(A\cdot B) \right| = \left| \det(A) \cdot \det(B) \right| = | \det(A) \cdot  \left( \text{area of } S \right)|
+\]
+
+\textbf{Theorem:} Let \( T : \mathbb{R}^n \rightarrow \mathbb{R}^m \) be a linear transformation with standard matrix \( A \). If \( S \) is a parallelogram, then the area of \( T(S) \) is given by \( \left| \det(A) \right| \) times the area of \( S \). In \( \mathbb{R}^3 \), the volume of \( T(S) \) is \( \left| \det(A) \right| \) times the volume of \( S \).
+
+\textbf{Remark:} This generalizes to any regions, e.g., circles.
+
+
+
+\section{Lecture 15, 2/28/2024}
+
+\textbf{Example:} Let \( S \) be the parallelogram formed by \( \vec{v}_1 = [3\ 5] \) and \( \vec{v}_2 = [-1\ 1] \). Suppose \( T : \mathbb{R}^2 \rightarrow \mathbb{R}^2 \) is a linear transformation with the standard matrix \( A = \begin{bmatrix} 2 & 2 \\ 5 & 2 \end{bmatrix} \). What is the area of \( T(S) \)?
+
+\[
+\Rightarrow \text{area of } T(S) = \left| \det(A) \right| \cdot (\text{area of } S) = \left| 4-10 \right| \left| \det \begin{pmatrix} 3 & -1 \\ 5 & 1 \end{pmatrix} \right| = \left| -6 \right| \cdot \left| 3+5 \right| = 48
+\]
+\text{Alternate solution:}
+
+\text{First map vectors:}
+\[
+A\vec{v_1} = \begin{bmatrix} 22 \\ 20 \end{bmatrix}, \quad A\vec{v_2} = \begin{bmatrix} -2 \\ -4 \end{bmatrix} \Rightarrow \text{parallelogram formed by} \begin{bmatrix} 22 \\ 20 \end{bmatrix}, \begin{bmatrix} -2 \\ -4 \end{bmatrix} 
+\]
+\[
+\Rightarrow \text{Area of } T(S) = \left| \det \begin{pmatrix} 22 & -2 \\ 20 & -4 \end{pmatrix} \right| = \left| -88 + 40 \right| = 48
+\]
+
+
+\textbf{Section 4.1: Vector Space and Subspaces}
+
+\textbf{Definition:} A vector space is a set \( V \) of elements called vectors, defined by two operations, addition and scalar multiplication, such that the following axioms hold for any \( \vec{u}, \vec{v}, \vec{w} \in V \), and scalars \( c \) and \( d \):
+
+\begin{enumerate}
+    \item \( \vec{u} + \vec{v} \in V \) ("closure under addition")
+    \item \( c\vec{u} \in V \) ("closure under scalar multiplication")
+    \item \( \vec{u} + \vec{v} = \vec{v} + \vec{u} \)
+    \item \( \vec{u} + (\vec{v} + \vec{w}) = (\vec{u} + \vec{v}) + \vec{w} \)
+    \item There is a zero vector, denoted \( \vec{0} \), such that \( \vec{u} + \vec{0} = \vec{u} \).
+    \item For every \( \vec{v} \in V \), there is a vector \( -\vec{v} \in V \) such that \( (\vec{v} + (-\vec{v})) = \vec{0} \)
+    \item \( c(\vec{u} + \vec{v}) = c\vec{u} + c\vec{v} \)
+    \item \( (c + d)\vec{u} = c\vec{u} + d\vec{u} \)
+    \item \( c(d\vec{u}) = (cd)\vec{u} \)
+    \item There is a \( 1 \), such that \( 1\vec{u} = \vec{u} \)
+\end{enumerate}
+
+
+\textbf{Examples:}
+\begin{enumerate}
+    \item \( \mathbb{R}^n = \{ (a_1, a_2, \ldots, a_n) : a_1, a_2, \ldots, a_n \in \mathbb{R} \} \)
+    \item \( M_n \) = space of all \( n \times n \) matrices with real entries. Remark: This can generalize to \( m \times n \) matrices.
+    \item \( \mathbb{P}_n \): The space of polynomials of degree at most \( n \), where addition and scalar multiplication are given by \( (f+g)(x) = f(x) + g(x) \) and \( cf(x) = c \cdot f(x) \). Example: \( 7x^5 - 3x + 1 \in \mathbb{P}_{10} \) $\rightarrow$ all of degree at most 10. In \( \mathbb{P}_n \), the zero vector is \( 0^{\prime}(x) = 0 \) (''zero function").
+    \item Let \( V \) be the set of all real-valued functions \( f: D \to \mathbb{R} \) (\( D \) is often \( \mathbb{R} \)). Example: \( \sin^5(7x^2) \in V \).
+\end{enumerate}
+
+\textbf{Subspaces}
+\textbf{Definition:} A subspace of vector space \( V \) is a subset \( U \) of \( V \) such that
+\begin{enumerate}
+    \item \( \vec{0} \in U \)
+    \item Closed under addition i.e. if \( \vec{u}_1, \vec{u}_2 \in U \), then \( \vec{u}_1 + \vec{u}_2 \in U \)
+    \item Closed under scalar multiplication i.e. if \( \vec{u}_1 \in U \) and \( c \) is a scalar, then \( c\vec{u}_1 \in U \).
+\end{enumerate}
+
+
+Note: 3 implies 1 already by choosing c=0.
+
+
+
+
+\section{Lecture 16, 3/1/2024}
+
+\textbf{Remarks:}
+\begin{enumerate}
+    \item All other properties of a vector space will be inherited from $V$ (see page 195).
+    \item All subspaces are vector spaces.
+\end{enumerate}
+
+\textbf{Examples:}
+\begin{enumerate}
+    \item $U = \{\vec{0}\}$ is always a subspace of any vector space called the zero subspace or trivial subspace.
+    \item Consider $U = \left\{ \begin{bmatrix} a & 0 \\ 0 & b \end{bmatrix} : a, b \in \mathbb{R} \right\}$, the set of diagonal matrices. Then $U$ is a subspace of $M_2$, the space of $2 \times 2$ matrices.
+\end{enumerate}
+
+\textbf{Closure:}
+How to show this? Let $\begin{bmatrix} 1 & 0 \\ 0 & 2 \end{bmatrix}, \begin{bmatrix} 2 & 0 \\ 0 & 3 \end{bmatrix} \in U$. Then $\begin{bmatrix} 1 & 0 \\ 0 & 2 \end{bmatrix} + \begin{bmatrix} 2 & 0 \\ 0 & 3 \end{bmatrix} = \begin{bmatrix} 3 & 0 \\ 0 & 5 \end{bmatrix}$, which is an element of $U$.
+
+Why does this not prove property 2? This may fail for other matrices! Instead, we need to show it holds for any diagonal matrices. Let's show all three properties:
+\begin{enumerate}
+    \item Let $a = b = 0$. Then $\begin{bmatrix} 0 & 0 \\ 0 & 0 \end{bmatrix} \in U$, showing the zero matrix is in $U$.
+    \item Let $\begin{bmatrix} a_1 & 0 \\ 0 & b_1 \end{bmatrix}$ and $\begin{bmatrix} a_2 & 0 \\ 0 & b_2 \end{bmatrix} \in U$, where $a_1, a_2, b_1, b_2 \in \mathbb{R}$. Then $\begin{bmatrix} a_1 & 0 \\ 0 & b_1 \end{bmatrix} + \begin{bmatrix} a_2 & 0 \\ 0 & b_2 \end{bmatrix} = \begin{bmatrix} a_1 + a_2 & 0 \\ 0 & b_1 + b_2 \end{bmatrix} \in U$, showing closure under addition.
+    \item Let $\begin{bmatrix} a_1 & 0 \\ 0 & b_1 \end{bmatrix} \in U$ and $c \in \mathbb{R}$. Then $c \begin{bmatrix} a_1 & 0 \\ 0 & b_1 \end{bmatrix} = \begin{bmatrix} ca_1 & 0 \\ 0 & cb_1 \end{bmatrix} \in U$, showing closure under scalar multiplication.
+\end{enumerate}
+
+\textbf{Example:} Is $U = \left\{ \begin{bmatrix} 1 & a \\ 0 & 0 \end{bmatrix} : a \in \mathbb{R} \right\}$ a subspace of $M_2$?
+
+\textbf{No}, the zero matrix is not in $U$! Here the first entry must be $1$. To disprove, a counterexample is enough:
+
+Let $\begin{bmatrix} 1 & 0 \\ 0 & 0 \end{bmatrix} \in U$, $c = 2$. Then $2\begin{bmatrix} 1 & 0 \\ 0 & 0 \end{bmatrix} = \begin{bmatrix} 2 & 0 \\ 0 & 0 \end{bmatrix} \not\in U$, failing scalar multiplication.
+
+Let $\begin{bmatrix} 1 & a \\ 0 & 0 \end{bmatrix} \in U$, $c \in \mathbb{R}$. Then $c\begin{bmatrix} 1 & a \\ 0 & 0 \end{bmatrix} = \begin{bmatrix} c & ac \\ 0 & 0 \end{bmatrix}$, $c=\pi$.
+
+\textbf{Example:} Is $U = \{(a, b, a-b) : a, b \in \mathbb{R}\}$ a subspace of $\mathbb{R}^3$?
+
+\begin{enumerate}
+    \item Let $a=b=0 \Rightarrow (0,0,0-0) = \vec{0} \in U$.
+    \item Let $\vec{u_1} = (a_1, b_1, a_1 - b_1)$, $\vec{u_2} = (a_2, b_2, a_2 - b_2) \in U$. Then $\vec{u_1} + \vec{u_2} = (a_1+a_2, b_1+b_2, a_1-b_1+a_2-b_2) = (a_1+a_2, b_1+b_2, (a_1+a_2)-(b_1+b_2))$, which is in $U$; hence, $U$ is closed under addition.
+    \item $\vec{u} = (a_1, b_1, a_1-b_1), c \in \mathbb{R} \Rightarrow c\vec{u_1} = (ca_1, cb_1, c(a_1-b_1) = (ca_1, cb_1, ca_1-cb_1$, which is in u $\Rightarrow$ closed under scalar multiplication
+\end{enumerate}
+
+\textbf{Example:} Show $\mathbb{P}_1$ is a subspace of $\mathbb{P}_2$ (polynomials of degree at most $n$ for $\mathbb{P}_n$).
+
+\begin{enumerate}
+    \item Let $a_1 = b_1 = 0$, which means the zero polynomial is in $\mathbb{P}_1$.
+    \item Let $f_1(x) = a_1x + b_1$ and $f_2(x) = a_2x + b_2 \in \mathbb{P}_1$. Then $f_1(x) + f_2(x) = a_1x + b_1 + a_2x + b_2 = (a_1 + a_2)x + (b_1 + b_2) \in \mathbb{P}_1$, showing closure under addition.
+    \item Let $f_1(x) = a_1x + b_1$ and $c \in \mathbb{R}$. Then $cf_1(x) = c(a_1x + b_1) = (ca_1)x + (cb_1) \in \mathbb{P}_1$, showing closure under scalar multiplication.
+\end{enumerate}
+
+Let $\vec{v_1}, \vec{v_2} \in \mathbb{V}$, where $V$ is a vector space. Let $U = \text{span}(\{\vec{v_1}, \vec{v_2}\})$.
+
+Take $\vec{y_1}, \vec{y_2} \in U$. Then, $\vec{y_1} = c_1\vec{v_1} + c_2\vec{v_2}$ and $\vec{y_2} = d_1\vec{v_1} + d_2\vec{v_2}$. 
+
+Therefore, $\vec{y_1} + \vec{y_2} = (c_1 + d_1)\vec{v_1} + (c_2 + d_2)\vec{v_2} \in U$, showing closure under addition.
+
+Let $k \in \mathbb{R}$ and $\vec{y_1} \in U$. Then, $\vec{y_1} = c_1\vec{v_1} + c_2\vec{v_2}$. 
+
+Therefore, $k\vec{y_1} = (kc_1)\vec{v_1} + (kc_2)\vec{v_2} \in U$, showing closure under scalar multiplication.
+
+
+\textbf{Theorem:} Let $\vec{v_1}, \ldots, \vec{v_m}$ be vectors in a vector space $V$. Then $\text{span}(\{\vec{v_1}, \ldots, \vec{v_m}\})$ is a subspace of $V$.
+
+
+(i.e. just show u = span(??))
+
+
+
+\section{Lecture 17, 3/4/2024}
+
+To show $U$ is a subspace of $U$, we simply need to define a set $A$ such that $U = \text{span}(A)$, and we are done!
+
+\textbf{Ex:} We had $U = \{(a,b,a-b): a,b \in \mathbb{R}\}$. Observe $(a,b,a-b) = a(1,0,1)+b(0,1,-1)$, hence $U = \text{span}\{(1,0,1), (0,1,-1)\}$, and we know the span of any set is a subspace, thus $U$ is a subspace of $\mathbb{R}^3$.
+
+\textbf{Ex:} Show $\mathbb{P}_1$ is a subspace of $\mathbb{P}_2$.
+
+$\mathbb{P}_1 = \{ax+b : a,b \in \mathbb{R}\}$
+
+Then $\mathbb{P}_1 = \text{span}\{1, x\}$. All linear combinations are of the form $b(1)+a(x)$, $a,b \in \mathbb{R}$. Hence $\mathbb{P}_1$ is the span of a set, so $\mathbb{P}_1$ is a subspace of $\mathbb{P}_2$.
+
+$\mathbb{R}^2$ as a subspace of $\mathbb{R}^3$ is false.
+
+$\{(x,y) : x, y \in \mathbb{R}\}$ versus $\{(x,y,z) : x,y,z \in \mathbb{R}\}$ ''looks like" $\{(x, y, 0) : x, y \in \mathbb{R}\}$.
+
+$\mathbb{R}^2 = \text{span}\{(1,0),(0,1)\}$
+
+$(1,1)+(2,2,2)$
+
+\textbf{True or False:}
+
+$\mathbb{P}_2 = \text{span}(1, x, x^2, 3x^2+5)$ $\rightarrow$ $\text{span}(\{1,x,x^2\})$ $\Rightarrow$ all linear combinations of the form $a(1)+b(x)+c(x^2)$, $a,b,c \in \mathbb{R}$
+
+\textbf{True}, the $3x^2+5$ is irrelevant since it is already a linear combination of $\{1, x, x^2\}$.
+
+
+Note that $\{1, x, x^2, 3x^2+5\}$ is linearly dependent.
+
+However, $\{1, x, x^2\}$ is linearly independent, and $\mathbb{P}_2 = \text{span}\{1, x, x^2\}$.
+
+
+Section 4.2: Null space, column space, and linear transformations
+
+\textbf{Definition:} The kernel, or null space of a linear transformation $T: V \rightarrow W$ is denoted as $\text{ker}(T) = \text{nul}(T) = \{\vec{v} \in V : T(\vec{v}) = \vec{0}\}$.
+
+\textbf{Definition:} The range of the linear transformation \( T: V \rightarrow W \) is denoted by \( \text{range}(T) \) and defined as follows:
+\[ \text{range}(T) = \{ T(\vec{v}) \in W : \vec{v} \in V \} \]
+
+\textbf{Definition:} In matrix form, if A =
+$\begin{bmatrix}
+    \vec{v_1} & \vec{v_2} & \ldots & \vec{v_m} \\
+    \downarrow & \downarrow & \downarrow & \downarrow \\
+\end{bmatrix}, $ then \( A \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \end{bmatrix} = x_1\vec{v}_1 + x_2\vec{v}_2 + \ldots + x_n\vec{v}_n \).
+
+
+We define the column space of \( A \) as \( \text{col}(A) = \text{span}(\{\vec{v}_1, \ldots, \vec{v}_n\}) \).
+
+Thus, given the mapping \(\vec{x} \mapsto A\vec{x}\), the range of the transformation is \( \text{col}(A) \).
+
+\textbf{Example:} Find \( \text{ker}(T) \) if \( T(x,y) = (x+y, 3x,y) \) (want standard matrix) 
+
+We have:
+\[
+T(1,0) = (1,3,0) \quad \text{and} \quad T(0,1) = (1,0,1)
+\]
+
+So, the standard matrix \( A \) is given by:
+\[
+A = \begin{bmatrix} 1 & 1 \\ 3 & 0 \\ 0 & 1 \end{bmatrix}
+\]
+
+\[
+\begin{aligned}
+    &\text{We want all } \vec{x} \in \mathbb{R}^2 \text{ such that } A\vec{x} = \vec{0} \\
+    &\text{Solve the homogeneous system} \\
+    &\text{Row reduce} \\
+    &\begin{bmatrix}
+        1 & 1 & | & 0 \\
+        3 & 0 & | & 0 \\
+        0 & 1 & | & 0
+    \end{bmatrix}
+    \rightarrow
+    \begin{bmatrix}
+        1 & 0 & | & 0 \\
+        0 & 1 & | & 0 \\
+        0 & 0 & | & 0
+    \end{bmatrix} \\
+    &x_1 = 0 \\
+    &x_2 = 0 \\
+    &\text{So } \text{ker}(T) = \{\vec{0}\}
+\end{aligned}
+\]
+
+
+\section{Lecture 18, 3/6/2024}
+
+Given transformation \( T: \mathbb{R}^2 \rightarrow \mathbb{R}^3 \) defined as \( T(x,y) = (x+y, 3x, y) \), we want to find the range \( \text{range}(T) \).
+
+The span of the given set \( \{ [1, 3, 0], [1, 0, 1] \} \).
+
+For the set \( S = \{ [a, b, c, d] : a+b-2c=d, 3a+4c+d=0 \} \), where \( a, b, c, d \in \mathbb{R} \):
+
+We seek vectors satisfying \( a+b-2c-d=0 \) and \( 3a+4c+d=0 \).
+
+Treating \( S \) as solutions to a linear system:
+
+\[
+\begin{bmatrix}
+1 & 1 & -2 & -1 \\
+3 & 0 & 4 & 1
+\end{bmatrix}
+\begin{bmatrix}
+a \\
+b \\
+c \\
+d
+\end{bmatrix}
+=
+\begin{bmatrix}
+0 \\
+0
+\end{bmatrix}
+\]
+
+So, \( S \) is the kernel of the linear transformation with standard matrix \( A = \begin{bmatrix} 1 & 1 & -2 & 1 \\ 3 & 0 & 4 & 1 \end{bmatrix} \).
+
+Solving, the RREF of the augmented matrix is:
+
+\[
+S = \text{ker}(A) = \text{span} \left\{ \left[ \frac{16}{3}, -\frac{10}{3}, 1, 0 \right], \left[ \frac{7}{3}, -\frac{4}{3}, 0, 1 \right] \right\}
+\]
+
+\( S \) is a subspace of \( \mathbb{R}^4 \).
+
+Theorem: Let \( T : V \rightarrow W \) where \( A \) is \( m \times n \). Then \( \text{ker}(T) = \text{nul}(T) \) (i.e., \( \text{ker}(A) = \text{nul}(A) \)) is a subspace of \( V \) (or \( \mathbb{R}^n \)). Moreover, \( \text{range}(T) \) is a subspace of \( W \) (or \( \text{col}(A) \) is a subspace of \( \mathbb{R}^m \)).
+
+
+\textbf{Example 1:} Is \(S = \{(x,y,z) : x = 2y + z, x,y,z \in \mathbb{R}\}\) a subspace of \(\mathbb{R}^3\)?
+
+\textbf{Method 1:} We want \((x,y,z)\) where \(x - 2y - z = 0 \Rightarrow [1\ -2\ 1] [x\ y\ z] = [0]\). \(S\) is the kernel of \(A = [1\ -2\ -1]\). The kernel is always a subspace $\Rightarrow S$ is a subspace.
+
+\textbf{Method 2:} Vectors of the form \((2y+z, y, z)\). Then \(\{(2y+z, y, z)\}\) subspace? \( (2y+z, y, z) = y(2,1,0) + z(1,0,1) \Rightarrow S = \text{span}\{(2,1,0), (1,0,1)\}, \text{and we know the span of any set is a subspace, so S}\) is a subspace.
+
+\textbf{Method 2:} Vectors of the form \((2y+z, y, z)\). Then \(\{(2y+z, y, z)\}\) subspace? 
+\((2y+z, y, z) = y(2,1,0) + z(1,0,1) \Rightarrow S = \text{span}\{(2,1,0), (1,0,1)\}\), and we know the span of any set is a subspace, so \(S\) is a subspace.
+
+\textbf{Example 2:} Let \(T : \mathbb{P}_1 \to \mathbb{P}_1\), where \(T(ax+b) = a\) (derivative). What is the kernel? Range? Is \(T\) one-to-one? Onto?
+
+\begin{itemize}
+    \item \textbf{Kernel (\( \text{Ker}(T) \)):} 
+    \( \text{Ker}(T) = \{c : c \in \mathbb{R}\} \) (constant polynomials).
+    
+    \item \textbf{One-to-one (\( T \) injective):} \\
+    \( T(3)=0 \) and \( T(2)=0 \), i.e., two different domain elements map to the same range value. Also, for \( T \) to be one-to-one, \( \text{Ker}(T) = \{\vec{0}\} \).
+    
+    \item  \( T \) is one-to-one (or injective) if and only if \( \text{Ker}(T) = \{\vec{0}\} \).
+
+\end{itemize}
+
+If \( \text{ker}(T) = \{\vec{0}\} \), why can't other values map to the same range value?
+
+\textbf{One-to-one:} 
+\[ T(\vec{u}) = T(\vec{v}) \Rightarrow \vec{u} = \vec{v} \]
+
+\[ T(\vec{u}) = T(\vec{v}) \Rightarrow T(\vec{u}) - T(\vec{v}) = \vec{0} \Rightarrow T(\vec{u} - \vec{v}) = \vec{0} \Rightarrow \vec{u} - \vec{v} = \vec{0} \text{ (trivial kernel)} \Rightarrow \vec{u} = \vec{v} \Rightarrow \text{one-to-one} \]
+
+\textbf{Onto:} 
+\[ T(ax+b) \neq x \]
+
+No, since the codomain is \( \mathbb{P}_1 \), \( g(x) = x \in \mathbb{P}_1 \), but no polynomial \( ax+b \) will satisfy \( T(ax+b) = x \) $\Rightarrow$ not onto/surjective. Note that if \( T : \mathbb{P}_1 \to \mathbb{P}_0 \), then \( T \) is onto/surjective.
+
+
+\section{Lecture 19, 3/8/2024}
+
+\textbf{Section 4.3: Linear Independent Sets and Bases}
+
+A set of vectors may span $\mathbb{R}^n$ but may not be linearly independent.
+
+A set may be linearly independent in $\mathbb{R}^3$ but may not span $\mathbb{R}^3$.
+
+\textbf{Definition:} A set of vectors $\{\vec{v}_1, \vec{v}_2, \ldots, \vec{v}_m\}$ is a basis of a vector space if the set spans the vector space and it is linearly independent.
+
+\textbf{Example:} $\{(1,0,0,0),(0,1,0,0),(0,0,1,0),(0,0,0,1)\}$ is the standard basis for $\mathbb{R}^4$. We sometimes write $\vec{e}_i = (0,0,\ldots,1,0,\ldots,0)$ (1 is the $i^{th}$ entry) to refer to the $i^{th}$ standard basis vector.
+
+\textbf{Example:} Basis for $\mathbb{P}_2 = \{ax^2+bx+c : a,b,c \in \mathbb{R}\}$ is $\{1,x,x^2\}$.
+
+
+More generally, $\{1, x, x^2, \ldots, x^n\}$ is the standard basis for $\mathbb{P}_n$.
+
+\textbf{Example:} Is $\{1, x+x^2\}$ a basis of $\mathbb{P}_2$?
+
+Span $\rightarrow a(1) + b(x+x^2) \rightarrow bx+bx^2$
+
+The polynomial $2x+x^2$ is not in span $\{1, x+x^2\}$, so $\{1, x+x^2\}$ is not a basis.
+
+\textbf{Theorem:} Let $\vec{v}_1, \ldots, \vec{v}_m$ span vector space $V$. Then each vector in $V$ can be uniquely expressed as a linear combination of $\vec{v}_1, \ldots, \vec{v}_m$ if and only if $\{\vec{v}_1, \ldots, \vec{v}_m\}$ is linearly independent, i.e., $\{\vec{v}_1, \ldots, \vec{v}_m\}$ is a basis.
+
+\textbf{Theorem:} Suppose $V = \text{span}(\{\vec{v}_1, \ldots, \vec{v}_m\})$. Then we can always reduce the set by deleting vectors, so that the new set of vectors is a basis of $V$.
+
+Moreover, given a linearly independent set that does not span \( V \), we can add vectors to extend to a basis of \( V \).
+
+\textbf{Bases for} \( \text{col}(A) \), \( \text{row}(A) \), \( \text{ker}(A) \)
+
+For \( \text{ker}(A) \), we simply find the solutions to \( A\vec{x} = \vec{0} \) in parametric vector form, and the vectors that span the solutions form a basis for \( \text{ker}(A) \).
+
+\textbf{Example:} \( A = \begin{bmatrix} 1 & 3 & 0 & 4 \\ 0 & 0 & 1 & 2 \end{bmatrix} \); solutions to \( A\vec{x} = \vec{0} \) are \( \begin{bmatrix} x_1 \\ x_2 \\ x_3 \\ x_4 \end{bmatrix} = x_2\begin{bmatrix} -3 \\ 1 \\ 0 \\ 0 \end{bmatrix} + x_4\begin{bmatrix} -4 \\ 9 \\ -2 \\ 1 \end{bmatrix} \), \( x_2, x_4 \in \mathbb{R} \) \( \Rightarrow \) basis for \( \text{ker}(A) \) is \( \{ \begin{bmatrix} -3 \\ 1 \\ 0 \\ 0 \end{bmatrix}, \begin{bmatrix} -4 \\ 9 \\ -2 \\ 1 \end{bmatrix} \} \). \( \text{ker}(A) = \text{span} \) of those vectors.
+
+\textbf{Theorem:} A basis for \( \text{col}(A) \) consists of the pivot columns corresponding to the original matrix \( A \), not the reduced row echelon form (RREF). A basis for \( \text{row}(A) \) consists of the non-zero rows of the RREF of \( A \).
+
+\textbf{Example:} \( A = \begin{bmatrix} 1 & 1 & 0 \\ 1 & 1 & 0 \\ 0 & 0 & 0 \end{bmatrix} \rightarrow \begin{bmatrix} 1 & 1 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 0 \end{bmatrix} \)
+
+\( \begin{bmatrix} 1 \\ 0 \\ 0 \end{bmatrix} \) is not a basis for \( \text{col}(A) \).
+
+\( \Rightarrow \) basis of \( \text{col}(A) = \{ \begin{bmatrix} 1 \\ 1 \\ 0 \end{bmatrix} \} \)
+
+\( \text{col}(A) = \text{span} \{ \begin{bmatrix} 1 \\ 1 \\ 0 \end{bmatrix} \} \)
+
+Basis of \( \text{row}(A) = \{ \begin{bmatrix} 1 & 1 & 0 \end{bmatrix} \} \)
+
+
+Given the matrix \( A = \begin{bmatrix} 1 & 4 & 1 & 2 \\ 1 & 2 & -1 & 0 \\ 2 & 6 & 0 & 3 \end{bmatrix} \), after row reduction, we have \( A \rightarrow \begin{bmatrix} 1 & 0 & -3 & 0 \\ 0 & 1 & 1 & 0 \\ 0 & 0 & 0 & 1 \end{bmatrix} \). 
+
+\textbf{a)} What is \( \text{col}(A) \)?
+
+\[
+\Rightarrow \text{col}(A) = \text{span} \left( \left\{ \begin{bmatrix} 1 \\ 1 \\ 2 \end{bmatrix}, \begin{bmatrix} 4 \\ 2 \\ 6 \end{bmatrix}, \begin{bmatrix} 2 \\ 0 \\ 3 \end{bmatrix} \right\} \right)
+\]
+
+\textbf{b)} Basis of \( \text{col}(A) \)?
+
+\[ \{ \begin{bmatrix} 1 \\ 1 \\ 2 \end{bmatrix}, \begin{bmatrix} 4 \\ 2 \\ 6 \end{bmatrix}, \begin{bmatrix} 2 \\ 0 \\ 3 \end{bmatrix} \} \] is a basis.
+
+\textbf{c)} Basis of \( \text{row}(A) \)?
+
+\[ \{ \begin{bmatrix} 1 & 0 & -3 & 0 \\ \end{bmatrix} \begin{bmatrix}0 & 1 & 1 & 0 \\ \end{bmatrix} \begin{bmatrix}0 & 0 & 0 & 1 \end{bmatrix} \} \]
+
+\textbf{d)} Suppose \( A \) is the matrix of a linear transformation from \( \mathbb{R}^4 \) to \( \mathbb{R}^3 \). Find a basis for \( \text{range}(A) \) and \( \text{ker}(A) \).
+
+\textbf{range}(A) = \( A\vec{x} \) $\rightarrow$ basis is the basis for \( \text{col}(A) \).
+
+\textbf{ker}(A)? Solve \( A\vec{x} = \vec{0} \)
+
+\[
+\Rightarrow \begin{cases} x_1 = 3x_3 \\ x_2 = -x_3 \\ x_3 = x_3 \\ x_4 = 0 \end{cases}
+\]
+
+\[
+\Rightarrow \text{Solution to } A\vec{x} = \vec{0} \text{ are } \vec{x} = x_3 \begin{bmatrix} 3 \\ -1 \\ 1 \\ 0 \end{bmatrix}, \quad x_3 \in \mathbb{R}
+\]
+
+\[
+\Rightarrow \text{ker}(A) = \text{span} \left( \left\{ \begin{bmatrix} 3 \\ -1 \\ 1 \\ 0 \end{bmatrix} \right\} \right) \text{, basis for } \text{ker}(A) \text{ is } \left\{ \begin{bmatrix} 3 \\ -1 \\ 1 \\ 0 \end{bmatrix} \right\}
+\]
+
+
+
+\section{Lecture 20, 3/11/2024}
+%quiz 7
+
+% 1. show something is a subspace
+% (dont have to use properties) write as span of set and clarfiy  that because it is a span of a set it is therefore a subspace
+
+% 2. given a matrix with rref 
+% some may say find a basis
+% some may say find row, col, ker
+% some may say basis of row, col, ker
+
+Given the matrix \( A = \begin{bmatrix} 1 & 2 & 3 & 4 \\ -1 & -1 & -4 & -2 \\ 3 & 4 & 11 & 8 \end{bmatrix} \) with the row-reduced echelon form (RREF) \( \begin{bmatrix} 1 & 0 & 5 & 0 \\ 0 & 1 & -1 & 2 \\ 0 & 0 & 0 & 0 \end{bmatrix} \).
+
+\textbf{a)} Determine \( \text{row}(A) \).
+
+\[
+\text{row}(A) = \text{span} \{ \begin{bmatrix} 1 & 0 & 5 & 0 \end{bmatrix}, \begin{bmatrix} 0 & 1 & -1 & 2 \end{bmatrix} \} = \text{span} \{ \begin{bmatrix} 1 \\ 2 \\ 3 \\ 4 \end{bmatrix}, \begin{bmatrix} -1 \\ -1 \\ -4 \\ -2 \end{bmatrix}, \begin{bmatrix} 3 \\ 4 \\ 11 \\ 8 \end{bmatrix} \}
+\]
+
+\textbf{b)} Basis of \( \text{col}(A) \)?
+
+\[ \{ \begin{bmatrix} 1 \\ -1 \\ 3 \end{bmatrix}, \begin{bmatrix} 2 \\ -1 \\ 4 \end{bmatrix} \} \]
+
+
+Section 4.4: Coordinate Systems
+
+\textbf{Definition:} Let \( B = \{ \vec{v}_1, \ldots, \vec{v}_n \} \) be a basis of \( V \). Let \( \vec{u} \in V \), and write \( \vec{u} = a_1 \vec{v}_1 + \ldots + a_n \vec{v}_n \). The column vector \( \vec{u}_B = [\vec{u}]_B = \begin{bmatrix} a_1 \\ \vdots \\ a_n \end{bmatrix} \) is the coordinate vector of \( \vec{u} \) relative to basis \( B = \{ \vec{v}_1, \ldots, \vec{v}_n \} \). The \( a_1, \ldots, a_n \) are the coordinates of \( \vec{u} \).
+
+
+\textbf{Example:} Let \( B = \{(3,4), (7,-1)\} \). For example, \( -2(3,4)+3(7,-1) = (15,-11) \). Therefore, \( [(15,-11)]_B = [-2][3] \).
+
+\textbf{Example:} Let \( B = \{(1,0), (0,1)\} \), the standard basis. For example, \( 9(1,0)+8(0,1) = (9,8) \). Therefore, \( [(9,8)]_B = [9][8] \). 
+
+\textbf{Example:} Let \( B_1 = \{(1,0),(0,1)\} = \{\vec{u}_1,\vec{u}_2\} \) and \( B_2 = \{(2,-1),(-1,1)\} = \{\vec{v}_1,\vec{v}_2\} \). Let \( \vec{u} = (4,5) \) and \( \vec{u} = 4\vec{u}_1+5\vec{u}_2 \). Then \( (4,5) = 3\vec{v}_1+2\vec{v}_2 \).
+
+Coordinates relative to the "oblique axes'' formed by \(\vec{v_1}\) and \(\vec{v_2}\) are denoted as \( [(4,5)]_{B_2} = [3][2] \).
+
+\textbf{Definition:} If \(B = \{\vec{v_1}, \ldots, \vec{v_n}\}\) is a basis for \(V\), and \(\vec{u} \in V\), the change-of-coordinates matrix from \(B\) to the standard basis is \(P_B = \begin{bmatrix}    \vec{v_1} & \vec{v_2} & \ldots & \vec{v_n} \\    \downarrow & \downarrow & \downarrow & \downarrow \\\end{bmatrix}\). Moreover, if \(\vec{u} = a_1\vec{v_1} + \ldots + a_n\vec{v_n}\), we have \(\vec{u} = P_B [\vec{u}]_B\). "Multiplying \(P_B\) with the coordinate vector outputs \(\vec{u}\) in terms of the standard basis''.
+
+Moreover, with \(P_B\) having linearly independent columns, \((P_B)^{-1}\) exists, so \([\vec{u}_B] = (P_B)^{-1} \vec{u}\).
+
+We can see \((P_B)^{-1}\) as a mapping from a vector space \(V\) to \(\mathbb{R}^n\) (vector \([\vec{u}_B]\)).
+
+Thus, we can see that any vector space with \(n\) basis vectors has a mapping \((P_B)^{-1}\), which is one-to-one and onto, will be isomorphic to \(\mathbb{R}^n\).
+
+\textbf{Example:} \(\{(x,y,0) : x,y \in \mathbb{R}\}\) is isomorphic to \(\mathbb{R}^2\) (in \(\mathbb{R}^3\)).
+
+\textbf{Example:} Consider \(\mathbb{P}_n\) and the standard basis \(B = \{1,x,x^2,\ldots,x^n\}\).
+
+If \(f(x) \in \mathbb{P}_n\), and \(f(x) = c_0 + c_1x + c_2x^2 + \ldots + c_nx^n\), then \([\vec{f}(x)]_B = \begin{bmatrix} c_0 \\ c_1 \\ c_2 \\ \vdots \\ c_n \end{bmatrix}\). Therefore, \(f(x) \mapsto [f(x)]_B\) is an isomorphism from \(\mathbb{P}_n\) to \(\mathbb{R}^{n+1}\).
+
+
+Usefulness of context $\Rightarrow$ Derivative transformation, useful as polynomials.
+
+Ex: Is $\{3+x^2, 1+x+x^2, x\}$ a linearly independent set in \(\mathbb{P}_2\)? Using the previous info, we have:
+\[\vec{v_1} = [3+x^2]_B = \begin{bmatrix} 3 \\ 0 \\ 1 \end{bmatrix}, \quad \vec{v_2} = [1+x+x^2]_B = \begin{bmatrix} 1 \\ 1 \\ 1 \end{bmatrix}, \quad \text{and} \quad \vec{v_3}=[x]_B = \begin{bmatrix} 0 \\ 1 \\ 0 \end{bmatrix}\]
+
+Are \(\{\vec{v_1}, \vec{v_2}, \vec{v_3}\}\) linearly independent? 
+\[\begin{bmatrix} 3 & 1 & 0 \\ 0 & 1 & 1 \\ 1 & 1 & 0 \end{bmatrix} \rightarrow \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{bmatrix}\]
+Since the row-reduced matrix is an identity matrix, the set is linearly independent.
+
+\section{Lecture 21, 3/13/2024}
+
+Last time: \(\mathbb{P}_n \rightarrow \mathbb{R}^{n+1}\) is an isomorphism. 
+
+\(P_B = \begin{bmatrix} \vec{v_1} & \vec{v_2} & \ldots & \vec{v_n} \\ \downarrow & \downarrow & \downarrow & \downarrow \end{bmatrix}\) is the change of coordinates matrix from \(B = \{\vec{v_1}, \ldots, \vec{v_n}\}\) to the standard basis.
+
+Example: Let \(T : \mathbb{P}_2 \rightarrow \mathbb{P}_2\) be given by \(T(a_0 + a_1x + a_2x^2) = a_2 + (a_1 - a_0)x\). 
+
+To find the matrix representation of \(T\) with respect to the standard basis \(\{1, x, x^2\}\):
+
+Map basis polynomials \(\rightarrow\) represent as vectors in \(\mathbb{R}^3\)
+
+\(a_0 = 1\), \(a_1 = 0\), \(a_2 = 0\): \(T(1) = 0 + (0 - 1)x = -x \Rightarrow [T(1)]_B = \begin{bmatrix} 0 \\ -1 \\ 0 \end{bmatrix}\)
+
+\(a_0 = 0\), \(a_1 = 1\), \(a_2 = 0\): \(T(x) = 0 + (1 - 0)x = -x \Rightarrow [T(x)]_B = \begin{bmatrix} 0 \\ 1 \\ 0 \end{bmatrix}\)
+
+\(a_0 = 0\), \(a_1 = 0\), \(a_2 = 1\): \(T(x^2) = 1 + (0 - 0)x = 0 \Rightarrow [T(x^2)]_B = \begin{bmatrix} 1 \\ 0 \\ 0 \end{bmatrix}\)
+
+\(\Rightarrow\) The matrix representation is \(A = \begin{bmatrix} 0 & 0 & 1 \\ -1 & 1 & 0 \\ 0 & 0 & 0 \end{bmatrix}\)
+
+For example, if \(B = \{(7,5), (-3,-2)\}\) is a basis of \(\mathbb{R}^2\), to express \(\vec{u} = \begin{bmatrix} 7 \\ 6 \end{bmatrix}\) as a linear combination of the vectors in \(B\), and find \([\vec{u}]_B\):
+
+By the earlier theorem, \(P_B = \begin{bmatrix} 7 & -3 \\ 5 & -2 \end{bmatrix}\). Thus, \((P_B^{-1})_B = \begin{bmatrix} -2 & 3 \\ -5 & 7 \end{bmatrix}\). 
+
+By the theorem, \([\vec{u}]_B = (P_B^{-1})_B \vec{u} = \begin{bmatrix} -2 & 3 \\ -5 & 7 \end{bmatrix} \begin{bmatrix} 7 \\ 6 \end{bmatrix} = \begin{bmatrix} 4 \\ 7 \end{bmatrix}\). 
+
+So, \(4(7,5) + 7(-3,-2) = (7,6)\).
+
+Generalization: We use P and $P^{-1}$ to go between ANY 2 bases! Right now we go between B and the standard basis.
+
+Section 4.5 (5th edition $\rightarrow$ also 4.6)
+
+Theorem: Let vector space V contain a basis of n vectors. Then any other basis of V also has exactly n vectors. Moreover, any set of n+1 or more vectors is necessarily linearly independent. Def: If vector space V has a basis of n vectors, then dimension of V is n, denoted dim(V) = n. For this class we assume n is finite.
+
+Ex: 
+
+1) $\mathbb{R}^n \Rightarrow$ Standard basis $\{(1,0,...,0), (0,1,0,...0), ... (0,0,...,0,1)\} \Rightarrow$ $\text{dim}(\mathbb{R}^n) = n$
+
+2) $\mathbb{P}_n \Rightarrow$ Standard basis $\{1, x, x^2, ... x^n\} \Rightarrow$ $\text{dim}(\mathbb{P}_n) = n+1$
+
+3) $\{\vec{0}\} \Rightarrow$ Dimension is 0
+
+Basis $\rightarrow$ linear independent AND spans V
+
+Now if we know dim(V), we only need to check linear independence.
+
+\textbf{Theorem:} If $\text{dim}(V) = n$, a set $\{\vec{v_1}, ..., \vec{v_n}\}$ in $V$ is a basis if and only if it is linearly independent or spans $V$.
+
+\textbf{Example:} Is $\{(1,1,1),(0,1,2),(3,0,1)\}$ a basis for $\mathbb{R}^3$?
+
+We check for linear independence by row reducing:
+
+\[
+\begin{bmatrix}
+1 & 0 & 3 \\
+1 & 1 & 0 \\
+1 & 2 & 1 \\
+\end{bmatrix}
+\rightarrow
+\begin{bmatrix}
+1 & 0 & 0 \\
+0 & 1 & 0 \\
+0 & 0 & 1 \\
+\end{bmatrix}
+\]
+
+Since we have three linearly independent vectors in $\mathbb{R}^3$ and $\text{dim}(\mathbb{R}^3) = 3$, the set forms a basis for $\mathbb{R}^3$.
+
+
+Now let $A$ be an $m \times n$ matrix. The row space of $A$, denoted $\text{row}(A)$, is a subspace of $\mathbb{R}^n$, and the column space of $A$, denoted $\text{col}(A)$, is a subspace of $\mathbb{R}^m$.
+
+\textbf{Theorem:} If $A$ is an $m \times n$ matrix, then $\text{dim}(\text{row}(A)) = \text{dim}(\text{col}(A))$.
+
+\textbf{Example:} Consider the matrix $A = \begin{bmatrix} 1 & 2 \\ 3 & 4 \\ 5 & 6 \end{bmatrix}$.
+
+$\rightarrow$ $\text{row}(A)$ is in $\mathbb{R}^2$.
+
+$\rightarrow$ $\text{col}(A)$ is in $\mathbb{R}^3$.
+
+So clearly $\text{row}(A) \neq \text{col}(A)$.
+
+\textbf{Definition:} The rank of a matrix $A$, denoted $\text{rank}(A)$, is the dimension of the column space, i.e., $\text{rank}(A) = \text{dim}(\text{col}(A)) = \text{dim}(\text{row}(A))$.
+
+
+
+\section{Lecture 22, 3/15/2024}
+
+\textbf{Theorem (Rank-Nullity, Matrix form):}
+Let $A$ be an $m \times n$ matrix. Then the number of columns, $n$, equals the rank of $A$ plus the dimension of the kernel of $A$.
+
+\textbf{Note:} $\text{dim}(\text{ker}(A))$ is called the "nullity" or $\text{null}(A)$, denoted by $\text{number} = \text{dim}(\text{nul}(A))$.
+
+\textbf{Theorem (Rank-Nullity, Linear Transformation form):}
+Let $T: V \rightarrow W$ be a linear transformation. Assume $\text{dim}(V) = n$. Then $\text{dim}(\text{domain}) = n = \text{dim}(\text{range}(T)) + \text{dim}(\text{ker}(A))$.
+
+\textbf{Example:} The row-reduced echelon form (RREF) of 
+\[
+\begin{bmatrix} 
+1 & 2 & 0 & -2 & -3 \\ 
+2 & 4 & 5 & 23 & -13 \\ 
+1 & 2 & 1 & 3 & -5 
+\end{bmatrix} 
+\]
+is 
+\[
+\begin{bmatrix} 
+1 & 2 & 0 & -2 & -3 \\ 
+0 & 0 & 1 & 5 & -2 \\ 
+0 & 0 & 0 & 0 & 0 
+\end{bmatrix}.
+\]
+\textbf{Verify the Rank-Nullity Theorem:}
+
+\[\Rightarrow \text{basis of } \text{col}(A) = \left\{ \begin{bmatrix} 1 \\ 2 \\ 1 \end{bmatrix}, \begin{bmatrix} 0 \\ 5 \\ 1 \end{bmatrix} \right\} \Rightarrow \text{rank}(A) = 2\]
+
+\textbf{Kernel?} Solving $A\vec{x} = \vec{0}$, observe the row-reduced echelon form (RREF) given by:
+\[ \begin{bmatrix} 
+1 & 2 & 0 & -2 & -3 & \vert & 0 \\ 
+0 & 0 & 1 & 5 & -2 & \vert & 0 \\ 
+0 & 0 & 0 & 0 & 0 & \vert & 0 
+\end{bmatrix}.\]
+
+\[\Rightarrow
+\begin{cases}
+x_1 = -2x_2 + 2x_4 + 3x_5 \\
+x_2 = x_2 \\
+x_3 = -5x_4 + 2x_5 \\
+x_4 = x_4 \\
+x_5 = x_5
+\end{cases}\]
+
+\[\Rightarrow \vec{x} = x_2 \begin{bmatrix} -2 \\ 1 \\ 0 \\ 0 \\ 0 \end{bmatrix} + x_4 \begin{bmatrix} 2 \\ 0 \\ -5 \\ 1 \\ 0 \end{bmatrix} + x_5 \begin{bmatrix} 3 \\ 0 \\ 2 \\ 0 \\ 1 \end{bmatrix}, \quad x_2, x_4, x_5 \in \mathbb{R}.\]
+
+\[\Rightarrow \text{basis of the kernel is } \left\{ \begin{bmatrix} -2 \\ 1 \\ 0 \\ 0 \\ 0 \end{bmatrix}, \begin{bmatrix} 2 \\ 0 \\ -5 \\ 1 \\ 0 \end{bmatrix}, \begin{bmatrix} 3 \\ 0 \\ 2 \\ 0 \\ 1 \end{bmatrix} \right\} \Rightarrow \text{dim}(\text{ker}(A)) = 3.\]
+
+By the Rank-Nullity Theorem: $\text{rank}(A) + \text{dim}(\text{ker}(A)) = 2 + 3 = 5$, which equals the number of columns.
+
+
+Given rank$(A) = 2$, we know the number of columns is $5$, hence we expect $\text{dim}(\text{ker}(A)) = 3$.
+
+
+\textbf{Example:} If $A$ is $5\times 9$, how large can $\text{dim}(\text{col}(A))$ be?
+
+Recall, $\text{dim}(\text{col}(A)) = \text{dim}(\text{row}(A))$. This means $\text{dim}(\text{col}(A))$ can be at most the minimum between the two dimensions ($5$ and $9$). Therefore, it can be at most $5$. 
+
+Thus, for example, by the Rank-Nullity Theorem, $\#$ of columns $= 9 = \text{rank}(A) + \text{dim}(\text{ker}(A))$. Since $\text{rank}(A)$ is at most $5$, we have $9 \leq 5 + \text{dim}(\text{ker}(A)) \Rightarrow \text{dim}(\text{ker}(A)) \geq 4$. Therefore, we can conclude that $\text{dim}(\text{ker}(A))$ is never $3$.
+
+Ex: Verify the rank-nullity theorem for the derivative operator $T: \mathbb{P}_2 \rightarrow \mathbb{P}_1$, where $T(a_0 + a_1x + a_2x^2) = a_1 + 2a_2x$. 
+
+- $\text{dim(domain)} = \text{dim}(\mathbb{P}_2) = 3$. 
+
+- Kernel? We need polynomials where the output has $a_1 + 2a_2x = 0$, so we need $a_2 = 0$, $a_1 = 0$, and no restriction on $a_0$. 
+  $\Rightarrow T(a_0 + 0x + 0x^2) = 0 \Rightarrow \text{ker}(T) = \{ k : k \in \mathbb{R} \}$.
+  $\Rightarrow$ Basis of ker(T) is $\{1\}$. $\Rightarrow \text{dim}(\text{ker}(T)) = 1$.
+
+- Note: $3 = \text{dim(domain)} = \text{dim(range)} + \text{dim(ker)} = ?? + 1$.
+  
+- Observe: $\text{range}(T) = \{a_1 + 2a_2x : a_1, a_2 \in \mathbb{R}\} = \{b_1 + 2b_2x : b_1, b_2 \in \mathbb{R}\} = \mathbb{P}_1$. 
+  $\Rightarrow$ Basis is $\{1, x\} \Rightarrow$ dim(range(T)) = 2 $\Rightarrow$ By rank-nullity theorem, 3 = dim(domain)= dim(range(T))+dim(ker(T)) = 2+1.
+
+Ex: A system of linear equations has 5 variables and 3 equations. The homogeneous system has 2 free variables. If A is the coefficient matrix, does A$\vec{x} = \vec{b}$ have a solution for any $\vec{b}$ (appropriate sized $\vec{b}$)
+
+Another way to phrase this problem is: If A is a linear transformation is the transformation onto/surjective.
+
+$\Rightarrow$ 2 free variables $\rightarrow \text{dim}(\text{ker}(A)) = 2$ 
+$\Rightarrow$ By the rank-nullity theorem, number of columns $= 5 = \text{rank}(A) + \text{dim}(\text{ker}(A)) = \text{rank}(A) + 2$ 
+$\Rightarrow \text{rank}(A) = \text{dim}(\text{col}(A)) = 3$ 
+$\Rightarrow \text{col}(A)$ is a subspace of $\mathbb{R}^3$. $\Rightarrow$ columns span $\mathbb{R}^3$ $\Rightarrow$ A$\vec{x} = \vec{b}$ always has a solution for any $\vec{b}$.
+
+%$\Rightarrow$ col(A) = $\mathbb{R}^3$ since dimension is 3 
+
+
+\section{Lecture 23, 3/25/2024}
+
+Section 4.6: Change of Basis
+
+In 4.4 $\rightarrow$ \(P_B = \begin{bmatrix} \vec{v_1} & \vec{v_2} & \ldots & \vec{v_n} \\ \downarrow & \downarrow & \downarrow & \downarrow \end{bmatrix}\)
+
+Given two bases $B_1=\{\vec{v_1}, \vec{v_2}\}$ and $B_2=\{\vec{u_1}, \vec{u_2}\}$, to express a vector as a linear combination of both bases, we need to relate $[\vec{x}]_{B_1}$ and $[\vec{x}]_{B_2}$.
+
+Definition: Let $B_1=\{\vec{v_1}, ..., \vec{v_n}\}$ and $B_2 = \{\vec{u_1}, ... \vec{u_n}\}$ be two bases of vector space $V$. The change-of-coordinates matrix, or transition matrix is $\underset{B_1 \leftarrow B_2}{\large P} = \begin{bmatrix} [\vec{v_1}]_{B_2} & [\vec{v_2}]_{B_2} & \ldots & [\vec{v_n}]_{B_2} \\ \downarrow & \downarrow & \downarrow & \downarrow \end{bmatrix}$.
+
+Here, the columns are the coordinate vectors of $\vec{v_1}, ... \vec{v_b}$ with respect to $B_2$.
+
+Remark: If $B_2$ is the standard basis, then $[\vec{v_1}]_{B_1} = \vec{v_1}$, yielding the result in Section 4.4.
+
+For example, let $B_1 = \{(7,-7), (-1,11)\} = \{\vec{v_1}, \vec{v_2}\}$ and $B_2 = \{(1,3),(-5,-1)\} = \{\vec{u_1}, \vec{u_2}\}$.
+
+
+How to find $\underset{B_1 \leftarrow B_2}{\large P}$? Need to write $(7,-7)$ and $(-1,11)$ as a linear combination of $(1,3)$ and $(-5,-1)$:
+
+$\Rightarrow$ row reduce $\begin{bmatrix} 1 & -5 & 7 \\ 3 & -1 & -7 \end{bmatrix} \rightarrow \begin{bmatrix} 1 & 0 & -3 & 4 \\ 0 & 1 & -2 & 1 \end{bmatrix}$
+
+$[\vec{v_1}]_{B_2} = \begin{bmatrix} -3 \\ -2 \end{bmatrix}$ $\Rightarrow$ $\vec{v_1} = -3\vec{u_1} - 2\vec{u_2}$ $\Rightarrow$
+
+$\underset{B_1 \leftarrow B_2}{\large P} = \begin{bmatrix} -3 & 4 \\ -2 & 1 \end{bmatrix}$
+
+Theorem: Let $B_1 = \{\vec{v_1}, \ldots, \vec{v_n}\}$ and $B_2 = \{\vec{u_1}, \vec{u_n}\}$ be two bases of a vector space $V$. Let $\vec{x} \in V$. If $\underset{B_1 \leftarrow B_2}{\large P}$ is the change of coordinates matrix, then $\underset{B_1 \leftarrow B_2}{\large P}[\vec{x}]_{B_1} = [\vec{x}]_{B_2}$.
+
+
+Moreover, matrix $P$ is invertible, and $(\underset{B_1 \leftarrow B_2}{\large P})^{-1}[\vec{x}]_{B_2} = \underset{B_2 \leftarrow B_1}{\large P}[\vec{x}]_{B_2} = [\vec{x}]_{B_1}$.
+
+Ex: From the last example, $B_1 = \{(7,-7), (-1,11)\}$, $B_2 = \{(1,3), (-5,-1)\}$, $\underset{B_1 \leftarrow B_2}{\large P} = \begin{bmatrix} -3 & 4 \\ -2 & 1 \end{bmatrix}$
+
+By inspection, what is $[(5, 15)]_{B_1}$?
+
+$[(5, 15)]_{B_1} = \begin{bmatrix} 1 \\ 2 \end{bmatrix} \Rightarrow \underset{B_1 \leftarrow B_2}{\large P}[(5,15)]_{B_1} = \begin{bmatrix} -3 & 4 \\ -2 & 1 \end{bmatrix} \begin{bmatrix} 1 \\ 2 \end{bmatrix} = \begin{bmatrix} 5 \\ 0 \end{bmatrix} = [(5,15)]_{B_2} \Rightarrow 5(1,3)+0(-5,-1) = (5,15)$.
+
+Note: With the 2x2 inverse formula:
+
+$(\underset{B_1 \leftarrow B_2}{\large P})^{-1} = \underset{B_2 \leftarrow B_1}{\large P} = \begin{bmatrix} \frac{1}{5} & -\frac{4}{5} \\ \frac{2}{5} & -\frac{3}{5} \end{bmatrix}$
+
+Ex: Let $B_1 = \{1, x, x^2\}$, $B_2 = \{4, x-1, 3x^2\}$ be the basis for $\mathbb{P}_2$. Find $\underset{B_1 \leftarrow B_2}{\large P}$ and $\underset{B_2 \leftarrow B_1}{\large P}$:
+
+$\begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{bmatrix} \leftarrow \begin{bmatrix} 4 & -1 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 3 \end{bmatrix}$
+
+\medskip
+Note: LHS is $B_1$, RHS is $B_2$, $B_1 \leftarrow B_2$
+\medskip
+\newline
+$\Rightarrow \underset{B_1 \leftarrow B_2}{\large P} 
+= \begin{bmatrix} 4 & -1 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 3 \end{bmatrix}$
+
+
+$\Rightarrow \underset{B_1 \leftarrow B_2}{\large P} = \begin{bmatrix} 4 & -1 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 3 \end{bmatrix} \begin{bmatrix} 4 & -1 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 3 \end{bmatrix}$
+
+$\left(\underset{B_2 \leftarrow B_1}{\large P}\right)^{-1} = \begin{bmatrix} 4 & -1 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 3 \end{bmatrix} = \begin{bmatrix} 1/4 & 1/4 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1/3 \end{bmatrix} = \underset{B_1 \leftarrow B_2}{\large P}$ 
+
+What is $[f(x)]_{B_2}$ if $f(x) = 4-x^{2}$?
+
+$B_1$ is easy $\Rightarrow$ want to use $B_1 \rightarrow B_2$ \\
+$\Rightarrow [f(x)]_{B_1} = [4][0][-1]$ \\
+$\Rightarrow \underset{B_1 \leftarrow B_2}{\large P}[f(x)]_{B_1} = \begin{bmatrix} 1/4 & 1/4 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1/3 \end{bmatrix} \begin{bmatrix} 4 \\ 0 \\ -1 \end{bmatrix} = \begin{bmatrix} 1 \\ 0 \\ -1/3 \end{bmatrix}$
+
+
+$\Rightarrow$ Indeed, we have $1(4) + 0(x - 1) + (-1/3)(3x^2) = 4 - x^2$
+
+
+
+\section{Lecture 24, 3/27/2024}
+
+Last Time: To find the change of coordinates matrix 
+${B_2}^{\large P}_{\leftarrow B_1}$, row reduce 
+
+\[
+\begin{bmatrix} 
+\vec{u_1} & \vec{u_2} & | & \vec{v_1} & \vec{v_2} \\
+\downarrow & \downarrow & | & \downarrow & \downarrow 
+\end{bmatrix}
+\]
+
+\textbf{Definition:} Let \( B_1 = \{\vec{v_1}, \vec{v_2}\} \) and \( B_2 = \{\vec{u_1}, \vec{u_2}\} \).
+
+\textbf{Section 5.1, 5.2: Eigenvectors and Eigenvalues and Characteristic equation.}
+
+\textbf{Definition:} Let \( A \) be an \( n \times n \) matrix. A scalar \( \lambda \) is an eigenvalue of \( A \) if there exists a vector \( \vec{x} \) that is not the zero vector such that \( A\vec{x} = \lambda\vec{x} \). Vector \( \vec{x} \) is an eigenvector of \( A \). Note if \( \lambda = 1 \Rightarrow A\vec{x} = \vec{x} \) ("stability").
+
+\textbf{How to find \( \lambda \) and \( \vec{x} \)}
+
+To solve \( A\vec{x} = \lambda\vec{x} \), we have \( A\vec{x} - \lambda\vec{x} = 0 \Rightarrow (A - \lambda I)\vec{x} = 0 \).
+
+
+$polynomial of \lambda \rightarrow find \lambda$
+
+\textbf{Definition:} If \( A \) is an \( n \times n \) matrix, the characteristic polynomial of \( A \) is \( \text{det}(A - \lambda I) \), which is a polynomial of degree \( n \) in terms of \( \lambda \). The characteristic equation is \( \text{det}(A - \lambda I) = 0 \).
+
+The roots of the polynomial are the eigenvalues \( \lambda \).
+
+The algebraic multiplicity of \( \lambda \) is the number of times \( \lambda \) occurs in the characteristic polynomial as a root. Once you obtain the eigenvalues \( \lambda \), substitute in \( (A - \lambda I)\vec{x} = 0 \) to get eigenvectors \( \vec{x} \).
+
+\textbf{Example:} Find the eigenvalues and eigenvectors of matrix \( A \):
+\[ A = \begin{bmatrix} 5 & 2 \\ -8 & -3 \end{bmatrix} \]
+
+\[
+\Rightarrow 0 = \text{det}(A - \lambda I) = \text{det}\left(\begin{bmatrix} 5-\lambda & 2 \\ -8 & -3-\lambda \end{bmatrix}\right)
+\]
+
+\[ 
+\begin{aligned}
+&= (5-\lambda)(-3-\lambda) - (-16) \\
+&= \lambda^2 - 2\lambda + 1 = (1-\lambda)^2 \\
+&\Rightarrow \lambda = 1 \text{ is an eigenvalue with algebraic multiplicity } 2.
+\end{aligned}
+\]
+
+\[
+\Rightarrow \text{solve } (A-\lambda I)\vec{x} = \vec{0} \Rightarrow (A-I)\vec{x} = \vec{0} \Rightarrow \text{Row reduce } \begin{bmatrix} 4 & 2 \\ -8 & -4 \end{bmatrix} \begin{bmatrix} x_1 \\ x_2 \end{bmatrix} = \begin{bmatrix} 0 \\ 0 \end{bmatrix} \text{ (Always infinite solutions)}
+\]
+
+\[
+\Rightarrow \begin{bmatrix} 1 & \frac{1}{2} \\ 0 & 0 \end{bmatrix} \Rightarrow x_1 = -\frac{1}{2}x_2, \ x_2 = x_2 \Rightarrow \vec{x} = \begin{bmatrix} -\frac{1}{2} \\ 1 \end{bmatrix}x_2 \]
+
+\[
+\Rightarrow \text{For eigenvalue } \lambda = 1, \text{ the eigenvectors are } \vec{x} = \begin{bmatrix} -\frac{1}{2} \\ 1 \end{bmatrix}x_2, \ x_2 \in \mathbb{R} \setminus \{0\} \text{ (}\vec{0} \text{ is not an eigenvector)}
+\]
+
+
+\textbf{Theorem:} If \( A \) is \( n \times n \), the set of all eigenvectors corresponding to \( \lambda \), along with \( \vec{0} \), form a subspace of \( \mathbb{R}^n \), called the eigenspace of \( \lambda \).
+
+\textbf{Example:} From above, the eigenspace of \( \lambda = 1 \) is \( \text{span}\left\{ \begin{bmatrix} -1 \\ 2 \\ 1 \end{bmatrix} \right\} \).
+
+\textbf{Note:} \( \vec{x} \neq \vec{0} \), but \( \lambda = 0 \) is okay. If \( \lambda = 0 \), then \( A\vec{x} = 0 \), so an eigenvector for \( \lambda = 0 \) is now a non-trivial solution to \( A\vec{x} = 0 \). This implies that matrix \( A \) cannot be invertible. Equivalently, \( \det(A) = 0 \).
+
+\textbf{Theorem:} An \( n \times n \) matrix \( A \) is invertible if and only if \( \lambda = 0 \) is not an eigenvalue, i.e., \( \det(A) \neq 0 \) if and only if \( \lambda = 0 \) is not an eigenvalue.
+
+
+
+\section{Lecture 25, 3/29/2024}
+
+Last time: \( A\vec{v} = \lambda\vec{v} \)
+
+\(\lambda = \) eigenvalue
+\(\vec{v} = \) eigenvector
+
+Solve \( \det(A-\lambda I) = 0 \) to get eigenvalues.
+
+Algebraic multiplicity \( \rightarrow \) number of times \( \lambda \) is a root in \( \det(A-\lambda I) \).
+
+Eigenspace of \( \lambda \) \( \Rightarrow \) All eigenvectors corresponding to \( \lambda \) and \( \vec{0} \).
+
+Ex: \( A = \begin{bmatrix} 4 & 1 & -1 \\ 2 & 5 & -2 \\ 1 & 1 & 2 \end{bmatrix} \). Is \( \vec{v} = \begin{bmatrix} 1 \\ 1 \\ 1 \end{bmatrix} \) an eigenvector?
+
+Check \( A\vec{v} = \lambda\vec{v} \). Compute \( A\vec{v} = \begin{bmatrix} 4 & 1 & -1 \\ 2 & 5 & -2 \\ 1 & 1 & 2 \end{bmatrix} \begin{bmatrix} 1 \\ 1 \\ 1 \end{bmatrix} = \begin{bmatrix} 4 \\ 5 \\ 4 \end{bmatrix} \). But \( \begin{bmatrix} 4 \\ 5 \\ 4 \end{bmatrix} \) is not a multiple of \( \vec{v} = \begin{bmatrix} 1 \\ 1 \\ 1 \end{bmatrix} \), i.e., there is no \( \lambda \) where \( A\vec{v} = \lambda\vec{v} \) \( \Rightarrow \vec{v} = \begin{bmatrix} 1 \\ 1 \\ 1 \end{bmatrix} \) is not an eigenvector.
+
+What are eigenvalues and eigenvectors of \( A \)?
+
+Solve \( 0 = \det(A-\lambda I) = \det\left( \begin{bmatrix} 4-\lambda & 1 & -1 \\ 2 & 5-\lambda & -2 \\ 1 & 1 & 2-\lambda \end{bmatrix} \right) = (3-\lambda)^2(5-\lambda) \).
+
+
+\(\Rightarrow \lambda = 3\) (multiplicity 2) and \(\lambda = 5\) (multiplicity 1) are the eigenvalues.
+
+Eigenvectors?
+
+\(\lambda = 3\): \((A-3I)\vec{v} = \vec{0}\); Row reduce
+
+\[
+\Rightarrow \begin{bmatrix} 1 & 1 & -1 \\ 2 & 2 & -2 \\ 1 & 1 & -1 \end{bmatrix} \rightarrow \begin{bmatrix} 1 & 1 & -1 \\ 0 & 0 & 0 \\ 0 & 0 & 0 \end{bmatrix} \rightarrow x_1 = -x_2 + x_3, \ x_2 = x_2, \ x_3 = x_3
+\]
+
+\(\vec{v} = x_2\begin{bmatrix} -1 \\ 1 \\ 0 \end{bmatrix} + x_3\begin{bmatrix} 1 \\ 0 \\ 1 \end{bmatrix}\)
+
+\(\Rightarrow\) for \(\lambda = 3\), the eigenspace is \(\text{span}(\{\begin{bmatrix} -1 \\ 1 \\ 0 \end{bmatrix}, \begin{bmatrix} 1 \\ 0 \\ 1 \end{bmatrix}\})\).
+
+For \(\lambda = 3\), the set of eigenvectors is \(\{x_2\begin{bmatrix} -1 \\ 1 \\ 0 \end{bmatrix} + x_3\begin{bmatrix} 1 \\ 0 \\ 1 \end{bmatrix} : x_2, x_3 \in \mathbb{R},\) with \(x_2 \neq 0, x_3 \neq 0\) simultaneously\}.
+
+\(x_3 = 0\), \(x_2 = 1\) \(\Rightarrow \begin{bmatrix} -1 \\ 1 \\ 0 \end{bmatrix}\) is an eigenvector for \(\lambda = 3\).
+
+\(\lambda = 5\): Solve \((A-5I)\vec{v} = \vec{0}\); row reduce
+
+\[
+\begin{bmatrix} -1 & 1 & -1 \\ 2 & 0 & -2 \\ 1 & 1 & -3 \end{bmatrix} \rightarrow \begin{bmatrix} 1 & 0 & -1 \\ 0 & 1 & -2 \\ 0 & 0 & 0 \end{bmatrix}
+\]
+
+\(\rightarrow x_1 = x_3, \ x_2 = 2x_3, \ x_3 = x_3\)
+
+\(\vec{v} = x_3\begin{bmatrix} 1 \\ 2 \\ 1 \end{bmatrix}\)
+
+
+
+\(\Rightarrow\) for \(\lambda = 5\), \(\text{span}(\{\begin{bmatrix} 1 \\ 2 \\ 1 \end{bmatrix}\})\) is the eigenspace. The set of eigenvectors is \(\{x_3\begin{bmatrix} 1 \\ 2 \\ 1 \end{bmatrix} : x_3 \in \mathbb{R}, \text{ and } x_3 \neq 0\}\).
+
+\textbf{Remark:} In this problem, \(\lambda = 3\) had algebraic multiplicity 2 and 2 linearly independent eigenvectors.
+
+In Wednesday's example, \(\lambda = 1\) had algebraic multiplicity 2, but only 1 linearly independent eigenvector.
+
+In the last example, is \(A\) invertible? Yes, we know \(A\) is invertible if and only if \(\lambda = 0\) is not an eigenvalue. So with \(\lambda = 3\) and \(5\) as the only eigenvalues, it is invertible.
+
+
+\textbf{Section 5.3: Diagonalization}
+
+\textbf{Definition:} Let \( A \) and \( B \) be \( n \times n \) matrices. We say \( A \) is similar to \( B \) if there exists an invertible matrix \( P \) such that \( A = PBP^{-1} \).
+
+Note that if \( Q = P^{-1} \), we have \( A = Q^{-1}B \), which implies \( B = QAQ^{-1} \). Thus, \( B \) is similar to \( A \).
+
+\textbf{Example:} One can check
+
+\[
+\begin{bmatrix} 7 & -10 \\ 3 & -4 \end{bmatrix} = \begin{bmatrix} 2 & 5 \\ 1 & 3 \end{bmatrix} \begin{bmatrix} 2 & 0 \\ 0 & 1 \end{bmatrix} \begin{bmatrix} 2 & 5 \\ 1 & 3 \end{bmatrix}^{-1}
+\]
+
+In the form \( A = PBP^{-1} \).
+
+\textbf{Eigenvalues of \( A \):} Solve \( \det(A-\lambda I) = 0 \) 
+
+\[
+\begin{vmatrix} 7-\lambda & -10 \\ 3 & -4-\lambda \end{vmatrix} = (2-\lambda)(1-\lambda) \Rightarrow \lambda = 1, 2 \text{ are the eigenvalues}.
+\]
+
+\textbf{Eigenvalues of \( B \):} 
+
+\[
+\begin{vmatrix} 2-\lambda & 0 \\ 0 & 1-\lambda \end{vmatrix} = (2-\lambda)(1-\lambda) \Rightarrow \text{eigenvalues are } \lambda = 1, 2 \text{ also}.
+\]
+
+\textbf{Theorem:} If \( A \) and \( B \) are similar, then they have the same eigenvalues, including multiplicities.
+
+\textbf{Definition:} A square matrix \( A \) is diagonalizable if there exists an invertible matrix \( P \) such that \( D = P^{-1}AP \), where \( D \) is a diagonal matrix.
+
+That is, \( A \) is similar to a diagonal matrix.
+
+Now write \( A = PDP^{-1} \). Then,
+
+\[
+A^2 = (PDP^{-1})(PDP^{-1}) = PD(P^{-1}P)DP^{-1} = (PD)(I)(DP^{-1}) = PD^2P^{-1}
+\]
+
+So, in general, \( A^k = PD^kP^{-1} \).
+
+
+\section{Lecture 26, 4/1/2024}
+
+Last time: Matrix \( A \) is diagonalizable if there exists \( P \) such that \( D = P^{-1}AP \), then we get \( A^k = PD^kP^{-1} \).
+
+Let \[ D = \begin{bmatrix} 1 & 0 \\ 0 & 2 \end{bmatrix} \]
+
+Then \( D^{50} = \begin{bmatrix} 1^{50} & 0 \\ 0 & 2^{50} \end{bmatrix} \), which is easier to compute than \( A^{50} \).
+
+What about \( A^{200} \)? 
+
+Find \( A^2 \) then \( (A^2)^2 \) which is \( (A^4)^2 = A^8 \).
+
+Theorem: Let \( A \) be an \( n \times n \) square matrix. Then, \( A \) is diagonalizable if and only if \( A \) has \( n \) linearly independent eigenvectors. Moreover, if \( D = P^{-1}AP \), then the diagonal entries of \( D \) are the \( n \) eigenvalues of \( A \), and the columns of \( P \) are the \( n \) linearly independent eigenvectors of \( A \).
+
+For example, let \( A = \begin{bmatrix} 7 & 3 \\ 3 & -1 \end{bmatrix} \). Is \( A \) diagonalizable? We need to find the eigenvalues. 
+
+\[ \det(A - \lambda I) = \det\left(\begin{bmatrix} 7 - \lambda & 3 \\ 3 & -1 - \lambda \end{bmatrix}\right) = (7 - \lambda)(-1 - \lambda) - (3 \cdot 3) = (8 - \lambda)(2 + \lambda) = 0 \]
+
+This gives us \( \lambda = 8, -2 \) as the eigenvalues.
+
+For \( \lambda = 8 \), solve \( (A - 8I) \vec{v} = \vec{0} \) which leads to row reduction: 
+
+\[ \begin{bmatrix} -1 & 3 \\ 3 & -9 \end{bmatrix} \] 
+
+\[ \Rightarrow \begin{bmatrix} 1 & -3 \\ 0 & 0 \end{bmatrix} \]
+
+This gives \( x_1 = 3x_2 \) and \( x_2 = x_2 \). 
+
+So, eigenvectors are of the form \( \vec{v} = x_2 \begin{bmatrix} 3 \\ 1 \end{bmatrix} \), where \( x_2 \in \mathbb{R} \setminus \{0\} \).
+
+Thus, \( \vec{v} = \begin{bmatrix} 3 \\ 1 \end{bmatrix} \) is a linearly independent eigenvector for \( \lambda = 8 \). A basis for the eigenspace of \( \lambda = 8 \) is \( \left\{ \begin{bmatrix} 3 \\ 1 \end{bmatrix} \right\} \).
+
+
+Make sure you get infinite solutions. The $\vec{0}$ is not an Eigenvector. Recognize when the answer is unreasonable.
+
+Solving \( (A+2I)\vec{v} = \vec{0} \), we find the eigenvectors of \( \lambda = -2 \) are of the form \( \vec{v} = \begin{bmatrix} 1 \\ -3 \end{bmatrix} x_1 \), \( x_1 \in \mathbb{R} \setminus \{0\} \). Therefore, the basis of the eigenspace for \( \lambda = -2 \) is \( \left\{ \begin{bmatrix} 1 \\ -3 \end{bmatrix} \right\} \). This means we have 2 linearly independent eigenvectors in a \( 2 \times 2 \) matrix, hence \( A \) is diagonalizable.
+
+\[ \begin{bmatrix} 9 & 3 \\ 3 & 1 \end{bmatrix} \begin{bmatrix} x_1 \\ x_2 \end{bmatrix} = \begin{bmatrix} 0 \\ 0 \end{bmatrix} \]
+
+\[ \Rightarrow \begin{bmatrix} 3 & 1 \\ 0 & 0 \end{bmatrix} \]
+
+This gives us \( 3x_1 = -x_2 \) and \( x_2 = x_2 \).
+
+So, \( \vec{v} = x_2 \begin{bmatrix} -1/3 \\ 1 \end{bmatrix} \).
+
+
+
+Then we have \( D = \begin{bmatrix} 8 & 0 \\ 0 & -2 \end{bmatrix} = \begin{bmatrix} 3 & 1 \\ 1 & -3 \end{bmatrix}^{-1} \begin{bmatrix} 7 & 3 \\ 3 & -1 \end{bmatrix} \begin{bmatrix} 3 & 1 \\ 1 & -3 \end{bmatrix} \)
+\[ = -\frac{1}{10} \begin{bmatrix} -3 & -1 \\ -1 & 3 \end{bmatrix} \begin{bmatrix} 7 & 3 \\ 3 & -1 \end{bmatrix} \begin{bmatrix} 3 & 1 \\ 1 & -3 \end{bmatrix} \]
+
+
+(Note that this is of the form \( D = P^{-1}AP \)).
+
+Matrix \( P \) has its columns being the linearly independent eigenvectors. They must be in the order of the eigenvalues from \( D \).
+
+
+What is \( A^5 \)? \( D = P^{-1}AP \Rightarrow A = PDP^{-1} \)
+
+\[
+A^5 = PD^5P^{-1} = -\frac{1}{10} \begin{bmatrix} 3 & 1 \\ 1 & -3 \end{bmatrix} \begin{bmatrix} 8^5 & 0 \\ 0 & (-2)^5 \end{bmatrix} \begin{bmatrix} -3 & -1 \\ -1 & 3 \end{bmatrix} = \begin{bmatrix} 29488 & 9846 \\ 9840 & 3248 \end{bmatrix}
+\]
+
+Def: The geometric multiplicity of eigenvalue \( \lambda \) is the dimension of the eigenspace of \( \lambda \), i.e., the number of linearly independent eigenvectors corresponding to \( \lambda \).
+
+Ex: Let \( A = \begin{bmatrix} 3 & -1 & 1 \\ 7 & -5 & 1 \\ 6 & -6 & 2 \end{bmatrix} \). 
+
+\( \text{det}(A - \lambda I) = (2 - \lambda)^2 \cdot (4 + \lambda) \Rightarrow \lambda = 2 \) has algebraic multiplicity 2 and \( \lambda = -4 \) has algebraic multiplicity 1.
+
+Geometric multiplicity? For \( \lambda = -4 \), we find the eigenvectors (solve \( (A + 4I) \vec{v} = \vec{0} \)) are of the form \( \vec{v} = k\begin{bmatrix} 0 \\ 1 \\ 1 \end{bmatrix} \), \( k \in \mathbb{R} \setminus \{0\} \). Therefore, the geometric multiplicity of \( \lambda = -4 \) is 1. 
+
+Inconclusive on diagonalization. Need to check \( \lambda = 2 \).
+
+\section{Lecture 27, 4/3/2024}
+
+Last time: 
+
+Geometric multiplicity: Dimension of eigenspace for \( \lambda \).
+
+Diagonalizable if and only if there are \( n \) linearly independent eigenvectors.
+
+\( D = P^{-1}AP \)
+
+For \( A = \begin{bmatrix} 3 & -1 & 1 \\ 7 & -5 & 1 \\ 6 & -6 & 2 \end{bmatrix} \):
+
+\[ \text{det}(A - \lambda I) = (2 - \lambda)^2(4 + \lambda) \Rightarrow \lambda = -4 \]
+
+We find an eigenvector: \( \vec{v_1} = \begin{bmatrix} 0 \\ 1 \\ 1 \end{bmatrix} \) - only one linearly independent eigenvector.
+
+One linearly independent eigenvector and algebraic multiplicity 1. What about \( \lambda = 2 \)? 
+
+\[ (A - 2I)\vec{v_2} = \vec{0} \]
+
+We row reduce:
+
+\[
+\begin{bmatrix} 
+1 & -1 & 1 \\ 
+7 & -7 & 1 \\ 
+6 & -6 & 0 
+\end{bmatrix}
+\rightarrow
+\begin{bmatrix} 
+1 & -1 & 0 \\ 
+0 & 0 & 1 \\ 
+0 & 0 & 0 
+\end{bmatrix}
+\]
+
+So, \( x_1 = x_2 \), \( x_2 = x_2 \), \( x_3 = 0 \). 
+
+\[ \vec{x} = x_2 \begin{bmatrix} 1 \\ 1 \\ 0 \end{bmatrix}, \quad x_2 \in \mathbb{R} \setminus \{0\} \]
+
+Thus, there is only 1 linearly independent eigenvector. 
+
+Geometric multiplicity: 1. Observe algebraic multiplicity is 2. 
+
+For this \( 3 \times 3 \) matrix, we only have 2 linearly independent eigenvectors. 
+
+Not Diagonalizable.
+
+Theorem:
+
+1. The sum of all algebraic multiplicities is \( n \).
+2. The algebraic multiplicity of any eigenvalue is at least the geometric multiplicity. So, if the algebraic multiplicity is 1, then the geometric multiplicity must be 1.
+3. Matrix \( A \) is diagonalizable if and only if the algebraic multiplicities equal the geometric multiplicities for all eigenvalues.
+4. If \( A \) has \( n \) distinct eigenvalues, then \( A \) is diagonalizable.
+
+Ex: True or False: If \( A \) is diagonalizable, then \( A \) has \( n \) distinct eigenvalues. False!
+
+\[ A = \begin{bmatrix} 0 & 0 \\ 0 & 0 \end{bmatrix} \]
+
+\[ (A - \lambda I) = \begin{bmatrix} -\lambda & 0 \\ 0 & -\lambda \end{bmatrix} \Rightarrow \lambda = 0 \] with algebraic multiplicity 2. 
+
+Eigenvectors? 
+
+\[ (A - \lambda I)\vec{v} = \vec{0} \Rightarrow \text{Row reduce} \]
+
+\[ \begin{bmatrix} 0 & 0 \\ 0 & 0 \end{bmatrix} \Rightarrow x_1 = x_1, x_2 = x_2 \]
+
+So, \( \begin{bmatrix} 1 \\ 0 \end{bmatrix} \) and \( \begin{bmatrix} 0 \\ 1 \end{bmatrix} \) are two linearly independent eigenvectors. 
+
+A \( 2 \times 2 \) matrix with 2 linearly independent eigenvectors, so \( A \) is diagonalizable, but \( A \) does not have distinct eigenvalues.
+
+
+Ex: Let \( A = \begin{bmatrix} 1 & -3 & 3 \\ 3 & -5 & 3 \\ 6 & -6 & 4 \end{bmatrix} \). Is \( A \) diagonalizable? 
+
+\[ \text{det}(A-\lambda I) = (2+\lambda)^2(-4+\lambda) \] (algebraic multiplicity 2).
+
+For \( \lambda = -2 \): 
+\[ (A+2I)\vec{v_2} = \vec{0} \Rightarrow \begin{bmatrix} 3 & -3 & 3 \\ 3 & -3 & 3 \\ 6 & -6 & 6 \end{bmatrix} \rightarrow \begin{bmatrix} 1 & -1 & 1 \\ 0 & 0 & 0 \\ 0 & 0 & 0 \end{bmatrix} \]
+\[ x_1 = x_2 - x_3, \ x_2 = x_2, \ x_3 = x_3 \]
+
+So, \( \vec{v_2} = x_2\begin{bmatrix} 1 \\ 1 \\ 0 \end{bmatrix} + x_3\begin{bmatrix} -1 \\ 0 \\ 1 \end{bmatrix} \), \( x_2, x_3 \in \mathbb{R} \), not both 0. Basis of eigenspace: \( \{ \begin{bmatrix} 1 \\ 1 \\ 0 \end{bmatrix}, \begin{bmatrix} -1 \\ 0 \\ 1 \end{bmatrix} \} \). 
+\[ \lambda = -2 \] has geometric multiplicity 2.
+
+For \( \lambda = 4 \): 
+\[ (A-4I)\vec{v_1} = \vec{0} \]
+Row reduce:
+\[ \begin{bmatrix} -3 & -3 & 3 \\ 3 & -9 & 3 \\ 6 & -6 & 0 \end{bmatrix} \rightarrow \begin{bmatrix} 1 & 0 & -\frac{1}{2} \\ 0 & 1 & -\frac{1}{2} \\ 0 & 0 & 0 \end{bmatrix} \]
+\[ x_1 = \frac{1}{2}x_3, \ x_2 = \frac{1}{2}x_3, \ x_3 = x_3 \]
+
+So, \( \vec{v_1} = x_3\begin{bmatrix} \frac{1}{2} \\ \frac{1}{2} \\ 1 \end{bmatrix} \), \( x_3 \in \mathbb{R} \setminus \{0\} \) are the eigenvectors for \( \lambda = 4 \). 
+Eigenspace for \( \lambda = 4 \) is span{\( \begin{bmatrix} \frac{1}{2} \\ \frac{1}{2} \\ 1 \end{bmatrix} \)}. 
+
+We found \( A \), which is \( 3 \times 3 \), has 3 linearly independent eigenvectors. \( A \) is diagonalizable or for each eigenvalue, algebraic multiplicity equaled the geometric multiplicity. \( A \) is diagonalizable.
+
+
+\section{Lecture 28, 4/5/2024}
+
+Given \( A = \begin{bmatrix} 1 & -3 & 3 \\ 3 & -5 & 3 \\ 6 & -6 & 4 \end{bmatrix} \):
+
+For \( \lambda = 4 \): \( \vec{v} = \begin{bmatrix} 1 \\ 1 \\ 2 \end{bmatrix} \) is an eigenvector.
+
+For \( \lambda = -2 \): \( \begin{Bmatrix} \begin{bmatrix} 1 \\ 1 \\ 0 \end{bmatrix}, \begin{bmatrix} -1 \\ 0 \\ 1 \end{bmatrix} \end{Bmatrix} \) forms a basis for the eigenspace.
+
+The matrix \( A \) is diagonalizable. We write:
+
+\[ \begin{bmatrix} 4 & 0 & 0 \\ 0 & -2 & 0 \\ 0 & 0 & -2 \end{bmatrix} = \left( \begin{bmatrix} 1 & 1 & -1 \\ 1 & 1 & 0 \\ 2 & 0 & 1 \end{bmatrix} \right)^{-1} \begin{bmatrix} 1 & -3 & 3 \\ 3 & -5 & 3 \\ 6 & -6 & 4 \end{bmatrix} \left( \begin{bmatrix} 1 & 1 & -1 \\ 1 & 1 & 0 \\ 2 & 0 & 1 \end{bmatrix} \right) \]
+
+\[ D = P^{-1}AP \]
+
+Ex: What can be said about diagonalizable matrices and being invertible?
+
+For \( \lambda = 0 \), it means \( A \) is not invertible.
+
+\[ A = \begin{bmatrix} 1 & 0 \\ 0 & 0 \end{bmatrix} \]
+
+\[ A-\lambda I = \begin{bmatrix} 1-\lambda & 0 \\ 0 & -\lambda \end{bmatrix} \Rightarrow \text{det}(A-\lambda I) = -\lambda(1-\lambda) = 0 \Rightarrow \lambda = 1, 0 \]
+
+Two distinct eigenvalues, not invertible, yet diagonalizable.
+
+Can matrix \( A \) ever be diagonalizable and invertible?
+
+\[ A = \begin{bmatrix} 1 & 0 \\ 0 & 2 \end{bmatrix} \Rightarrow \text{det}(A) = 2 \]
+
+Two distinct eigenvalues, hence invertible and diagonalizable.
+
+Not invertible, not diagonalizable? Need \( \lambda = 2 \) as eigenvalue for multiplicity 2, otherwise, two distinct eigenvalues.
+
+\[ A = \begin{bmatrix} 0 & 1 \\ 0 & 0 \end{bmatrix} \Rightarrow \text{det}(A-\lambda I) = \lambda^2 = 0 \Rightarrow \lambda = 2 \]
+
+Only one linearly independent eigenvector, hence not diagonalizable.
+
+Invertible but not diagonalizable? 
+
+\[ A = \begin{bmatrix} 1 & 1 \\ 0 & 1 \end{bmatrix} \Rightarrow \lambda = 1 \] is the only eigenvalue.
+
+Only one linearly independent eigenvector, hence not diagonalizable.
+
+There is no direct relation between diagonalization and being invertible.
+
+
+% \section*{1. Is $U = \{(a, b, c) \mid a \leq b \leq c\}$ a subspace of $\mathbb{R}^3$?}
+
+% Given vectors $(1, 2, 3)$ and $(2, 3, 4)$:
+% \begin{itemize}
+%     \item Let $(1, 2, 3) \in U$. If $c = -1$, then $-1(1, 2, 3) = (-1, -2, -3)$, which fails $a \leq b \leq c$.
+%     \item Therefore, $U$ fails to be closed under scalar multiplication, hence it's not a subspace.
+% \end{itemize}
+
+% \section*{2. True or False: If $A$ and $B$ are row equivalent matrices, and $T_1$ and $T_2$ are the corresponding linear transformations,}
+% \begin{enumerate}
+%     \item[a)] $\text{ker}(T_1) = \text{ker}(T_2)$  
+%     \textbf{True:} Since $A$ and $B$ have the same solution set $\vec{x}$ for $A\vec{x} = \vec{0}$ and $B\vec{x} = \vec{0}$.
+%     \item[b)] $\text{range}(T_1) = \text{range}(T_2)$  
+%     \textbf{False:} Row equivalence doesn't imply that the ranges of corresponding linear transformations are equal.
+% \end{enumerate}
+
+% \section*{3. Given $\text{det}(A) = -10$ and $\text{det}(B) = 4$, can we find the following?}
+% \begin{enumerate}
+%     \item[a)] $\text{det}(A^2B^T)$  
+%     $\text{det}(A^2B^T) = \text{det}(A^2) \times \text{det}(B^T) = \text{det}(A) \times \text{det}(A) \times \text{det}(B) = (-10) \times (-10) \times 4 = 400$
+%     \item[b)] $\text{det}(3A^{-1}B^3)$  
+%     Cannot determine without knowing the dimensions of $A$.
+% \end{enumerate}
+
+
+% \[
+% U = \{(a,b,c,d) \mid 3b - 4c + 2d = 0\}
+% \]
+
+% \[
+% = \text{span}\left\{\begin{bmatrix} 1 \\ 0 \\ 0 \\ 0 \end{bmatrix}, \begin{bmatrix} 0 \\ \frac{4}{3} \\ 1 \\ 0 \end{bmatrix}, \begin{bmatrix} 0 \\ -\frac{2}{3} \\ 0 \\ 1 \end{bmatrix}\right\}
+% \]
+
+% \[
+% U = \text{span}\left\{\begin{bmatrix} 1 \\ 0 \\ 0 \\ 0 \end{bmatrix}, \begin{bmatrix} 0 \\ \frac{4}{3} \\ 1 \\ 0 \end{bmatrix}, \begin{bmatrix} 0 \\ -\frac{2}{3} \\ 0 \\ 1 \end{bmatrix}\right\} \quad \text{(since $U$ is the span of a set, it is a subspace)}
+% \]
+
+
+\section{Lecture 29, 4/10/2024}
+
+\textbf{Algebraic multiplicity:} Number of times $\lambda$ is a root of $\text{det}(A-\lambda I)$
+
+\textbf{Geometric multiplicity:} Number of linearly independent corresponding eigenvectors to $\lambda =$ Dimension of the eigenspace of $\lambda$
+
+Ex: Matrix $A$ has characteristic polynomial $\text{det}(A-\lambda I) = (2-\lambda)(\lambda)(5-\lambda)^7$
+
+Can we determine the following?
+
+a) Size of $A$? Yes, $9 \times 9$, sum of exponents (algebraic multiplicity).
+
+b) Diagonalizable (need $n$ linearly independent eigenvectors), so no, cannot determine; don't know geometric multiplicity of $\lambda = 5$.
+
+c) $\text{rank}(A)$: At most $9$. $\Rightarrow \lambda = 0$ is an eigenvalue. $\Rightarrow A$ is not invertible. $\Rightarrow$ Not row equivalent to $I$. $\Rightarrow \text{rank}(A)$ is less than $9$, but we don't know the exact value.
+
+Geometric multiplicity helps with diagonalizability.
+
+\textbf{Section: 5.4 Eigenvectors and linear transformations.} Consider a linear transformation $T : V \rightarrow W$. Let $B_1$ be a basis of $V$, $B_2$ a basis of $W$.
+
+How do we express $T(\vec{v})$ in terms of $B_2$?
+
+\textbf{Theorem:} Let $T : V \rightarrow W$ be a linear transformation, $\text{dim}(V) = n$, $\text{dim}(W) = m$. 
+
+Let $B_1 = \{\vec{v_1}, \ldots, \vec{v_n}\}$ be a basis of $V$, $B_2 = \{\vec{w_1}, \ldots, \vec{w_m}\}$ be a basis of $W$.
+
+Then if $\vec{v} \in V$, $m[\vec{v}]_{B_1} = [T(\vec{v})]_{B_2}$, where $m = \begin{bmatrix} [T(\vec{v_1})]_{B_2} & [T(\vec{v_2})]_{B_2} & \ldots & [T(\vec{v_n})]_{B_2} \\ \downarrow & \downarrow & \downarrow & \downarrow \end{bmatrix}$
+
+called the matrix of $T$ relative to basis $B_1$ and $B_2$.
+
+\[
+\begin{array}{ccc}
+\vec{v} & \rightarrow & T(\vec{v}) \\
+\downarrow & & \downarrow \\
+\vec{v}_{B_1} & \rightarrow & [T(\vec{v})]_{B_2}
+\end{array}
+\]
+
+(Note $\vec{v}_{B_1}$ is supposed to be $[\vec{v}]_{B_1}$ but it had formatting issues)
+
+\medskip
+
+Ex: Let \( B_1 = \{(-3, 1), (1,4)\} = \{\vec{v_1}, \vec{v_2}\} \) and \( B_2 = \{(1,2), (-2,3)\} = \{\vec{w_1}, \vec{w_2}\} \).
+
+Suppose \( T(\vec{v_1}) = (-4, 13) \), \( T(\vec{v_2}) = (6, 5) \). Find the matrix of \( T \) relative to \( B_1 \) and \( B_2 \).
+
+\[
+\text{Row reduce} \begin{bmatrix} 1 & -2 & -4 & 6 \\ 2 & 3 & 13 & 5 \end{bmatrix} (\mathbf{A}\vec{x} = \vec{b}) \rightarrow \begin{bmatrix} 1 & 0 & 2 & 4 \\ 0 & 1 & 3 & -1 \end{bmatrix}
+\]
+
+\[ [T(\vec{v_1})]_{B_2} = [2][3] = 2(1,2)+3(-2,3) = (-4, 13) \]
+
+So, \( M = \begin{bmatrix} 2 & 4 \\ 3 & -1 \end{bmatrix} \) is the matrix of \( T \) relative to \( B_1 \) and \( B_2 \).
+
+Ex: Let \( T : \mathbb{P}_2 \rightarrow \mathbb{P}_2 \) be the standard derivative operator. Find the B-matrix of \( T \) with respect to \( B = \{1, x, x^2\} \).
+
+
+\begin{align*}
+T(1) &= 0 = 0(1) + 0(x) + 0(x^2) \\
+T(x) &= 1 = 1(1) + 0(x) + 0(x^2) \\
+T(x^2) &= 2x = 0(1) + 2(x) + 0(x^2) \\
+\end{align*}
+
+
+So, \( [T]_B = \begin{bmatrix} 0 & 1 & 0 \\ 0 & 0 & 2 \\ 0 & 0 & 0 \end{bmatrix} \).
+
+
+\section{Lecture 30, 4/12/2024}
+
+\textbf{Ex:} Let $T : \mathbb{P}_2 \rightarrow \mathbb{P}_3$ be given by $T(f(x)) = f(x) + xf(x)$. Find the matrix of $T$ relative to basis $B_1 = \{1, x, x^2\}$ and $B_2 = \{1, x, x^2, x^3\}$.
+
+Map basis vectors:
+
+\[ T(1) = 1 + x = 1(1) + 1(x) + 0(x^2) + 0(x^3) \]
+\[ T(x) = x + x^2 = 0(1) + 1(x) + 1(x^2) + 0(x^3) \]
+\[ T(x^2) = x^2 + x^3 = 0(1) + 0(x) + 1(x^2) + 1(x^3) \]
+
+So, writing $M$ in terms of $B_2$:
+
+\[ M = \begin{bmatrix} 1 & 0 & 0 \\ 1 & 1 & 0 \\ 0 & 1 & 1 \\ 0 & 0 & 1 \end{bmatrix} \]
+
+What is this telling us?
+
+Find $[T(7 - x^2)]_{B_2}$:
+
+\[
+[7 - x^2]_{B_1} = \begin{bmatrix} 7 \\ 0 \\ -1 \end{bmatrix}
+\]
+Thus,
+\[
+M \times \begin{bmatrix} 7 \\ 0 \\ -1 \end{bmatrix} = \begin{bmatrix} 7 \\ 7 \\ -1 \\ -1 \end{bmatrix}
+\]
+Therefore, 
+\[
+T(7 - x^2) = 7(1) + 7(x) - 1(x^2) - 1(x^3) = 7 + 7x - x^2 - x^3
+\]
+(one can check and find \( T(7 - x^2) \) directly).
+
+\textbf{Theorem:} Suppose $T : V \rightarrow V$, $\text{dim}(V) = n$ is a linear transformation. Let $A$ be the (standard) matrix representation of $T$.
+
+Assume $A$ is similar to $C$ ($A = PCP^{-1}$). If $B$ is a basis of $V$, say $B = \{\vec{v_1}, \ldots, \vec{v_n}\}$, and $\vec{v_1}, \ldots, \vec{v_n}$ are the columns of $P$, then matrix $C$ is the $B$-matrix of the transformation. In particular, if $B$ is a basis of eigenvectors ("$n$" of them - diagonalizable), then the $B$-matrix is $D = \left[ \begin{array}{cccc} \lambda_1 & 0 & \ldots & 0 \\ 0 & \lambda_2 & \ldots & 0 \\ \vdots & \vdots & \ddots & \vdots \\ 0 & 0 & \ldots & \lambda_n \end{array} \right]$.
+
+That is $C = P^{-1}AP = [T]_B$. We have this information.
+
+\textbf{Ex:} What is the $B$-matrix for mapping $\vec{x} \mapsto Ax$, where $A = \left[ \begin{array}{cc} 1 & -3 \\ 2 & 2 \end{array} \right]$, and $B = \{\begin{bmatrix} 1 \\ 4 \end{bmatrix}, \begin{bmatrix} -5 \\ 1 \end{bmatrix}\}$?
+
+\[ C = P^{-1}AP = \left( \left[ \begin{array}{cc} 1 & -5 \\ 4 & 1 \end{array} \right] \right)^{-1} \left[ \begin{array}{cc} 1 & -3 \\ 2 & 2 \end{array} \right] \left[ \begin{array}{cc} 1 & -5 \\ 4 & 1 \end{array} \right] = \left[ \begin{array}{cc} \frac{13}{7} & -\frac{16}{7} \\ \frac{18}{7} & \frac{8}{7} \end{array} \right] \]
+
+
+\textbf{Mapped vector}: 
+\[
+A \begin{bmatrix} 77 \\ 14 \end{bmatrix} = \begin{bmatrix} 35 \\ 182 \end{bmatrix} = 45 \begin{bmatrix} 1 \\ 4 \end{bmatrix} + 2 \begin{bmatrix} -5 \\ 1 \end{bmatrix}
+\]
+
+\textbf{Section 5.5: Complex Eigenvalues}
+
+\textbf{Definition}: 
+The complex numbers \( \mathbb{C} \) are of the form \( a + bi \), where \( a, b \in \mathbb{R} \) and \( i = \sqrt{-1} \). We define \( \mathbb{C}^n \) to be the \( n \)-tuples \( (z_1, z_2, \ldots, z_n) \), where \( z_1, z_2, \ldots, z_n \in \mathbb{C} \).
+
+\textbf{Definition}: 
+Given \( z = c + bi \), the complex conjugate of \( z \) is \( \bar{z} = c - bi \). The absolute value (modulus) is \( |z| = \sqrt{a^2 + b^2} \).
+
+The real and imaginary parts of \( \vec{x} \in \mathbb{C}^n \), denoted \( \text{Re}(\vec{x}) \), \( \text{Im}(\vec{x}) \) are vectors in \( \mathbb{R}^n \) consisting of the real and imaginary values in the entries of \( \vec{x} \).
+
+\textbf{Example}: 
+\[
+\vec{x} = \begin{bmatrix} 1 - i \\ 3 \end{bmatrix} \Rightarrow \text{Re}(\vec{x}) = \begin{bmatrix} 1 \\ 3 \end{bmatrix}, \text{Im}(\vec{x}) = \begin{bmatrix} -1 \\ 0 \end{bmatrix}.
+\]
+
+
+\textbf{How to find complex eigenvalues, eigenvectors?}
+
+\textbf{Example}: $A = \left[ \begin{array}{cc} 0 & -1 \\ 1 & 0 \end{array} \right] \Rightarrow \text{det}(A - \lambda I) = \lambda^2 + 1 = 0 \Rightarrow \lambda = \pm i$. (Note: if complex eigenvalues, they come in pairs, $\lambda$ and its complex conjugate.)
+
+\textbf{Eigenvectors}:
+
+For $\lambda = i$: $A - iI = \left[ \begin{array}{cc} -i & -1 \\ 1 & -i \end{array} \right]$. Solve $(A - iI)\vec{v} = \vec{0}$:
+
+\[ \left[ \begin{array}{cc|c} -i & -1 & 0 \\ 1 & -i & 0 \end{array} \right] \rightarrow \left[ \begin{array}{cc|c} 1 & -i & 0 \\ 1 & -i & 0 \end{array} \right] \rightarrow \left[ \begin{array}{cc|c} 1 & -i & 0 \\ 0 & 0 & 0 \end{array} \right] \]
+
+\[ \Rightarrow x_1 = ix_2, x_2 = x_2 \Rightarrow \vec{v} = x_2 \left[ \begin{array}{c} i \\ 1 \end{array} \right] \]
+
+$\lambda = i$ has eigenvector $\left[ \begin{array}{c} i \\ 1 \end{array} \right]$.
+
+According to the book, eigenvector $\left[ \begin{array}{c} 1 \\ -i \end{array} \right]$ is a multiple of the first one by a scalar $i$.
+
+\section{Lecture 31, 4/15/2024}
+
+% Quiz
+% Do not expand out determinant, if it is eigenspace write as span of set, Diagonalizable,
+
+Last time: $A = \left[ \begin{array}{cc} 0 & -1 \\ 1 & 0 \end{array} \right] \Rightarrow$ eigenvalues $\lambda = \pm i$.
+
+Shortcut for the $2 \times 2$ case to find the eigenvectors (once you have the eigenvalues): You know row 1 must be a multiple of row 2 $\Rightarrow$ You do not need to row reduce. We solve $(A - iI)\vec{v} = \vec{0}$, we have:
+
+\[ \left[ \begin{array}{cc|c} -i & -1 & 0 \\ 1 & -i & 0 \end{array} \right] \]
+
+We can just work with equation 1 (row 1) to find the eigenvectors for $\lambda = i$. $ix_1 - x_2 = 0 \Rightarrow -ix_1 = x_2 \Rightarrow x_1 = ix_2 \Rightarrow x_1 = ix_2, x_2 = x_2$. Letting $x_2 = 1$, an eigenvector is $\vec{v} = \left[ \begin{array}{c} i \\ 1 \end{array} \right]$.
+
+
+Section 6.1: Inner Products, Length, and Orthogonality
+
+\textbf{Definition:} An inner product on a (real) vector space \( V \) is a function that assigns a pair of vectors \( \vec{u}, \vec{v} \in V \) to a real number, denoted \( \langle \vec{u}, \vec{v} \rangle \). This function satisfies the following for any \( \vec{u}, \vec{v}, \vec{w} \in V \) and \( c \in \mathbb{R} \),
+
+a) \( \langle \vec{u}, \vec{v} \rangle = \langle \vec{v}, \vec{u} \rangle \)
+
+b) \( \langle \vec{u}+\vec{v}, \vec{w} \rangle = \langle \vec{u}, \vec{w} \rangle+ \langle \vec{v}, \vec{w} \rangle \)
+
+c) \( \langle c\vec{u}, \vec{v} \rangle = c \langle \vec{u}, \vec{v} \rangle \)
+
+d) \( \langle \vec{u}, \vec{u} \rangle \geq 0 \) and \( \langle \vec{u}, \vec{u} \rangle = 0 \) if and only if \( \vec{u} = \vec{0} \)
+
+\textbf{Example:} Over \( \mathbb{R}^n \), the "standard'' inner product is the dot product: If \( \vec{u} = (u_1, u_2, ..., u_n) \), \( \vec{v} = (v_1, v_2, ..., v_n) \) in \( \mathbb{R}^n \), \( \langle \vec{u}, \vec{v} \rangle = \vec{u} \cdot \vec{v} = u_1v_1+u_2v_2+...+u_n \cdot v_n = [u_1 u_2 ... u_n] \cdot [v_1 v_2 ... v_n] = \vec{u}^T \cdot \vec{v} \) (this means dot product)
+
+\textbf{Example:} \( \langle f(x), g(x) \rangle = \int_{0}^{1} f(x)g(x) \, dx \)
+
+From here, we focus specifically on the dot product.
+
+\textbf{Definition:} Let \( V \) be a vector space with an inner product. The length or norm of \( \vec{v} \in V \) is \( ||\vec{v}|| = \sqrt{\langle \vec{v}, \vec{v} \rangle} \)
+
+In \( \mathbb{R}^n \), if \( \vec{v} = (v_1, v_2, ..., v_n) \), \( ||\vec{v}|| = \sqrt{v_1^2+v_2^2+...+v_n^2} \) 
+
+\textbf{Definition:} The distance between \( \vec{u} \) and \( \vec{v} \) in \( \mathbb{R}^n \) is \( \text{dist}(\vec{u}, \vec{v}) = ||\vec{u}-\vec{v}|| \)
+
+\textbf{Definition:} If \( \{\vec{v_1}, \vec{v_2}, \vec{v_3}\} \) is a basis, then \( \left\{ \frac{1}{||\vec{v_1}||}, \frac{1}{||\vec{v_2}||}, \frac{1}{||\vec{v_3}||} \right\} \) is a normalized basis.
+
+\textbf{Definition:} Two vectors \( \vec{u} \) and \( \vec{v} \) in \( \mathbb{R}^n \) are perpendicular or orthogonal if and only if \( \vec{u} \cdot \vec{v} = 0 \) (more generally, \( \langle \vec{u}, \vec{v} \rangle = 0 \)).
+
+\textbf{Definition:} Let \( W \) be a subspace of \( \mathbb{R}^n \). If vector \( \vec{v} \) is orthogonal to all vectors in \( W \), we say \( \vec{v} \) is orthogonal to \( W \). The orthogonal complement of \( W \) is denoted as \( W^{\perp} \), defined as \( W^{\perp} = \{ \vec{v} \in \mathbb{R}^n : \vec{v} \cdot \vec{w} = 0 \text{ for all } \vec{w} \in W \} \).
+
+\textbf{Example:} Let \( W \) be a plane through the origin. Then \( W^{\perp} = \text{span}(\{\vec{n}\}) \) where \( \vec{n} \) is a vector orthogonal to the plane.
+
+\textbf{Theorem:} For any subspace \( W \) of \( \mathbb{R}^n \), \( W^{\perp} \) is a subspace of $\mathbb{R}^n$.
+
+\textbf{Property:} \( W \cap W^{\perp} = \{\vec{0}\} \)
+
+\textbf{Example:} Let \( A \) be an \( m \times n \) matrix. What is \( (\text{row}(A))^{\perp} \)?
+
+Given \( A = \begin{bmatrix} 1 & 3 & 7 & -2 \\ 5 & 5 & 3 & 1 \\ 0 & 4 & 0 & -2 \end{bmatrix} \), we have:
+
+\[ \left[\vec{v_1} \rightarrow \vec{v_2} \rightarrow \vec{v_3} \rightarrow \right] \cdot \begin{bmatrix} z_1 \\ z_2 \\ z_3 \end{bmatrix} = \begin{bmatrix} 0 \\ 0 \\ 0 \end{bmatrix} \]
+
+What \( \vec{z} \) satisfies this? It's the kernel of \( A \)!
+
+\textbf{Theorem:} Let \( A \) be an \( m \times n \) matrix. Then \( (\text{row}(A))^{\perp} = \text{ker}(A) \) and \( (\text{col}(A))^{\perp} = \text{ker}(A^T) \).
+
+
+\section{Lecture 32, 4/17/2024}
+
+
+Given that \( W \) is a subspace, \( W^{\perp} = \{\vec{v} \in \mathbb{R}^n : \vec{v} \cdot \vec{w} = 0 \text{ for all } \vec{w} \in W\} \).
+
+For a matrix \( A \) of size \( m \times n \), we have \( (\text{row}(A))^{\perp} = \text{ker}(A) \).
+
+Given matrix \( A = \begin{bmatrix} 1 & 3 & 7 & -2 \\ 5 & 5 & 3 & 1 \\ 0 & 4 & 0 & -2 \end{bmatrix} \),
+
+we find \( (\text{row}(A))^{\perp} \) as follows:
+
+\begin{align*}
+&\begin{bmatrix} 1 & 0 & 0 & \frac{13}{16} \\ 0 & 1 & 0 & -\frac{1}{2} \\ 0 & 0 & 1 & -\frac{3}{16} \end{bmatrix} \\
+&\Rightarrow x_4 = 16, \, x_3 = 3, \, x_2 = 8, \, x_1 = -13 \\
+&\Rightarrow (\text{row}(A))^{\perp} = \text{span}\left\{ \begin{bmatrix} -13 \\ 8 \\ 3 \\ 16 \end{bmatrix} \right\}
+\end{align*}
+
+This represents the subspace orthogonal to the rows of matrix \( A \).
+
+
+Section 6.2:  Orthogonal Sets
+
+\textbf{Definition:} A set of vectors \( \{\vec{v}_1, \ldots, \vec{v}_m\} \) in \( \mathbb{R}^n \) is an orthogonal set if \( \vec{v}_i \cdot \vec{v}_j = 0 \) for any \( 1 \leq i \neq j \leq m \). An orthogonal set that forms a basis of a subspace is called an orthogonal basis.
+
+\textbf{Theorem:} An orthogonal set that does not contain \( \vec{0} \) is linearly independent.
+
+\textit{Proof:} Let \( \{\vec{v}_1, \ldots, \vec{v}_m\} \) be an orthogonal set.
+
+Suppose \( c_1\vec{v}_1 + c_2\vec{v}_2 + \ldots + c_m\vec{v}_m = \vec{0} \). 
+
+Take the dot product of \( \vec{v}_1 \) on both sides:
+
+\[ \vec{v}_1 \cdot (c_1\vec{v}_1 + c_2\vec{v}_2 + \ldots + c_m\vec{v}_m) = \vec{0} \cdot \vec{v}_1 = 0 \]
+\[ c_1(\vec{v}_1 \cdot \vec{v}_1) + c_2(\vec{v}_1 \cdot \vec{v}_2) + \ldots + c_m(\vec{v}_1 \cdot \vec{v}_m) = 0 \]
+
+Since \( \vec{v}_1 \cdot \vec{v}_1 > 0 \), we can conclude that \( c_1 = 0 \).
+
+Repeat this process for \( \vec{v}_2, \vec{v}_3, \ldots, \vec{v}_m \) to show that \( c_2, c_3, \ldots, c_m \) must also be \( 0 \). Therefore, \( \{\vec{v}_1, \ldots, \vec{v}_m\} \) is linearly independent.
+
+Given an orthogonal set, we can find the coefficients to form a linear combination of a vector.
+
+Suppose \( \vec{w} = c_1\vec{v}_1 + c_2\vec{v}_2 + \ldots + c_m\vec{v}_m \). 
+
+The coefficients can be found using the formula \( c_i = \frac{\vec{v}_i \cdot \vec{w}}{\vec{v}_i \cdot \vec{v}_i} \).
+
+\textbf{Example:} Let \( \{(1, 2, 1), (4, -2, 0), (2, 4, -10)\} \) be an orthogonal set. Write \( (5, 1, 1) \) as a linear combination of this set.
+
+\[ (5, 1, 1) = \vec{w} = \ldots + \frac{8}{6}(1,2,1) + \frac{18}{20}(4, -2, 0) + \frac{4}{120}(2, 4, -10) \]
+
+Projection onto a Vector:
+
+\textbf{Theorem:} For vectors \( \vec{u} \) and \( \vec{y} \), the projection of \( \vec{y} \) onto \( \vec{u} \), denoted \( \hat{y} \), is given by:
+
+\[ \hat{y} = \text{proj}_{\vec{u}}(\vec{y}) = \frac{\vec{y} \cdot \vec{u}}{\vec{u} \cdot \vec{u}} \cdot \vec{u} \]
+
+\textbf{Example:} Write \( \vec{y} = (1,2) \) as a sum of a vector in \( \text{span}(\{(-1, 5)\}) \) and a vector orthogonal to \( (-1,5) \). Here, \( \vec{u} = (-1, 5) \).
+
+First, find \( \text{proj}_{\vec{u}}(\vec{y}) \):
+\[ \text{proj}_{\vec{u}}(\vec{y}) = \frac{\vec{y} \cdot \vec{u}}{\vec{u} \cdot \vec{u}} \cdot \vec{u} = \frac{9}{26} \cdot (-1, 5) \]
+
+Then, 
+\[ \vec{y} = (1,2) = \hat{y} + \hat{z} \]
+\[ \vec{z} = (1, 2) - \frac{9}{26} (-1, 5) = \left( \frac{35}{26}, \frac{7}{26} \right) \]
+So, 
+\[ (1, 2) = \frac{9}{26} (1, 5) + \left( \frac{35}{26}, \frac{7}{26} \right) \]
+
+\textbf{Definition:} A set \( \{\vec{v}_1, \ldots, \vec{v}_m\} \) is an orthonormal set if it is an orthogonal set such that each vector is a unit vector ("normalized"). Such a set spanning subspace \( W \) is called an orthonormal basis.
+
+\textbf{Example:} \( \{(1, 2), (-2, 1)\} \) is an orthogonal set but not orthonormal. \( \left\{\left(\frac{1}{\sqrt{5}}, 2\sqrt{5}\right), \left(-\frac{2}{\sqrt{5}}, \frac{1}{\sqrt{5}}\right)\right\} \) is an orthonormal set.
+
+Suppose \( \{\vec{v}_1, \ldots, \vec{v}_m\} \) is an orthonormal set. 
+
+\[ A^T \cdot A = I \] 
+since the diagonal is all 1's (unit vectors) and the rest will be 0.
+
+
+\section{Lecture 33, 4/19/2024}
+
+Last time, we discussed an orthogonal set $\{\vec{v_1}, \ldots, \vec{v_n}\}$, which satisfies the following properties: every vector is a unit vector ($\|\vec{v_i}\| = 1$), and any two distinct vectors are orthogonal, i.e., $\vec{v_i} \cdot \vec{v_j} = 0$.
+
+\textbf{Theorem:} Let $A$ be an $m \times n$ matrix whose columns form an orthogonal set. This holds if and only if $A^TA = I$. Moreover, for any $\vec{x}, \vec{y} \in \mathbb{R}^n$,
+
+1) $\|A\vec{x}\| = \|\vec{x}\|$ (mapping preserves magnitudes)
+
+2) $(A\vec{x}) \cdot (A\vec{y}) = \vec{x} \cdot \vec{y}$ (Also, $\vec{x} \cdot \vec{y} = 0$ if and only if $(A\vec{x}) \cdot (A\vec{y}) = 0$)
+
+\textbf{Example:} Let $A = \left[\begin{array}{cc} \frac{1}{\sqrt{3}} & 0 \\ \frac{1}{\sqrt{3}} & \frac{1}{\sqrt{2}} \\ -\frac{1}{\sqrt{3}} & \frac{1}{\sqrt{2}} \end{array}\right]$. If $\vec{x} = \left[\begin{array}{c} 3 \\ 4 \end{array}\right]$, find $\|A\vec{x}\|$.
+
+\textit{Orthonormal columns}
+
+Finding the magnitude directly will be unnecessary.
+
+By the theorem: 
+
+$\|A\vec{x}\| = \|\vec{x}\| = \sqrt{3^2+4^2} = \sqrt{25} = 5$.
+
+\textbf{Definition:} An orthogonal matrix is an invertible matrix (thus square) such that $A^{-1} = A^T$ (so if you know $A$, just take $A^T$ to get the inverse).
+
+\textbf{Theorem:} Let $A$ be a square matrix. The following are equivalent:
+
+1) $A$ is an orthogonal matrix.
+
+2) The columns of $A$ form an orthonormal set.
+
+3) The rows of $A$ form an orthonormal set.
+
+$\left[\begin{array}{cc} 2 & 0 \\ 0 & 1 \end{array}\right] \rightarrow$ Not an orthogonal matrix.
+
+
+Section 6.3: Orthogonal Projections
+
+\begin{align*}
+\vec{y} &= \text{proj } \vec{u} \vec{y} + \vec{z} \\
+\vec{z} & \text{ is orthogonal to } \text{proj } \vec{u} \vec{y} \text{ and is in span}(\vec{u})
+\end{align*}
+
+Over $\mathbb{R}^n$, we express $\vec{y}$ as a sum of two vectors, one in subspace $W$, and the other in the space orthogonal to the vectors in $W$ (i.e., in $W^{\perp}$). Then the projection vector $\vec{y}$ will be orthogonal to $W$. The projection vector is denoted $\text{proj }_W\vec{y}$.
+
+\textbf{Theorem:} Let $\vec{y} \in \mathbb{R}^n$, $W$ be a subspace of $\mathbb{R}^n$. Then $\vec{y}$ can be uniquely written as $\vec{y} = \vec{w} + \vec{z}$, where $\vec{w} \in W$, $\vec{z} \in W^{\perp}$. Moreover,
+\[
+\vec{w} = \text{proj }_W \vec{y} = \left( \frac{\vec{y} \cdot \vec{w}_1}{\vec{w}_1 \cdot \vec{w}_1} \right) \vec{w}_1 + \ldots + \left( \frac{\vec{y} \cdot \vec{w}_m}{\vec{w}_m \cdot \vec{w}_m} \right) \vec{w}_m
+\]
+where $\{\vec{w}_1, \ldots, \vec{w}_m\}$ is an orthogonal basis of $W$.
+
+\textbf{Remark:} In the case where $\{\vec{u}_1, \ldots, \vec{u}_m\}$ is an orthonormal basis of $W$, we have $||\vec{u}_1||^2 = 1 = \vec{u}_1 \cdot \vec{u}_1$. Then,
+\[
+\text{proj }_W\vec{y} = (\vec{y} \cdot \vec{u}_1)\vec{u}_1 + \ldots + (\vec{y} \cdot \vec{u}_m)\vec{u}_m = UU^T\vec{y}
+\]
+
+\textbf{Example:} Express $\vec{y} = (-1, 4, 3)$ as a sum $\vec{w} + \vec{z}$, where $\vec{w} \in \text{span}\{ (1, 1, 1), (-1, 3, -2)\} = W$, and $\vec{z} \in W^{\perp}$. Let $\vec{v}_1 = (1, 1, 1)$, $\vec{v}_2 = (-1, 3, -2)$.
+
+Check $\vec{v}_1 \cdot \vec{v}_2 = 0 \Rightarrow \{\vec{v}_1, \vec{v}_2\}$ is an orthogonal basis for $W$.
+
+\[
+\begin{aligned}
+\Rightarrow \vec{y} &= (-1, 4, 3) \\
+&= \text{proj }_W \vec{y} + \vec{z} \\
+&= \left( \frac{\vec{y} \cdot \vec{v}_1}{\vec{v}_1 \cdot \vec{v}_1} \right) \vec{v}_1 + \left( \frac{\vec{y} \cdot \vec{v}_2}{\vec{v}_2 \cdot \vec{v}_2} \right) \vec{v}_2 + \vec{z} \\
+&= \frac{6}{3}(1,1,1) + \frac{7}{14}(-1,3,-2) + \vec{z} \\
+&= \left( \frac{3}{2}, \frac{7}{2}, 1 \right) + \vec{z} \quad \text{(we can get)} \vec{z}) \\
+&= (-1, 4, 3) - \left( \frac{3}{2}, \frac{7}{2}, 1 \right) \\
+&= \left( -\frac{5}{2}, \frac{1}{2}, 2 \right) \\
+\Rightarrow \vec{y} &= (-1, 4, 3) = \left( \frac{3}{2}, \frac{7}{2}, 1 \right) + \left( -\frac{5}{2}, \frac{1}{2}, 2 \right).
+\end{aligned}
+\]
+
+Check that the vectors are orthogonal.
+
+\textbf{Theorem (Best Approximation):} Let $W$ be a subspace of $\mathbb{R}^n$, and $\vec{y} \in \mathbb{R}^n$. The point $\text{proj }_W \vec{y}$ is the point in $W$ closest to $\vec{y}$. Moreover, the distance is $||\vec{y} - \text{proj }_W \vec{y}||$.
+
+\textbf{Example:} What is the closest point in $W$ to $(-1, 4, 3)$? We want $\text{proj}_{\vec{w}} \vec{y} = \left( \frac{3}{2}, \frac{7}{2}, 7 \right)$.
+
+
+\section{Lecture 34, 4/22/2024}
+
+% Quiz: decompose vectors into two parts or find closest W. Choose a basis and choose the one that is orthogonal.
+
+Last time:
+
+
+Given vectors in vector space $V$, we want to apply the Gram-Schmidt process:
+\[
+\vec{y} = \vec{w} + \vec{z}, \quad \vec{w} \in W, \quad \vec{z} \in W^{\perp}
+\]
+where
+\[
+\vec{w} = \text{proj}_{W} \vec{y} = \sum_{i=1}^m \left(\frac{\vec{y} \cdot \vec{w}_i}{\vec{w}_i \cdot \vec{w}_i}\right) \vec{w}_i
+\]
+with $\{\vec{w}_1, \ldots, \vec{w}_m\}$ as an orthogonal basis of $W$.
+
+\textbf{If the basis is not orthogonal}, we use the Gram-Schmidt process to construct an orthogonal basis:
+\[
+\begin{aligned}
+\vec{v}_1 &= \vec{z}_1, \\
+\vec{v}_2 &= \vec{z}_2 - \text{proj}_{\vec{v}_1} \vec{z}_2, \\
+\vec{v}_3 &= \vec{z}_3 - \text{proj}_{\vec{v}_1} \vec{z}_3 - \text{proj}_{\vec{v}_2} \vec{z}_3, \\
+&\vdots \\
+\vec{v}_i &= \vec{z}_i - \sum_{j=1}^{i-1} \text{proj}_{\vec{v}_j} \vec{z}_i,
+\end{aligned}
+\]
+where
+\[
+\text{proj}_{\vec{v}_j} \vec{z}_i = \left(\frac{\vec{z}_i \cdot \vec{v}_j}{\vec{v}_j \cdot \vec{v}_j}\right) \vec{v}_j.
+\]
+This results in an orthogonal basis $\{\vec{v}_1, \ldots, \vec{v}_m\}$ for $V$.
+
+\textbf{Example:} Apply Gram-Schmidt to $\{(-1, 1, -1, 1), (-1, 3, -1, 3), (1, 3, 3, 7)\}$:
+\[
+\begin{aligned}
+\vec{v}_1 &= (-1, 1, -1, 1), \\
+\vec{v}_2 &= (-1, 3, -1, 3) - \left(\frac{(-1, 3, -1, 3) \cdot (-1, 1, -1, 1)}{(-1, 1, -1, 1) \cdot (-1, 1, -1, 1)}\right)(-1, 1, -1, 1) \\
+&= (1, 1, 1, 1), \\
+\vec{v}_3 &= (1, 3, 3, 7) - \text{proj}_{\vec{v}_1}(1, 3, 3, 7) - \text{proj}_{\vec{v}_2}(1, 3, 3, 7) \\
+&= (-2, -2, 2, 2).
+\end{aligned}
+\]
+Check orthogonality and normalize:
+\[
+\begin{aligned}
+\text{Check:} &\quad \vec{v}_1 \cdot \vec{v}_2 = 0, \quad \vec{v}_2 \cdot \vec{v}_3 = 0, \quad \vec{v}_1 \cdot \vec{v}_3 = 0, \\
+\text{Orthonormal basis:} &\quad \left\{\frac{\vec{v}_1}{\|\vec{v}_1\|}, \frac{\vec{v}_2}{\|\vec{v}_2\|}, \frac{\vec{v}_3}{\|\vec{v}_3\|}\right\}.
+\end{aligned}
+\]
+
+\textbf{Theorem: (QR Factorization)}
+
+Let \( A \) be an \( n \times m \) matrix. Assume \( A \) has \( m \) linearly independent vectors. Then \( A \) can be factored as \( A = QR \), where \( Q \) is an \( n \times m \) matrix with \( m \) orthonormal column vectors (by Gram-Schmidt, normalized). Note that if \( m = n \), \( Q \) is an orthogonal matrix and \( R \) is an \( m \times m \) upper triangular matrix.
+
+If \( A = QR \), then:
+\[
+\begin{aligned}
+Q^T A &= Q^T QR \\
+&= I \cdot R \\
+&= R
+\end{aligned}
+\]
+
+Therefore, \( R = Q^T A \).
+
+
+\textbf{Example:} Find the QR-factorization of
+\[
+A = \begin{bmatrix} 
+1 & 2 & 2 \\
+1 & 0 & 4 \\
+1 & 1 & 5 
+\end{bmatrix}
+\]
+
+First, find the orthogonal vectors:
+\[
+\begin{aligned}
+\vec{z}_1 &= (1,1,1) \\
+\vec{z}_2 &= (2,0,1) \\
+\vec{z}_3 &= (2,4,5)
+\end{aligned}
+\]
+
+Apply Gram-Schmidt, then normalize to get:
+\[
+\begin{aligned}
+\vec{v}_1 &= \left(\frac{1}{\sqrt{3}}, \frac{1}{\sqrt{3}}, \frac{1}{\sqrt{3}}\right) \\
+\vec{v}_2 &= \left(\frac{1}{\sqrt{2}}, -\frac{1}{\sqrt{2}}, 0\right) \\
+\vec{v}_3 &= \left(-\frac{1}{\sqrt{6}}, -\frac{1}{\sqrt{6}}, \frac{2}{\sqrt{6}}\right)
+\end{aligned}
+\]
+
+Thus,
+\[
+Q = \begin{bmatrix} 
+\frac{1}{\sqrt{3}} & \frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{6}} \\
+\frac{1}{\sqrt{3}} & -\frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{6}} \\
+\frac{1}{\sqrt{3}} & 0 & \frac{2}{\sqrt{6}} 
+\end{bmatrix}
+\]
+
+Now, calculate \( R = Q^T A \):
+\[
+\begin{aligned}
+R &= Q^T A \\
+&= \begin{bmatrix} 
+\frac{1}{\sqrt{3}} & \frac{1}{\sqrt{3}} & \frac{1}{\sqrt{3}} \\
+\frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{2}} & 0 \\
+-\frac{1}{\sqrt{6}} & -\frac{1}{\sqrt{6}} & \frac{2}{\sqrt{6}} 
+\end{bmatrix}
+\begin{bmatrix} 
+1 & 2 & 2 \\
+1 & 0 & 4 \\
+1 & 1 & 5 
+\end{bmatrix} \\
+&= \begin{bmatrix} 
+\frac{3}{\sqrt{3}} & \frac{3}{\sqrt{3}} & \frac{11}{\sqrt{3}} \\
+0 & \frac{2}{\sqrt{2}} & -\frac{2}{\sqrt{2}} \\
+0 & 0 & \frac{4}{\sqrt{6}} 
+\end{bmatrix}
+\end{aligned}
+\]
+
+This decomposition is \textbf{not unique}.
+
+\section{Lecture 35, 4/24/2024}
+
+Computing Projections and Least-Squares Problems
+
+To compute the projection of a vector $\vec{y}$ onto a subspace $W$, an orthogonal basis for $W$ is required.
+
+Section 6.5: Least-Squares Problems
+
+In practice, a system of equations may not have a solution. The goal then is to find a vector $\hat{x}$ such that the norm $||\vec{b} - A\hat{x}||$ is minimized over all vectors $\vec{x}$ in the domain, which means $\hat{x}$ is a least-squares solution to $A\vec{x} = \vec{b}$. If $\vec{b}$ is not in the column space of $A$, $\text{col}(A)$, we look for $\hat{b} = \text{proj}_{\text{range}(A)} \vec{b} = \text{proj}_{\text{col}(A)} \vec{b}$.
+
+The least squares solution to $A\vec{x} = \vec{b}$ is such an $\hat{x}$ that $A\hat{x} = \hat{b}$. We observe that $\vec{b} - A\hat{x}$ is orthogonal to everything in $\text{range}(A) = \text{col}(A)$.
+
+Normal Equations
+
+The least squares solution(s) of $A\vec{x}=\vec{b}$ are the solutions to the normal equations:
+\[ A^TA\vec{x} = A^T\vec{b} \]
+
+Example Problem
+
+Find the least squares solution to:
+\begin{align*}
+x_1 + 2x_2 &= -1 \\
+3x_1 + 4x_2 &= 3 \\
+5x_1 + 6x_2 &= -5
+\end{align*}
+
+Given $A = \begin{bmatrix}
+1 & 2 \\
+3 & 4 \\
+5 & 6
+\end{bmatrix}$ and $\vec{b} = \begin{bmatrix}
+-1 \\
+3 \\
+-5
+\end{bmatrix}$.
+
+Calculating $A^TA$ and $A^T\vec{b}$, we can row reduce the augmented matrix to find $\hat{x}$.
+
+Another method to find $\hat{x}$ is using the pseudoinverse of $A$, given by $\hat{x} = (A^TA)^{-1}A^T\vec{b}$ if $(A^TA)^{-1}$ exists.
+
+Least Squares Error
+
+The least squares error for $A\vec{x} = \vec{b}$ is $||\vec{b} - A\hat{x}||$ where $\hat{x}$ is the least squares solution.
+
+Orthogonal Columns in $A$
+
+If the columns of $A$ are orthogonal, finding $\hat{x}$ is straightforward.
+
+QR-factorization Method
+
+If $A$ has linearly independent columns, and $A = QR$ where $Q$ has orthonormal columns and $R$ is upper triangular, we can find $\hat{x}$ by solving $R\hat{x} = Q^T\vec{b}$ and then performing backward substitution.
+
+\section{Lecture 36, 4/26/2024}
+
+Recap: Least Squares Solutions
+To find the least squares solution $\hat{x}$ to the system $A\vec{x} = \vec{b}$, solve the normal equation $A^TA\hat{x} = A^T\vec{b}$. In some cases, we can use $(A^TA)^{-1}$, the projection method if the columns of $A$ are orthogonal, or the QR-factorization.
+
+Section 6.6: Applications to Linear Models
+We consider the system $A\vec{x} = \vec{b}$ as $X\vec{B} = \vec{y}$, where $X$ is the design matrix, $\vec{B}$ is the parameter vector, and $\vec{y}$ is the observation vector. Given data points $(x_1, y_1), \ldots, (x_n, y_n)$, we seek a line $y = B_0 + B_1x$ closest to the data.
+
+The residual for a point is given by the distance from the observed value to the line, i.e., $|y_1 - (B_0 + B_1x_1)|$. We aim for the data point $(x_1, y_1)$ to lie on the line, hence $y_1 = B_0 + B_1x_1$. To find $B_0$ and $B_1$, we consider the system:
+\[
+\begin{bmatrix}
+1 & x_1 \\
+1 & x_2 \\
+\vdots & \vdots \\
+1 & x_n
+\end{bmatrix}
+\begin{bmatrix}
+B_0 \\
+B_1
+\end{bmatrix}
+=
+\begin{bmatrix}
+y_1 \\
+y_2 \\
+\vdots \\
+y_n
+\end{bmatrix}
+\]
+
+This leads to $X\vec{B} = \vec{y}$, which usually is inconsistent, so we apply the least-squares method to find the closest solution.
+
+We minimize the norm $||X\vec{B} - \vec{y}||$, which corresponds to minimizing the squares of the residuals.
+
+Example: Least-Squares Line
+Given the points $(1, 0)$, $(2, 4)$, and $(3, 7)$, find the least-squares line $y = B_0 + B_1x$.
+
+\[
+X = 
+\begin{bmatrix}
+1 & 1 \\
+1 & 2 \\
+1 & 3
+\end{bmatrix},
+\quad
+\vec{B} = 
+\begin{bmatrix}
+B_0 \\
+B_1
+\end{bmatrix},
+\quad
+\vec{y} = 
+\begin{bmatrix}
+0 \\
+4 \\
+7
+\end{bmatrix}
+\]
+
+Solving $X^TX\vec{B} = X^T\vec{y}$ yields $\vec{B} = \begin{bmatrix} -10/3 \\ 7/2 \end{bmatrix}$, hence the least-squares line is $y = -\frac{10}{3} + \frac{7}{2}x$.
+
+Generalizations
+We can extend this to fit other models, such as $y = B_0\cos(x) + B_1\sin(x) + B_2\sin^2(x)$, and find the least-squares solution similarly.
+
+Example: Least-Squares Parabola
+Find the least squares parabola $y = B_0 + B_1x + B_2x^2$ for the points $(1, 5)$, $(2, 2)$, $(3, 3)$, $(4, 8)$.
+
+Solving $X^TX\vec{B} = X^T\vec{y}$ for $X\vec{B} = \vec{y}$, we get $\vec{B} = \begin{bmatrix} 12 \\ -9 \\ 2 \end{bmatrix}$, leading to the least-squares parabola $y = 12 - 9x + 2x^2$.
+
+In the context of least-squares problems, note that the matrix $A^TA$ is always symmetric, that is, $A = A^T$.
+
+
+\section{Lecture 37, 4/29/2024}
+
+Section 7.1: Diagonalization of Symmetric Matrices
+
+Recall a matrix $A$ is symmetric if $A^T = A$. We say $A$ is diagonalizable if it can be written in the form $D = P^{-1}AP$, where $D$ is a diagonal matrix.
+
+\textbf{Definition:} An $n \times n$ matrix is \textit{orthogonally diagonalizable} if there is an orthogonal matrix $P$ (so $P^{-1} = P^T$) and a diagonal matrix $D$ such that $D = P^{-1}AP = P^TAP$. (It can be shown that $D$ is still the matrix of eigenvalues.)
+
+\textbf{Theorem:} An $n \times n$ matrix is orthogonally diagonalizable if and only if $A$ is symmetric.
+
+\textbf{Example: Orthogonally Diagonalizable}
+
+Consider matrices $A$ and $B$:
+\[
+A = \begin{bmatrix}
+3 & 2 & 4 \\
+2 & 0 & 2 \\
+4 & 2 & 3
+\end{bmatrix}, \quad
+B = \begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6 \\
+7 & 8 & 9
+\end{bmatrix}
+\]
+Choose $A$ (since $B$ is not symmetric).
+
+We find the characteristic polynomial:
+\[
+\det(A - \lambda I) = (8-\lambda)(1+\lambda)^2 = 0 \Rightarrow \lambda = 8, -1, -1
+\]
+
+\textbf{Eigenvectors:}
+
+For $\lambda_1 = 8$:
+\[
+(A - 8I)\vec{z}_1 = \vec{0} \Rightarrow \vec{z}_1 = \begin{bmatrix} 2 \\ 1 \\ 2 \end{bmatrix}
+\]
+
+For $\lambda_2, \lambda_3 = -1, -1$:
+\[
+(A + I)\vec{z} = \vec{0}.
+\]
+
+We find two linearly independent eigenvectors:
+\[
+\vec{z}_2 = \begin{bmatrix} 1 \\ -2 \\ 0 \end{bmatrix}, \quad
+\vec{z}_3 = \begin{bmatrix} 1 \\ -4 \\ 1 \end{bmatrix}
+\]
+
+$\vec{z}_1$ is orthogonal to $\vec{z}_2$ and $\vec{z}_3$.
+
+\textbf{Applying Gram-Schmidt:}
+
+\[
+\vec{u}_1 = \frac{1}{3} \begin{bmatrix} 2 \\ 1 \\ 2 \end{bmatrix}, \quad
+\vec{u}_2 = \frac{1}{\sqrt{5}} \begin{bmatrix} 1 \\ -2 \\ 0 \end{bmatrix}
+\]
+
+\[
+\vec{v}_3 = \vec{z}_3 - \frac{\vec{z}_3 \cdot \vec{v}_2}{\vec{v}_2 \cdot \vec{v}_2} \vec{v}_2 = \begin{bmatrix} 1 \\ -4 \\ 1 \end{bmatrix} - \frac{9}{5} \begin{bmatrix} 1 \\ -2 \\ 0 \end{bmatrix}
+\]
+
+\[
+\|\vec{v}_3\| = \sqrt{\left(\frac{-4}{5}\right)^2 + \left(\frac{-2}{5}\right)^2 + 1} = \frac{3}{\sqrt{5}}
+\]
+
+\[
+\vec{u}_3 = \frac{1}{3/\sqrt{5}} \vec{v}_3 = \begin{bmatrix} -\frac{4}{3\sqrt{5}} \\ -\frac{2}{3\sqrt{5}} \\ \frac{\sqrt{5}}{3} \end{bmatrix}
+\]
+
+\[
+P = \begin{bmatrix} \frac{2}{3} & \frac{1}{\sqrt{5}} & -\frac{4}{3\sqrt{5}} \\ \frac{1}{3} & -\frac{2}{\sqrt{5}} & -\frac{2}{3\sqrt{5}} \\ \frac{2}{3} & 0 & \frac{\sqrt{5}}{3} \end{bmatrix}, \quad
+D = \begin{bmatrix} 8 & 0 & 0 \\ 0 & -1 & 0 \\ 0 & 0 & -1 \end{bmatrix}
+\]
+
+\[
+D = P^TAP \quad (P^{-1} = P^T)
+\]
+
+\textbf{Theorem (Spectral Decomposition):} Let $A$ be an $n \times n$ symmetric matrix. Then:
+\begin{enumerate}
+    \item All eigenvalues are real.
+    \item The geometric multiplicities equal the algebraic multiplicities for all eigenvalues.
+    \item The eigenspaces are mutually orthogonal. Moreover, there is an orthonormal basis of eigenvectors that span $\mathbb{R}^n$.
+    \item Matrix $A$ is orthogonally diagonalizable.
+\end{enumerate}
+
+\[
+A = PDP^T = \sum_{i=1}^n \lambda_i \vec{u}_i \vec{u}_i^T
+\]
+
+Each matrix $\vec{u}_i \vec{u}_i^T$ is a projection matrix.
+
+\textbf{Example:} For $A = \begin{bmatrix} 1 & 5 \\ 5 & 1 \end{bmatrix}$, we find $\lambda_1 = 6$ with eigenvector $\vec{u}_1 = \begin{bmatrix} \frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}} \end{bmatrix}$ and $\lambda_2 = -4$ with eigenvector $\begin{bmatrix} -\frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}} \end{bmatrix}$.
+
+\[
+A = 6 \begin{bmatrix} \frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}} \end{bmatrix} \begin{bmatrix} \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} \end{bmatrix} - 4 \begin{bmatrix} -\frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}} \end{bmatrix} \begin{bmatrix} -\frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} \end{bmatrix}
+\]
+
+
+\section{Lecture 38, 5/3/2024}
+
+Last time: $A = \sum_{i=1}^n \lambda_i \mathbf{u}_i \mathbf{u}_i^T$ is the spectral decomposition of $A$, where $\lambda_i$'s are the eigenvalues, and $\mathbf{u}_i$'s are the normalized, orthogonal eigenvectors corresponding to eigenvalues $\lambda_i$'s.
+
+From the example last time:
+
+\[
+A = 6 \begin{bmatrix} \frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}} \end{bmatrix} \begin{bmatrix} \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} \end{bmatrix} - 4 \begin{bmatrix} -\frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}} \end{bmatrix} \begin{bmatrix} -\frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} \end{bmatrix}
+\]
+
+\[= 6\begin{bmatrix} \frac{1}{2} & \frac{1}{2} \\ \frac{1}{2} & \frac{1}{2} \end{bmatrix} - 4\begin{bmatrix} \frac{1}{2} & \frac{-1}{2}\\ -\frac{1}{2} & \frac{1}{2} \end{bmatrix} \]
+
+\[= \begin{bmatrix} 1 & 5 \\ 5 & 1 \end{bmatrix}\]
+
+Note this is the form $A = PDP^T$.
+
+Orthogonally diagonalize $A$.
+
+Ex: If $\mathbf{u} = \begin{bmatrix} \frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}} \end{bmatrix}$ from above, what is $\text{proj}_{\mathbf{u}} (7,2)$?
+
+\[\Rightarrow \text{proj}_{\mathbf{u}} (7,2) = \left(\frac{\mathbf{u}_1 \cdot (7, 2)}{\mathbf{u}_1 \cdot \mathbf{u}_1}\right) \mathbf{u}_1 = (\mathbf{u}_1 \cdot (7, 2)) \mathbf{u}_1\]
+
+Note: $\mathbf{u}_1 \cdot \mathbf{u}_1 = 1$ since it is a unit vector.
+
+OR
+
+\[\mathbf{u}_1\mathbf{u}_1^T \begin{bmatrix} 7 \\ 2 \end{bmatrix} = \begin{bmatrix} \frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}} \end{bmatrix}\begin{bmatrix} \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} \end{bmatrix} \begin{bmatrix} 7 \\ 2 \end{bmatrix} = \begin{bmatrix} \frac{9}{2} \\ \frac{9}{2} \end{bmatrix}\]
+
+
+Section 7.4: Singular Value Decomposition (SVD)
+
+We look at "diagonalizing" an arbitrary $m \times n$ matrix. From the least squares section, we found $A^TA$ is always symmetric $\Rightarrow$ Spectral theorem and results in the last section hold.
+
+Def: The singular values of $A$ are the square roots of the eigenvalues of $A^TA$. The values are denoted $\sigma_1, \sigma_2, \ldots, \sigma_n$ (so $\sigma = \sqrt{\lambda_1}$).
+
+Theorem (SVD): Let $A$ be $m \times n$ with rank $r$. Then we can write
+
+\[A = U\Sigma V^T\]
+
+$U$ is an $m \times m$ orthogonal matrix,
+$\Sigma$ is an $m \times n$ matrix whose upper-left submatrix is a diagonal matrix whose diagonal entries are the first $r$ singular values, in non-increasing order,
+$V$ is an $n \times n$ orthogonal matrix.
+
+Ex: Let $A = \begin{bmatrix} 1 & 0 & 2 \\ 0 & 1 & 0 \end{bmatrix}$ $\Rightarrow A^TA = \begin{bmatrix} 1 & 0 & 2 \\ 0 & 1 & 0 \end{bmatrix}\begin{bmatrix} 1 & 0 \\ 0 & 1 \\ 2 & 0 \end{bmatrix}$
+
+Eigenvalues and eigenvectors of $A^TA$:
+
+$\lambda_1 = 5$, $\lambda_2 = 1$, $\lambda_3 = 0$
+
+$\Rightarrow \sigma_1 = \sqrt{5}$, $\sigma_2 = \sqrt{1} = 1$ are the singular values
+
+$\Rightarrow$ SVD has $\Sigma = \begin{bmatrix} \sqrt{5} & 0 & 0 \\ 0 & 1 & 0 \end{bmatrix}$
+
+Image Compression:
+
+Let $A$ be a $256 \times 512$ matrix corresponding to an image whose entries are grayscale values of each pixel.
+
+$\Rightarrow$ Store $256 \times 512 = 131072$
+
+By looking at the SVD of $A$, we see 
+
+\[A = \begin{bmatrix} & &  \\ & & \\ & & \\ \end{bmatrix}\begin{bmatrix} \sigma_1 & \rightarrow & \rightarrow \\ 0 & \sigma_2 & \rightarrow \\ 0 & 0 & \ddots \\ \end{bmatrix} \begin{bmatrix} & &  \\ & & \\ & & \\ \end{bmatrix}\]
+
+These matrices are: $256 \times 256$, $256 \times 512$, and $512 \times 512$ respectively.
+
+$\sigma_1 = 7500$
+
+We assume $\sigma_1 \geq \sigma_2 \geq \ldots \geq \sigma_{256}$
+
+We expect $\sigma_{256}$ to be very small.
+
+$\sigma_{256} = 0.001$, $\sigma_{255} = 0.02$
+
+What if we simply change the small singular values to $0$?
+
+This alters the image by a little.
+
+Suppose we only work with the first $60$ largest singular values (so $\sigma_{61} = \ldots = \sigma_{256} = 0$ now)
+
+$\Rightarrow$ We now only need to store $(256)(60) + (60)(60) + (60)(512) = 49680$, which is less than half the original amount needed.
+
+
+
+How well does this preserve the image? The "metric'' is determined by the singular values 
+
+$$\frac{(\sigma_1+\sigma_2+...+\sigma_k)}{(\sigma_1+\sigma_2+...+\sigma_r)}$$
+
+k is what to only use and r is the total.
+
+
+\section{Lecture 39, 5/5/2024}
+
+\textbf{Review:}
+
+1. Matrix Inversion
+Given matrices \( A \) and \( B^{-1} \), determine \( (BA)^{-1} \).
+\[
+A = \begin{bmatrix} 1 & -2 & 8 \\ 1 & -1 & 6 \\ 0 & 0 & 1 \end{bmatrix}, \quad
+B^{-1} = \begin{bmatrix} -2 & 1 & 0 \\ 2 & 0 & 1 \\ 1 & -1 & -1 \end{bmatrix}
+\]
+\[
+(BA)^{-1} = A^{-1}B^{-1} = \begin{bmatrix} 2 & 3 & 6 \\ 6 & -3 & -1 \\ 1 & -1 & -1 \end{bmatrix}
+\]
+
+2. Orthogonal Matrix and Dot Product
+Let \( A \) be an \( n \times n \) orthogonal matrix. Show for \( \vec{u}, \vec{v} \in \mathbb{R}^n \),
+\[
+(A\vec{v}) \cdot (A\vec{u}) = \vec{v} \cdot \vec{u}
+\]
+\[
+(A\vec{v})^T(A\vec{u}) = (\vec{v}^TA^T)(A\vec{u}) = \vec{v}^T(A^TA)\vec{u} = \vec{v}^TI\vec{u} = \vec{v}^T\vec{u} = \vec{v} \cdot \vec{u}
+\]
+
+3. Linear Dependence of Row Vector
+\textbf{True or False}: If \( A \) is a \( 7 \times 3 \) matrix, the row vectors must form a linearly dependent set.
+
+\textbf{Answer}: True, any set of 7 vectors in \( \mathbb{R}^3 \) is linearly dependent.
+
+4. Linear Transformation from \( \mathbb{R}^4 \) to \( \mathbb{R}^5 \)
+Construct a linear transformation \( T: \mathbb{R}^4 \rightarrow \mathbb{R}^5 \) where the range is spanned by \( (7, 9, 9, 3, 2) \) and \( (-15, 1, 0, 7, 7) \), or explain why it is impossible.
+\[
+T(\vec{x}) = \begin{bmatrix} 7 & -15 & 0 & 0 \\ 9 & 1 & 0 & 0 \\ 9 & 0 & 0 & 0 \\ 3 & 7 & 0 & 0 \\ 2 & 7 & 0 & 0 \end{bmatrix} \vec{x}
+\]
+
+5. Diagonalizability of Similar Matrices
+Suppose \( A \) is diagonalizable. Assume \( B \) is similar to \( A \). Show \( B \) is diagonalizable.
+\[
+D = P^{-1}AP \quad \text{and} \quad A = QBQ^{-1}
+\]
+\[
+\Rightarrow D = P^{-1}QBQ^{-1}P, \quad \text{let} \quad R = Q^{-1}P, \quad R^{-1} = P^{-1}Q
+\]
+\[
+\therefore D = R^{-1}BR \quad \text{so} \quad B \text{ is diagonalizable}.
+\]
+
+6. Subspace Criteria
+Is the set \( \{(x_1, x_2, x_3) : x_1 = x_3, x_1, x_2, x_3 \in \mathbb{R}\} \) a subspace of \( \mathbb{R}^3 \)?
+\[
+(x_1, x_2, x_3) = (x_3, x_2, x_3) = x_3(1, 0, 1) + x2(0, 1, 0)
+\]
+\[
+\text{The original set equals to} \, \text{span}(\{x3(1, 0, 1) + x2(0, 1, 0)\}), \text{ and the span of any set is a subspace}.
+\]
+
+7. Determinant of a Matrix Product
+If \( A \) is a \( 2 \times 2 \) and \( \det(A) = 7 \), \( B = \begin{bmatrix} 3 & -4 \\ 2 & -2 \end{bmatrix} \), find \( \det(3A^{-1}B^{-1}) \).
+\[
+\det(B) = -6 + 8 = 2
+\]
+\[
+\det(3A^{-1}B^{-1}) = 3^2 \det(A^{-1}) \det(B^{-1}) = 9 \cdot \frac{1}{\det(A)} \cdot \frac{1}{\det(B)} = \frac{9}{14}
+\]
+
+8. Linear Transformation \( T: \mathbb{P}_2 \rightarrow \mathbb{P}_3 \)
+Given by \( T(a_0 + a_1x + a_2x^2) = a_1 \).
+\[
+\text{Basis of kernel and range:}
+\]
+\[
+\text{Range} \Rightarrow \text{basis of range is} \{1\}
+\]
+\[
+\text{Kernel} \Rightarrow \text{Necessarily} \, a_1 = 0
+\]
+\[
+\text{No restriction on} \, a_0 \, \text{or} \, a_2 \Rightarrow \text{ker}(T) = \{a_0 + a_2x^2 : a_0, a_2 \in \mathbb{R}\}
+\]
+\[
+\Rightarrow \text{Basis for ker}(T) \text{ is} \{1, x^2\}
+\]
+
+\noindent\textbf{True or False}: Suppose \( B \) contains 5 polynomials in \( \mathbb{P}_4 \), and
+suppose \( f(x) = x^2 \) is one of these polynomials. It is given that \( f(x) \) is a linear
+combination of the other polynomials in \( B \). Then \( B \) can never span \( \mathbb{P}_4 \).
+
+\[
+\parbox{0.9\textwidth}{
+\textbf{True}, since \( B \) is given to be linearly dependent, the dimension of \( B \)
+can be at most 4, even though there are 5 polynomials. However, the dimension of 
+\(\mathbb{P}_4\) is 5, which means \( B \) cannot span \(\mathbb{P}_4\).
+}
+\]
+
+
+
+\section{Lecture 40, 5/7/2024}
+
+\textbf{Review:}
+
+\begin{enumerate}
+    \item Let $\vec{v_1}, \vec{v_2}, \vec{v_3} \in \mathbb{R}^5$. Assume the set of vectors is linearly independent. Suppose $T$ is a linear transformation. Show that $\{T(\vec{v_1}), T(\vec{v_2}), T(\vec{v_3})\}$ may be linearly independent. We can choose the matrix of $T$ to be the zero matrix. Then $\text{Ker}(T) \Rightarrow T(\vec{v_1}), T(\vec{v_2}), T(\vec{v_3}) = \vec{0}$, and any set with the zero vector is linearly dependent.
+
+    Now suppose $\{\vec{v_1}, \vec{v_2}, \vec{v_3}\}$ is linearly dependent. Show $\{T(\vec{v_1}), T(\vec{v_2}), T(\vec{v_3})\}$ is always linearly dependent. Hence, there exist $c_1, c_2, c_3$ (not all zero) where $c_1\vec{v_1} + c_2\vec{v_2} + c_3\vec{v_3} = \vec{0}$. Therefore, $T(c_1\vec{v_1} + c_2\vec{v_2} + c_3\vec{v_3}) = T(\vec{0}) = \vec{0}$. It follows that $c_1T(\vec{v_1}) + c_2T(\vec{v_2}) + c_3T(\vec{v_3}) = \vec{0}$.
+
+    \item Let $\vec{u} \in \mathbb{R}^5$ and assume $\vec{u} \neq 0$. What is the rank of $\vec{u}\vec{u}^T$?
+
+    For example in $\mathbb{R}^3$, $\vec{u} = \begin{bmatrix} 1 \\ 2 \\ 3 \end{bmatrix}$, then $\vec{u}\vec{u}^T = \begin{bmatrix} 1 \\ 2 \\ 3 \end{bmatrix} \begin{bmatrix} 1 & 2 & 3 \end{bmatrix} = \begin{bmatrix} 1 & 2 & 3 \\ 2 & 4 & 6 \\ 3 & 6 & 9 \end{bmatrix}$. Since each new row is a multiple of the first, the rank must be 1.
+
+    \item What is the eigenspace for $\lambda = 0$ if $A = \begin{bmatrix} -2 & 2 & 0 \\ 1 & 0 & 2 \\ 1 & -1 & 0 \end{bmatrix}$? Solving $(A - 0I)\vec{v} = \vec{0}$, the RREF of the augmented matrix $B$ is $\begin{bmatrix} 1 & 0 & 2 \\ 0 & 1 & 2 \\ 0 & 0 & 0 \end{bmatrix}$. Therefore, the eigenspace is spanned by $\{ \begin{bmatrix} -2 \\ -2 \\ 1 \end{bmatrix} \}$.
+
+    \item True or False: Let $A$ and $B$ be matrices of the same dimension. If $\text{row}(A) = \text{row}(B)$, then $\text{col}(A) = \text{col}(B)$. This statement is \textbf{False} as demonstrated by the matrices $A = \begin{bmatrix} 1 & 1 \\ 0 & 0 \end{bmatrix}$ and $B = \begin{bmatrix} 0 & 0 \\ 1 & 1 \end{bmatrix}$, which have the same row space but different column spaces.
+
+    \item Let $T: \mathbb{P}_2 \rightarrow \mathbb{P}_2$ be given by $T(a_0 + a_1x + a_2x^2) = -a_0 + a_1x^2$:
+    \begin{itemize}
+        \item[(a)] Find the matrix representation of $T$ with respect to the basis $\{1, x, x^2\}$:
+        \[
+        \text{Matrix} = \begin{bmatrix} -1 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 1 & 0 \end{bmatrix}
+        \]
+        \item[(b)] Basis for the kernel and range:
+        \[
+        \text{Kernel: Basis is } \{x^2\}, \quad \text{Range: Basis is } \{1, x^2\}
+        \]
+    \end{itemize}
+
+    \item True or False:
+    \begin{itemize}
+        \item[(a)] A system of linear equations has a $10 \times 3$ augmented matrix. Then, with more equations than variables, the system is always inconsistent. \textbf{False}.
+        \item[(b)] Now suppose the $10 \times 3$ matrix is the matrix of a linear transformation. Then the transformation is never onto/surjective. \textbf{True}.
+    \end{itemize}
+
+    \item Let $B_1 = \{(1, 0), (0, 1)\}, B_2 = \{(3, 4), (1, 2)\}$:
+    \begin{itemize}
+        \item Determine the change of coordinates matrix from $B_1$ to $B_2$:
+        \[
+        \text{Matrix} = \begin{bmatrix} 1 & -\frac{1}{2} \\ -2 & \frac{3}{2} \end{bmatrix}
+        \]
+        \item How to express $\begin{bmatrix} 4 \\ 4 \end{bmatrix}$ as a linear combination of vectors in $B_2$, written in terms of $B_1$:
+        \[
+        \begin{bmatrix} 1 & -\frac{1}{2} \\ -2 & \frac{3}{2} \end{bmatrix} \begin{bmatrix} 4 \\ 4 \end{bmatrix} = \begin{bmatrix} 2 \\ -2 \end{bmatrix} \Rightarrow 2(3, 4) - 2(1, 2) = (4, 4)
+        \]
+    \end{itemize}
+\end{enumerate}
+
+
+\end{document}
+
+
