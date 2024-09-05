@@ -43,7 +43,7 @@
     \item 2 midterms and a final exam
 \end{itemize}
 
-\section*{Day 1: Tuesday 8/27/2024}
+\section*{Lecture 1: Tuesday 8/27/2024}
 
 \section*{Course Overview: STAT400}
 We study:
@@ -206,7 +206,7 @@ On Thursday will learn how to compute problems similar to \(P(\mathbb{Q} \cap [0
 
 \pagebreak
 
-\section*{Day 2: Thursday 8/29/2024}
+\section*{Lecture 2: Thursday 8/29/2024}
 
 \subsection*{Probability}
 
@@ -740,18 +740,329 @@ P(\{1, 3, 5\}) = P(\{1\}) + P(\{3\}) + P(\{5\}) = \frac{1}{6} + \frac{1}{6} + \f
 \]
 
 
+\section*{Lecture 3: Thursday 9/3/2024}
+\section{Probability}
+
+\textbf{Definition:} Probability is the mathematical framework for quantifying and analyzing uncertainty.
+
+A probability space is defined by the triple \( (\Omega, \mathcal{F}, P) \), where:
+\begin{itemize}
+    \item \( \Omega \) is the sample space (set of all possible outcomes)
+    \item \( \mathcal{F} \) is the event space (sigma-algebra of subsets of \( \Omega \))
+    \item \( P \) is the probability measure (function assigning probabilities to events)
+\end{itemize}
+
+\subsection*{Axioms of Probability}
+
+The probability measure \( P \) satisfies the following axioms:
+\begin{enumerate}
+    \item \( P(\Omega) = 1 \) and \( P(\emptyset) = 0 \)
+    \item For all \( A \in \mathcal{F} \), \( P(A) \geq 0 \)
+    \item (Countable additivity) If \(A_1, A_2, \ldots \in \mathcal{F}\) are pairwise disjoint events (i.e $A_i \cap A_j = \emptyset$ for all $i \neq j$):
+        \[
+        P\left(\bigcup_{i=1}^{\infty} A_i\right) = \sum_{i=1}^{\infty} P(A_i)
+        \]
+\end{enumerate}
+
+\textbf{Note:} Understanding and being able to derive properties from these axioms is crucial for the first midterm and for building a solid foundation in probability theory.
+
+\subsection*{Important Results}
+
+\begin{enumerate}  
+    \item \textbf{Decomposition of Probability:} For any two events \(A, B \in \mathcal{F}\):
+    \[
+        P(B) = P(B - A) + P(A \cap B)
+    \]
+
+    \textit{Proof:} 
+    \begin{itemize}
+        \item Observe that \(B\) can be partitioned into two disjoint sets: \(B = (B - A) \cup (A \cap B)\)
+        \item Note that \((B - A) \cap (A \cap B) = \emptyset\) (these sets are mutually exclusive)
+        \item By the axiom of countable additivity (which implies finite additivity for disjoint events):
+        \[P(B) = P((B - A) \cup (A \cap B)) = P(B - A) + P(A \cap B)\]
+    \end{itemize}
+
+    This result is fundamental in probability theory and is often used in solving complex probability problems. 
+    It allows us to break down the probability of an event into mutually exclusive parts, which can be easier to calculate individually.
+
+    \begin{center}
+    \begin{tikzpicture}
+        % Draw the rectangle representing the universal set Omega
+        \draw[thick] (-2,-2) rectangle (4,2);
+        \node at (-2.5,1.8) {\(\Omega\)};
+        
+        % Draw the circles representing sets A and B
+        \fill[gray!30] (2,0) circle(1.5);
+        \begin{scope}
+            \clip (0,0) circle(1.5);
+        \end{scope}
+        \draw (0,0) circle(1.5);
+        \draw (2,0) circle(1.5);
+        
+        % Label the sets
+        \node at (-0.8,1.5) {\(A\)};
+        \node at (2.8,1.5) {\(B\)};
+        \node at (1,0) {\(A \cap B\)};
+        \node at (2.5,0) {\(B - A\)};
+    \end{tikzpicture}
+    \end{center}
+    \pagebreak
+    \item \textbf{Finite Additivity:} For any two events \(A, B \in \mathcal{F}\):
+    \[
+        P(A \cup B) = P(A) + P(B) - P(A \cap B)
+    \]
+
+    \textit{Proof:}
+    \begin{itemize}
+        \item Observe that \(A \cup B = A \cup (B - A)\) and \(A \cap (B - A) = \emptyset\)
+        \item Since \(A\) and \(B - A\) are disjoint, \(P(A \cup B) = P(A) + P(B - A)\) (finite additivity)
+        \item From the decomposition result: \(P(B) = P(B - A) + P(A \cap B)\)
+        \item Rearranging: \(P(B - A) = P(B) - P(A \cap B)\)
+        \item Substituting into our earlier equation:
+              \[P(A \cup B) = P(A) + P(B) - P(A \cap B)\]
+    \end{itemize}
+    
+    \begin{center}
+    \begin{tikzpicture}
+        % Draw the rectangle representing the universal set Omega
+        \draw[thick] (-2,-2) rectangle (4,2);
+        \node at (-2.5,1.8) {\(\Omega\)};
+        
+        % Draw the circles representing sets A and B
+        \fill[gray!30] (0,0) circle(1.5);
+        \fill[gray!30] (2,0) circle(1.5);
+        \draw (0,0) circle(1.5);
+        \draw (2,0) circle(1.5);
+        
+        % Label the sets
+        \node at (-0.8,1.5) {\(A\)};
+        \node at (2.8,1.5) {\(B\)};
+        \node at (1,0) {\(A \cap B\)};
+        \node at (2.5,0) {\(B - A\)};
+    \end{tikzpicture}
+    \end{center}
+    
+    \item \textbf{Monotonicity:} If \(A \subseteq B\), then \(P(A) \leq P(B)\)
+    
+    \textit{Proof:} 
+    \begin{itemize}
+        \item If \(A \subseteq B\), then:
+            \begin{itemize}
+                \item \(B = A \cup (B - A)\)
+                \item \(A \cap (B - A) = \emptyset\)
+            \end{itemize}
+        \item By finite additivity: \(P(B) = P(A \cup (B - A)) = P(A) + P(B - A)\)
+        \item Since probabilities are non-negative, \(P(B - A) \geq 0\)
+        \item Therefore, \(P(B) \geq P(A)\)
+    \end{itemize}
+    
+    \begin{center}
+    \begin{tikzpicture}
+        % Draw the rectangle representing the universal set Omega
+        \draw[thick] (-2,-2.5) rectangle (4,2.5);
+        \node at (-2.5,1.8) {\(\Omega\)};
+        
+        % Draw the circles representing sets A and B
+        \fill[gray!30] (1,0) circle(2);
+        \fill[gray!60] (1,0) circle(1);
+        \draw (1,0) circle(2);
+        \draw (1,0) circle(1);
+        
+        % Label the sets
+        \node at (1.9,1) {\(A\)};
+        \node at (2.8,1.5) {\(B\)};
+    \end{tikzpicture}
+    \end{center}
+    
+    \item \textbf{Union of Three Sets:} For \(A, B, C \in \mathcal{F}\):
+    \[
+    P(A \cup B \cup C)
+    \]
+
+    \textit{How to compute:}
+    \begin{align*}
+        P(A \cup B \cup C) &= P(A) + P(B \cup C) - P(A \cap (B \cup C)) \\
+        &= P(A) + [P(B) + P(C) - P(B \cap C)] - P(A \cap (B \cup C)) \quad \text{(decompose the union)} \\
+        &= P(A) + P(B) + P(C) - P(B \cap C) - P((A \cap B) \cup (A \cap C)) \quad \text{(by distributive law)} \\
+        &= P(A) + P(B) + P(C) - P(B \cap C) - (P(A \cap B) + P(A \cap C) - P((A \cap B) \cap (A \cap C)))  \\
+        &= P(A) + P(B) + P(C) - P(B \cap C) - (P(A \cap B) + P(A \cap C) - P(A \cap B \cap C))  \\
+        &= P(A) + P(B) + P(C) - P(B \cap C) - P(A \cap B) - P(A \cap C) + P(A \cap B \cap C)  \\
+    \end{align*}
+
+
+\begin{center}
+\begin{tikzpicture}
+    % Draw the rectangle representing the universal set Omega
+    \draw[thick] (-3,-2.5) rectangle (5,4.5);
+    \node at (-2.5,2.5) {\(\Omega\)};
+    
+    % Draw the circles representing sets A, B, and C
+    \begin{scope}
+        \clip (0,0) circle(2);
+        \fill[gray!40] (2,0) circle(2);
+        \fill[gray!40] (1,1.732) circle(2);
+    \end{scope}
+    \begin{scope}
+        \clip (2,0) circle(2);
+        \fill[gray!40] (1,1.732) circle(2);
+    \end{scope}
+    
+    % Fill the intersection of all three circles with a darker shade
+    \begin{scope}
+        \clip (0,0) circle(2);
+        \clip (2,0) circle(2);
+        \fill[gray!80] (1,1.732) circle(2);
+    \end{scope}
+    
+    \draw (0,0) circle(2);
+    \draw (2,0) circle(2);
+    \draw (1,1.732) circle(2);
+    
+    % Label the sets
+    \node at (-2,-1.5) {\(A\)};
+    \node at (4,-1.5) {\(B\)};
+    \node at (1,4) {\(C\)};
+    
+    % Label intersections
+    \node at (1,-0.8) {\small \(A \cap B - C\)};
+    \node at (-0.15,1.5) {\small \(A \cap C - B\)};
+    \node at (2.2,1.5) {\small \(B \cap C - A\)};
+    \node at (1,0.6) {\(A \cap B \cap C\)};
+
+    % Label regions for A, B, C only
+    \node at (-1,-0.5) {\small $A - (B \cup C)$};
+    \node at (3,-0.5) {\small $B - (A \cup C)$};
+    \node at (1,3) {\small $C - (A \cup B)$};
+    
+    
+\end{tikzpicture}
+\end{center}
+
+
+\end{enumerate}
+
+\textbf{Example:} Suppose that $A$ and $B$ are events with $P(A) = 0.5$ and $P(B) = 0.6$. Find numbers $a$ and $b$ such that $a \leq P(A \cup B) \leq b$ and $a \leq P(A \cap B) \leq b$.
+
+\begin{enumerate}
+    \item Using the addition rule of probability:
+        \[P(A \cup B) = P(A) + P(B) - P(A \cap B) = 0.5 + 0.6 - P(A \cap B) = 1.1 - P(A \cap B)\]
+    
+    \item Since $A \cup B \subseteq \Omega$ and $P(\Omega) = 1$, we have:
+        \[P(A \cup B) \leq P(\Omega) \leq 1\]
+    
+    \item From steps 1 and 2:
+        \[1.1 - P(A \cap B) \leq 1 \implies P(A \cap B) \geq 0.1\]
+    
+    \item The maximum value for $P(A \cap B)$ is $\min(P(A), P(B)) = 0.5$, because:
+        \begin{itemize}
+            \item $A \cap B \subseteq A$ and $A \cap B \subseteq B$
+            \item Therefore, $P(A \cap B) \leq P(A)$ and $P(A \cap B) \leq P(B)$
+        \end{itemize}
+    
+    \item We can conclude:
+        \[0.1 \leq P(A \cap B) \leq 0.5\]
+        \[0.6 \leq P(A \cup B) \leq 1.0\]
+    
+    \item To verify the lower bound for $P(A \cup B)$:
+        \begin{align*}
+            P(A \cup B) &= P(A) + P(B) - P(A \cap B) \\
+                        &\geq P(A) + P(B) - \min(P(A), P(B)) \\
+                        &= 0.5 + 0.6 - 0.5 = 0.6
+        \end{align*}
+\end{enumerate}
+
+\textbf{Conclusion:} We have found that $a = 0.1$ and $b = 0.5$ satisfy $a \leq P(A \cap B) \leq b$, while $a = 0.6$ and $b = 1.0$ satisfy $a \leq P(A \cup B) \leq b$.
+
+\textbf{Visualization:} To better understand the relationship between $A$ and $B$, consider the following Venn diagram:
+\begin{center}
+\begin{tikzpicture}
+    % Draw the rectangle representing the universal set Omega
+    \draw[thick] (-3,-2) rectangle (3,2);
+    
+    % Draw the circles representing sets A and B
+    \begin{scope}
+        \clip (-0.5,0) circle(1.5);
+        \fill[gray!30] (0.5,0) circle(1.5);
+    \end{scope}
+    \draw (-0.5,0) circle(1.5);
+    \draw (0.5,0) circle(1.5);
+    
+    % Label the sets
+    \node at (-2.2,1) {$A$};
+    \node at (2.2,1) {$B$};
+    \node at (0, 0) {$A \cap B$};
+    
+    % Add probabilities
+    \node at (-1.5,-1.7) {$P(A) = 0.5$};
+    \node at (1.5,-1.7) {$P(B) = 0.6$};
+    \node at (0,1.75) {$0.1 \leq P(A \cap B) \leq 0.5$};
+\end{tikzpicture}
+\end{center}
+
+This visualization illustrates why $0.1 \leq P(A \cap B) \leq 0.5$ and $0.6 \leq P(A \cup B) \leq 1.0$.
 
 
 
+\textbf{Example:} When Alice visits a certain grocery store, she:
+\begin{itemize}
+    \item buys apples with probability 0.4
+    \item buys bananas with probability 0.7
+    \item buys both with probability 0.25
+\end{itemize}
 
+Compute the probability that on her next visit to the store, Alice:
+\begin{enumerate}
+    \item buys either apples or bananas
+    \item buys bananas but not apples
+    \item buys neither apples nor bananas
+\end{enumerate}
 
+\textbf{Step 1:} Define notation and given probabilities
+\begin{align*}
+    A &: \text{Alice buys apples} \\
+    B &: \text{Alice buys bananas}
+\end{align*}
 
+\begin{align*}
+    P(A) &= 0.4 \\
+    P(B) &= 0.7 \\
+    P(A \cap B) &= 0.25
+\end{align*}
 
+\textbf{Note:} Symbol correspondences
+\begin{itemize}
+    \item $\cup$ corresponds to ``or" (union)
+    \item $\cap$ corresponds to ``and" (intersection)
+    \item $\complement$ corresponds to ``not" (complement)
+    \item $-$ corresponds to ``and not", or ``but not" (relative complement)
+\end{itemize}
 
+\textbf{Step 2:} Calculate probabilities
+\begin{enumerate}
+    \item $P(A \cup B) = P(A) + P(B) - P(A \cap B) = 0.4 + 0.7 - 0.25 = 0.85$
+    \item $P(B - A) = P(B) - P(A \cap B) = 0.7 - 0.25 = 0.45$
+    \item $P(A^c \cap B^c) = P((A \cup B)^c) = 1 - P(A \cup B) = 1 - 0.85 = 0.15$
+    
+\end{enumerate}
 
+\textbf{Note:} Important probability relationships:
+\begin{align*}
+    P(A) &= 1 - P(A^c) \\
+    \Omega &= A \cup A^c \\
+    P(\Omega) &= P(A) + P(A^c) = 1 \\
+    P(A^c) &= 1 - P(A)
+\end{align*}
 
+\textbf{Computing probabilities for finite, equally likely outcomes:}
+For any event $A \subseteq \Omega$, where $\Omega$ is a finite sample space with equally likely outcomes, the probability of $A$ is given by:
 
+\[
+P(A) = \frac{\text{number of elements in } A}{\text{number of elements in } \Omega} = \frac{|A|}{|\Omega|}
+\]
 
+where $|A|$ denotes the cardinality (number of elements) of set $A$.
+
+\section*{Lecture 4: Thursday 9/5/2024}
 
 
 
