@@ -894,7 +894,6 @@ The probability measure \( P \) satisfies the following axioms:
 \begin{tikzpicture}
     % Draw the rectangle representing the universal set Omega
     \draw[thick] (-3,-2.5) rectangle (5,4.5);
-    \node at (-2.5,2.5) {\(\Omega\)};
     
     % Draw the circles representing sets A, B, and C
     \begin{scope}
@@ -1062,7 +1061,249 @@ P(A) = \frac{\text{number of elements in } A}{\text{number of elements in } \Ome
 
 where $|A|$ denotes the cardinality (number of elements) of set $A$.
 
+\pagebreak
+
 \section*{Lecture 4: Thursday 9/5/2024}
+
+\subsection*{Probability for Finite, Equally Likely Outcomes}
+
+Consider an experiment with finitely many outcomes, each of which is equally likely. This scenario is often referred to as ``fair" or ``uniformly at random" (with finite outcomes).
+
+In this situation:
+\begin{itemize}
+    \item $\mathcal{F} = \mathcal{P}(\Omega)$
+    \item For any event $A \in \mathcal{F}$, $P(A) = \frac{|A|}{|\Omega|}$
+\end{itemize}
+
+\textbf{Proof that $P(A) = \frac{|A|}{|\Omega|}$ satisfies the axioms of probability:}
+
+\begin{enumerate}
+    \item For any outcome $\omega \in \Omega$, we show $P(\{\omega\}) = \frac{1}{|\Omega|}$
+    
+    Let $\Omega = \{\omega_1, \omega_2, \ldots, \omega_n\}$. Then:
+    \begin{itemize}
+        \item $P(\{\omega_1\}) = P(\{\omega_2\}) = \cdots = P(\{\omega_n\})$ (equally likely)
+        \item $\{\omega_i\}$ are pairwise disjoint for $i = 1, \ldots, n$
+        \item $\Omega = \bigcup_{i=1}^{n} \{\omega_i\}$
+        \item $P(\Omega) = P(\bigcup_{i=1}^{n} \{\omega_i\}) = \sum_{i=1}^{n} P(\{\omega_i\})$ (finite additivity)
+    \end{itemize}
+    Let $x = P(\{\omega_i\})$ for any $i$. Then:
+    \begin{align*}
+        1 &= P(\Omega) = nx \\
+        x &= \frac{1}{n} = \frac{1}{|\Omega|}
+    \end{align*}
+    Therefore, $P(\{\omega_1\}) = P(\{\omega_2\}) = \cdots = P(\{\omega_n\}) = \frac{1}{|\Omega|}$
+
+    \item For any event $A \subseteq \Omega$, we prove $P(A) = \frac{|A|}{|\Omega|}$
+    
+    Let $A = \{\omega_{i_1}, \omega_{i_2}, \ldots, \omega_{i_k}\}$ where $k = |A|$. Then:
+    \begin{align*}
+        P(A) &= P(\{\omega_{i_1}\} \cup \{\omega_{i_2}\} \cup \cdots \cup \{\omega_{i_k}\}) \\
+             &= \sum_{j=1}^{k} P(\{\omega_{i_j}\}) \quad \text{(finite additivity)} \\
+             &= \sum_{j=1}^{k} \frac{1}{n} \\
+             &= \frac{k}{n} = \frac{|A|}{|\Omega|}
+    \end{align*}
+\end{enumerate}
+
+
+To properly use the probability formula, we need to be able to count effectively. There are two fundamental principles of counting:
+
+\begin{itemize}
+    \item Additive principle of counting
+    \item Multiplicative principle of counting
+\end{itemize}
+
+\textbf{Additive Principle of Counting:} If we have $n$ ways of doing one thing and $m$ ways of doing another thing, where both actions cannot be performed simultaneously, then there are $n + m$ ways of selecting an action.
+
+\textbf{Example (Additive Principle):}
+Suppose you own:
+\begin{itemize}
+    \item 6 pairs of jeans
+    \item 5 pairs of slacks
+\end{itemize}
+Then there are $6 + 5 = 11$ ways of selecting an article of clothing.
+
+\textbf{Multiplicative Principle of Counting:} If we have $n$ ways of doing one thing and $m$ ways of doing another thing, then there are $n \times m$ ways of performing both actions.
+
+\textbf{Example (Multiplicative Principle):}
+Continuing from the previous example, if you are packing for a trip and want to pack:
+\begin{itemize}
+    \item 1 pair of jeans
+    \item 1 pair of slacks
+\end{itemize}
+There are $6 \times 5 = 30$ ways of selecting a pair of jeans and a pair of slacks.
+
+Problems we study in this class can be categorized according to two main features:
+
+\begin{enumerate}
+    \item Replacement
+    \item Order
+\end{enumerate}
+
+\noindent
+Examples:
+\begin{itemize}
+    \item Passwords: Replacement allowed, order matters
+    \item Card games: Usually no replacement, order may or may not matter (depends on the situation)
+\end{itemize}
+
+\noindent
+We can visualize these categories in a 2x2 grid:
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+    \hline
+    & \textbf{Replacement} & \textbf{No Replacement} \\
+    \hline
+    \textbf{Order Matters} & \checkmark & \checkmark \\
+    \hline
+    \textbf{Order Doesn't Matter} & $\times$ & \checkmark \\
+    \hline
+\end{tabular}
+\end{center}
+
+\noindent
+This grid helps us classify different probability problems based on their characteristics.
+The $\checkmark$ and $\times$ are used to indicate what we will study in this class.
+
+
+\textbf{Problem:} Suppose that a password consists of 10 characters. The character set contains 256 possible characters. If characters are chosen uniformly at random, what is the probability of picking a password that starts with an `A'?
+
+\textbf{Analysis:}
+\begin{itemize}
+    \item Replacement: \checkmark
+    \item Order matters: \checkmark
+\end{itemize}
+
+\textbf{Visualization:}
+\begin{itemize}
+    \item All possible passwords: 
+        \[256, 256, 256, \ldots, 256\]
+        \[\_\,\_\,\_\,\_\,\_\,\_\,\_\,\_\,\_\,\_\]
+        (256 choices for each of the 10 slots)
+    \item Passwords starting with 'A':
+        \[A, 256, 256, \ldots, 256\]
+        \[A\,\_\,\_\,\_\,\_\,\_\,\_\,\_\,\_\,\_\]
+        (1 choice for first slot (`A'), 256 choices for each of the remaining 9 slots)
+\end{itemize}
+
+\textbf{Calculation:}
+\begin{itemize}
+    \item Total number of possible passwords: $256^{10}$ (256 choices for each of 10 slots)
+    \item Number of passwords starting with `A': $1 \times 256^9$ (1 choice for first slot, 256 choices for each of 9 slots)
+    \item Probability = $\frac{\text{Favorable outcomes}}{\text{Total outcomes}} = \frac{1 \times 256^9}{256^{10}} = \frac{1}{256}$
+\end{itemize}
+
+\textbf{Conclusion:} The probability of picking a password that starts with an `A' is $\frac{1}{256}$.
+
+\noindent
+\textbf{General Rule:} If you have a list of $n$ things to choose from, replacement is allowed, order matters, and you choose $k$ times, then there are $n^k$ possible choices.
+
+\vspace{0.5cm}
+
+\noindent
+\textbf{New Problem:} Using the previous example (where $n = 256$ and $k = 10$), what is the probability of randomly picking a password that repeats at least one character?
+
+\vspace{0.3cm}
+
+\noindent
+\textbf{Strategy:} It is sometimes easier to calculate the probability of the complement of an event.
+
+\vspace{0.3cm}
+
+\noindent
+\textbf{Approach:} We will count the number of passwords where each character is unique.
+
+\vspace{0.3cm}
+
+\noindent
+Let $A$ be the event that the randomly chosen password has no repeated characters.
+
+$P(A^c) = 1 - P(A)$
+
+
+\textbf{Number of passwords with unique characters:}
+\begin{itemize}
+    \item Visualization:
+        \[\underbrace{256 \cdot 255 \cdot 254 \cdot 253 \cdot 252 \cdot 251 \cdot 250 \cdot 249 \cdot 248 \cdot 247}_{10\text{ positions}}\]
+    \item Mathematical representation: $\prod_{i=0}^{9} (256 - i)$
+    \item Probability calculation: $P(A^c) = 1 - \frac{\prod_{i=0}^{9} (256 - i)}{256^{10}}$
+\end{itemize}
+
+\vspace{0.5cm}
+
+\pagebreak
+\noindent
+\textbf{General Formula:} When picking $k$ things out of $n$ things while keeping track of the order (where $k \leq n$):
+
+\vspace{0.3cm}
+
+\noindent
+Number of different ways:
+\begin{align*}
+    &= n \cdot (n-1) \cdot (n-2) \cdot \ldots \cdot (n-k+1) \\
+    &= n \cdot (n-1) \cdot (n-2) \cdot \ldots \cdot (n-k+1) \cdot \frac{(n-k) \cdot (n-k-1) \cdot \ldots \cdot 1}{(n-k) \cdot (n-k-1) \cdot \ldots \cdot 1} \\
+    &= \frac{n!}{(n-k)!}
+\end{align*}
+
+Where $n!$ is defined as:
+\[
+    n! = \prod_{i=1}^{n} i \quad \text{and} \quad 0! = 1
+\]
+
+\vspace{0.3cm}
+
+\noindent
+$\frac{n!}{(n-k)!}$ is known as ``$n$ permute $k$", denoted as ${}^nP_k$.
+
+\vspace{0.5cm}
+
+\noindent
+\textbf{No replacement, order does not matter:}
+
+\noindent
+The trick is to solve the problem assuming order matters, then adjust by dividing by the number of ways to order the $k$ things.
+
+\vspace{0.3cm}
+
+\noindent
+Consider the following slots:
+
+\[
+\underbrace{\_\,\_\,\_\,\_\,\_\,\_\,\_\,\_\,\_\,\_}_{k\text{ slots}}
+\]
+
+\noindent
+First, we count the number of ways to fill these slots while keeping track of the order:
+\begin{itemize}
+    \item This is given by ${}^nP_k = \frac{n!}{(n-k)!}$
+    \item It represents the number of ways to choose and arrange $k$ items from $n$ options
+\end{itemize}
+
+However, this count includes permutations of the same $k$ items, which we don't want to distinguish. To adjust for this overcounting:
+\begin{itemize}
+    \item We divide by the number of ways to order $k$ items, which is $k!$
+        \begin{itemize}
+            \item $k!$ represents all possible permutations of the $k$ chosen items
+        \end{itemize}
+    \item This adjustment gives us the following formula:
+        \[ \frac{{}^nP_k}{k!} = \frac{n!}{k!(n-k)!} = {}^nC_k \]
+\end{itemize}
+
+The result, ${}^nC_k$, is known as ``$n$ choose $k$". It represents the number of ways to choose $k$ items from $n$ options when the order doesn't matter.
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
