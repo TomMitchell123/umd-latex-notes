@@ -283,7 +283,6 @@ Given events \(A\) and \(B\), the intersection is the event that contains all ou
 \begin{tikzpicture}
     % Draw the rectangle representing the universal set Omega
     \draw[thick] (-2,-2) rectangle (4,2);
-    \node at (-2.5,1.8) {\(\Omega\)};
     
     % Draw the circles representing sets A and B
     \begin{scope}
@@ -369,7 +368,6 @@ A \cap B = \{5\} \neq \emptyset
 
     % Draw the rectangle representing the universal set Omega
     \draw[thick] (-2,-2) rectangle (4,2);
-    \node at (-2.5,1.8) {\(\Omega\)};
     
     % Draw non-intersecting circles representing pairwise disjoint sets
     \draw (0,0.5) circle(0.4);
@@ -398,7 +396,6 @@ The union of two events \(A\) and \(B\), denoted by \(A \cup B\), is the event t
 
     % Draw the rectangle representing the universal set Omega
     \draw[thick] (-2,-2) rectangle (4,2);
-    \node at (-2.5,1.8) {\(\Omega\)};
     
     % Draw the circles representing sets A and B
     \begin{scope}
@@ -466,7 +463,6 @@ Given events \(A\) and \(B\), the relative complement \(A - B\) is the event tha
 
     % Draw the rectangle representing the universal set Omega
     \draw[thick] (-2,-2) rectangle (4,2);
-    \node at (-2.5,1.8) {\(\Omega\)};
     
     % Draw the circles representing sets A and B
     \fill[gray!30] (0,0) circle(1.5);
@@ -789,7 +785,6 @@ The probability measure \( P \) satisfies the following axioms:
     \begin{tikzpicture}
         % Draw the rectangle representing the universal set Omega
         \draw[thick] (-2,-2) rectangle (4,2);
-        \node at (-2.5,1.8) {\(\Omega\)};
         
         % Draw the circles representing sets A and B
         \fill[gray!30] (2,0) circle(1.5);
@@ -826,7 +821,6 @@ The probability measure \( P \) satisfies the following axioms:
     \begin{tikzpicture}
         % Draw the rectangle representing the universal set Omega
         \draw[thick] (-2,-2) rectangle (4,2);
-        \node at (-2.5,1.8) {\(\Omega\)};
         
         % Draw the circles representing sets A and B
         \fill[gray!30] (0,0) circle(1.5);
@@ -860,7 +854,6 @@ The probability measure \( P \) satisfies the following axioms:
     \begin{tikzpicture}
         % Draw the rectangle representing the universal set Omega
         \draw[thick] (-2,-2.5) rectangle (4,2.5);
-        \node at (-2.5,1.8) {\(\Omega\)};
         
         % Draw the circles representing sets A and B
         \fill[gray!30] (1,0) circle(2);
@@ -1287,21 +1280,130 @@ However, this count includes permutations of the same $k$ items, which we don't 
             \item $k!$ represents all possible permutations of the $k$ chosen items
         \end{itemize}
     \item This adjustment gives us the following formula:
-        \[ \frac{{}^nP_k}{k!} = \frac{n!}{k!(n-k)!} = {}^nC_k \]
+        \[ \frac{{}^nP_k}{k!} = \frac{n!}{k!(n-k)!} = {}^nC_k = \binom{n}{k} \]
 \end{itemize}
 
-The result, ${}^nC_k$, is known as ``$n$ choose $k$". It represents the number of ways to choose $k$ items from $n$ options when the order doesn't matter.
+The result, $\binom{n}{k}$, is known as ``$n$ choose $k$". It represents the number of ways to choose $k$ items from $n$ options when the order doesn't matter.
 
+\pagebreak
 
+\section*{Lecture 5: Tuesday 9/10/2024}
 
+\subsection*{No Replacement, Order Does Not Matter}
 
+A common source of examples for this scenario is card games like poker.
 
+\vspace{0.3cm}
 
+\noindent
+\textbf{Example:} Suppose you are dealt 5 cards from a well-shuffled deck of cards. What is the probability that you are dealt a straight (5 cards in sequence)?
 
+\begin{itemize}
+    \item A well-shuffled deck means all 52 cards are equally likely to be drawn (uniformly at random).
+    \item A straight has 5 consecutive ranks but not all of the same suit.
+\end{itemize}
 
+\vspace{0.3cm}
 
+\noindent
+\textbf{Common Strategy: Undercount and Adjust}
+\begin{itemize}
+    \item We count a specific case and adjust for the number of cases.
+    \item Recall: For $\binom{n}{k} = \frac{{}^nP_k}{k!}$, we overcounted and adjusted by dividing by $k!$.
+\end{itemize}
 
+\vspace{0.3cm}
 
+\noindent
+Let's consider a specific type of straight: one containing the ranks 9, 10, J, Q, K.
+
+\begin{itemize}
+    \item There are 4 different suits, so there are four ways to choose each rank.
+    \item Total number of ways for a specific straight: $4^5 = 1024$
+    \item Subtract straight flushes: $1024 - 4 = 1020$ (4 straight flushes, one for each suit)
+\end{itemize}
+
+The number of all straights is equal to $(4^5-4) \times$ number of options for the starting rank.
+
+\begin{itemize}
+    \item Ace can be considered the highest or lowest rank, but not both:
+    \begin{itemize}
+        \item A, 2, 3, 4, 5 \checkmark
+        \item 10, J, Q, K, A \checkmark
+        \item J, Q, K, A, 2 $\times$
+    \end{itemize}
+    \item There are 10 possible starting ranks (Ace(1) through 10)
+\end{itemize}
+
+    Therefore, the total number of straights is:
+
+    \[ 10 \times (4^5-4) = 10 \times 1020 = 10,200 \]
+
+    The required probability is:
+    
+    \begin{align*}
+    P(\text{Straight}) &= \frac{\text{Number of straights}}{\text{Number of possible hands}} \\[6pt]
+    &= \frac{10(4^5-4)}{\binom{52}{5}}
+    \end{align*}
+
+    \subsection*{Conditional Probability}
+
+    Conditional probability measures the likelihood of an event occurring given that another event has already occurred. It allows us to update our probability estimates based on new information.
+    
+    \textbf{Definition:} Given two events $A$ and $B$, where $P(A) > 0$, the conditional probability of $B$ given that $A$ has occurred is denoted by $P(B|A)$. This probability is defined as:
+    
+    \[
+    P(B|A) = \frac{P(A \cap B)}{P(A)}
+    \]
+    
+    \textbf{Example:} Suppose you buy a lottery ticket and the first four numbers drawn match the numbers on your ticket. Your chances of winning have increased because we now have additional information.
+    
+    The formula for conditional probability can be interpreted as the proportion of outcomes in A that also belong to B. This is visually represented in the Venn diagram below:
+    \begin{center}
+    \begin{tikzpicture}
+        % Draw the rectangle representing the universal set Omega
+        \draw[thick] (-2,-2) rectangle (4,2);
+        
+        % Draw the circles representing sets A and B
+        \begin{scope}
+            \clip (0,0) circle(1.5);
+            \fill[gray!30] (2,0) circle(1.5);
+        \end{scope}
+        \draw (0,0) circle(1.5);
+        \draw (2,0) circle(1.5);
+        
+        % Label the sets
+        \node at (-0.8,1.5) {$A$};
+        \node at (2.8,1.5) {$B$};
+        
+        % Label the intersection area
+        \node at (1,0) {$A \cap B$};
+        
+    \end{tikzpicture}
+    \end{center}
+    In this diagram, $P(B|A)$ represents the proportion of the area of $A$ that overlaps with $B$.
+    
+    \subsection*{Independence}
+    
+    Two events $A$ and $B$ are independent if:
+    
+    \[
+    P(A \cap B) = P(A) \cdot P(B)
+    \]
+
+    \textbf{Note:} This definition holds for all values of $P(A)$ and $P(B)$, including when either or both equal zero.
+    
+    In the case where $P(A) > 0$, independence implies:
+    
+    \[
+    \frac{P(A \cap B)}{P(A)} = P(B)
+    \]
+    
+    Which is equivalent to $P(B|A) = P(B)$, meaning the occurrence of $A$ does not affect the probability of $B$.
+    
+    
+    
+    
 
 
 

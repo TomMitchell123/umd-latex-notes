@@ -1457,11 +1457,12 @@ Sketch
     \text{At } (0,\pm 1):& \quad t - y^2 = -1
 \end{align*}
 
+\pagebreak
 Continue this process for other points to build a comprehensive slope field.
 
-\begin{figure}[h]
+\begin{figure}[h!]
     \centering
-    \begin{tikzpicture}[scale=1.2]
+    \begin{tikzpicture}[scale=1]
         % Draw the axes
         \draw[->] (-3,0) -- (3,0) node[right] {$t$};
         \draw[->] (0,-3) -- (0,3) node[above] {$y$};
@@ -1485,16 +1486,19 @@ Continue this process for other points to build a comprehensive slope field.
         \node[left] at (0,-1) {-1};
         
         % Add title
-        \node[above] at (0,3) {Slope field for $y' = t - y^2$};
+        \node[above] at (0,3.5) {Slope field for $y' = t - y^2$};
     \end{tikzpicture}
     \caption{Slope field for the differential equation $y' = t - y^2$}
     \label{fig:slope_field}
 \end{figure}
 
+\vspace{-0.5cm}
 
-\begin{figure}[h]
+If $y(0) = 1$, then the point should follow the slope field:
+
+\begin{figure}[h!]
     \centering
-    \begin{tikzpicture}[scale=1.2]
+    \begin{tikzpicture}[scale=1]
         % Draw the axes
         \draw[->] (-3,0) -- (3,0) node[right] {$t$};
         \draw[->] (0,-3) -- (0,3) node[above] {$y$};
@@ -1520,47 +1524,7 @@ Continue this process for other points to build a comprehensive slope field.
         }
         
         % Add title
-        \node[above] at (0,3) {Slope field for $y' = t - y^2$};
-    \end{tikzpicture}
-    \caption{Detailed slope field for the differential equation $y' = t - y^2$}
-    \label{fig:detailed_slope_field}
-\end{figure}
-
-
-
-if y(0) = 1, 
-
-then the point should follow the slope field
-
-\begin{figure}[h]
-    \centering
-    \begin{tikzpicture}[scale=1.2]
-        % Draw the axes
-        \draw[->] (-3,0) -- (3,0) node[right] {$t$};
-        \draw[->] (0,-3) -- (0,3) node[above] {$y$};
-        
-        % Draw grid lines
-        \draw[gray!30] (-3,-3) grid (3,3);
-        
-        % Draw arrows representing the slope field
-        \foreach \x in {-2.5,-2,...,2.5} {
-            \foreach \y in {-2.5,-2,...,2.5} {
-                \pgfmathsetmacro{\slope}{\x - \y*\y}
-                \draw[red,->] (\x,\y) -- ++({0.2*cos(atan(\slope))},{0.2*sin(atan(\slope))});
-            }
-        }
-        
-        % Label the axes
-        \node[below left] at (0,0) {0};
-        \foreach \x in {-2,-1,1,2} {
-            \node[below] at (\x,0) {\x};
-        }
-        \foreach \y in {-2,-1,1,2} {
-            \node[left] at (0,\y) {\y};
-        }
-        
-        % Add title
-        \node[above] at (0,3) {Slope field for $y' = t - y^2$};
+        \node[above] at (0,3.5) {Slope field for $y' = t - y^2$};
         
         % Mark the initial point
         \fill[blue] (0,1) circle (2pt);
@@ -1573,8 +1537,756 @@ then the point should follow the slope field
     \caption{Slope field for $y' = t - y^2$ with initial point $y(0) = 1$ and solution curve}
     \label{fig:slope_field_with_solution_corrected}
 \end{figure}
+\pagebreak
+
+\section*{Lecture 4, Thursday 9/5/2024}
+
+\section{I.6 Applications of Differential Equations}
+
+\subsection{I.6.1 Tanks and Mixtures}
+
+\subsubsection{I.6.1.1 IRS Method: Identify, Reduce, Solve}
+
+In tank and mixture problems, we often encounter scenarios where:
+
+\begin{itemize}
+    \item Water flows into and out of a tank
+    \item Salt is mixed into the water
+    \item The concentration of salt varies over time
+    \item The mixture in the tank is continuously leaving
+\end{itemize}
+
+Our primary interest is in understanding how the salt content changes over time.
+
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}[scale=1.2]
+        % Tank
+        \draw[thick] (0,0) -- (0,4) -- (3,4) -- (3,0);
+        \draw[thick] (0,0) arc (180:360:1.5cm and 0.5cm);
+        \draw[thick] (0,4) arc (180:0:1.5cm and 0.5cm);
+        
+        % Water in tank
+        \fill[blue!20] (0,1) rectangle (3,3);
+        \fill[blue!20] (0,1) arc (180:360:1.5cm and 0.25cm);
+        \draw[blue!50] (0,3) arc (180:0:1.5cm and 0.25cm);
+        
+        % Inflow
+        \draw[->, thick, blue] (-1,4.5) to[out=-30,in=180] (0.5,4);
+        \node[above] at (-0.25,4.5) {Inflow};
+        
+        % Outflow
+        \draw[->, thick, blue] (2.5,0) to[out=0,in=90] (4,-0.5);
+        \node[right] at (4,-0.5) {Outflow};
+        
+        % Salt particles
+        \foreach \x in {0.3,0.7,1.1,1.5,1.9,2.3,2.7}
+            \foreach \y in {1.3,1.7,2.1,2.5,2.9}
+                \fill[red] (\x,\y) circle (0.03);
+        
+        % Mixer
+        \draw[thick] (1.5,1) -- (1.5,3);
+        \draw[thick] (1.3,2.8) -- (1.7,2.8);
+        \draw[thick] (1.3,1.2) -- (1.7,1.2);
+        \draw[->, thick] (1.5,2) arc (90:450:0.3);
+        
+        % Labels
+        \node[below] at (1.5,-0.7) {\textbf{Tank with well-mixed salt solution}};
+        \node[text width=2cm, align=center, above right] at (3,4) {10 gal/min\\2/5 lbs/gal};
+        \node[text width=2cm, align=center, below right] at (4,0.5) {10 gal/min\\$\frac{\mathcal{Q}(t)}{100}$ lbs/gal};
+    \end{tikzpicture}
+    \caption{Diagram of a tank with water inflow, outflow, and well-mixed salt solution}
+    \label{fig:tank_mixture}
+\end{figure}
+
+\textbf{Example:} Consider a tank with the following properties:
+
+\begin{itemize}
+    \item Initial contents: 100 gallons of brine
+    \item Initial salt content: 20 lbs dissolved in the brine
+    \item Inflow: Brine containing 2/5 lbs/gal of salt at 10 gal/min
+    \item Outflow: Well-mixed solution at 10 gal/min
+\end{itemize}
+
+\textbf{Problem:} Find a formula for the salt content after $t$ minutes.
+
+\textbf{Solution:} Let $\mathcal{Q}(t)$ be the quantity of salt at time $t$.
+
+\begin{align*}
+    \text{Rate of salt inflow} &= 10 \text{ gal/min} \cdot \frac{2}{5} \text{ lbs/gal} = 4 \text{ lbs/min} \\
+    \text{Rate of salt outflow} &= 10 \text{ gal/min} \cdot \frac{\mathcal{Q}(t)}{100} \text{ lbs/gal} = \frac{\mathcal{Q}(t)}{10} \text{ lbs/min}
+\end{align*}
+
+The rate of change of salt content is the difference between inflow and outflow:
+
+\[
+\frac{d\mathcal{Q}}{dt} = \text{salt in} - \text{salt out} = 4 - \frac{\mathcal{Q}(t)}{10}
+\]
+
+This is our differential equation. We can solve it using the integrating factor method or separation of variables.
+
+The initial condition is:
+
+\[
+\mathcal{Q}(0) = 20 \text{ lbs}
+\]
+
+Therefore, our initial value problem (IVP) is:
+
+\[
+\begin{cases}
+\mathcal{Q}' = 4 - \frac{\mathcal{Q}}{10} \\
+\mathcal{Q}(0) = 20
+\end{cases}
+\]
+
+\textbf{Solve the IVP:} The equation is linear: $\mathcal{Q}' + \frac{1}{10}\mathcal{Q} = 4$
+
+\begin{align*}
+    a(t) &= \frac{1}{10} \Rightarrow A(t) = \frac{t}{10} \\[6pt]
+    \text{Multiply by } e^{t/10}&: e^{t/10} \mathcal{Q}' + \frac{1}{10}e^{t/10}\mathcal{Q} = 4e^{t/10} \\[6pt]
+    \text{Integrate both sides}&: e^{t/10}\mathcal{Q} = 40e^{t/10} + C \\[6pt]
+    &\Rightarrow \mathcal{Q} = 40 + Ce^{-t/10}
+\end{align*}
+
+Use the initial condition to solve for $C$:
+\begin{align*}
+    20 &= 40 + C \Rightarrow C = -20
+\end{align*}
+
+Therefore, the solution is:
+\[
+    \mathcal{Q}(t) = 40 - 20e^{-t/10}
+\]
 
 
+\subsection*{Further Questions}
+
+\subsubsection*{Asymptotic Behavior}
+As $t \rightarrow \infty$, what happens to $\mathcal{Q}(t)$?
+
+\textbf{Answer:} 
+\begin{align*}
+    \lim_{t \to \infty} \mathcal{Q}(t) &= \lim_{t \to \infty} (40 - 20e^{-t/10}) \\
+    &= 40 - 20 \lim_{t \to \infty} e^{-t/10} \\
+    &= 40 - 20(0) = 40 \text{ lbs}
+\end{align*}
+
+\subsubsection*{Time to Reach a Specific Amount}
+After what time will there be more than 30 lbs of salt in the tank?
+
+\textbf{Answer:} Set $\mathcal{Q}(t) = 30$ lbs and solve for $t$:
+\begin{align*}
+    30 &= 40 - 20e^{-t/10} \\
+    -10 &= -20e^{-t/10} \\
+    \frac{1}{2} &= e^{-t/10} \\
+    \ln(\frac{1}{2}) &= -\frac{t}{10} \\
+    t &= 10\ln(2) \approx 6.93 \text{ minutes}
+\end{align*}
+
+\subsection*{General Case}
+
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}
+        % Draw cylinder
+        \draw (0,0) -- (0,4) -- (2,4) -- (2,0);
+        \draw (0,0) arc (180:360:1cm and 0.3cm);
+        \draw (0,4) arc (180:0:1cm and 0.3cm);
+        
+        % Inflow and outflow arrows
+        \draw[->,thick] (-1,3.5) -- (0,3.5) node[left] {$R_1, c_1$};
+        \draw[->,thick] (2,0.5) -- (3,0.5) node[above] {$R_2, \frac{\mathcal{Q}(t)}{V(t)}$};
+        
+        % Label contents
+        \node at (1,2) {$\mathcal{Q}(t)$};
+        \node at (1,1.5) {$V(t)$};
+    \end{tikzpicture}
+    \caption{Cylinder with inflow and outflow}
+\end{figure}
+
+\textbf{Parameters:}
+\begin{itemize}
+    \item $R_1$: Rate of inflow
+    \item $c_1$: Concentration of inflow
+    \item $R_2$: Rate of outflow
+    \item $\frac{\mathcal{Q}(t)}{V(t)}$: Concentration of outflow
+\end{itemize}
+
+\textbf{Initial Conditions:}
+\begin{align*}
+    \mathcal{Q}(0) &= \mathcal{Q}_0 \\
+    V(0) &= V_0
+\end{align*}
+
+\textbf{Differential Equations:}
+\begin{align*}
+    V'(t) &= r_1 - r_2  = v(t) = (r_1 - r_2)t + v_0\\
+    \mathcal{Q}'(t) &= r_1c_1 - r_2 \frac{\mathcal{Q}(t)}{V(t)} = r_1c_1 - \frac{r_2q(t)}{(r_1-r_2)t+v0}
+\end{align*}
+
+\textbf{Salt Analysis:}
+\begin{itemize}
+    \item Salt in: $r_1c_1$
+    \item Salt out: $\frac{\mathcal{Q}(t)}{V(t)}$
+\end{itemize}
+
+\textbf{Population Dynamics:}
+
+Let $P(t)$ be the population at time $t$. Consider the differential equation:
+\[
+    \frac{dP}{dt} = R(P)P - h(t)
+\]
+where:
+\begin{itemize}
+    \item $R(P)$: Growth rate
+    \item $h(t)$: Harvest rate
+\end{itemize}
+
+\textbf{Exponential Model:}
+For the exponential model, we take $h(t) = 0$ and $R(P) = r$ (constant).
+
+The differential equation becomes:
+\[
+    \frac{dP}{dt} = rP
+\]
+
+The general solution is:
+\[
+    P(t) = Ce^{rt}
+\]
+
+With the initial condition $P(0) = P_0$, we get:
+\[
+    P(t) = P_0e^{rt}
+\]
+
+\textbf{Example 1: Monkey Population Growth}
+
+Consider a population of monkeys with the following characteristics:
+\begin{itemize}
+    \item Initial population: 100 monkeys
+    \item Growth rate: 4\% per year
+    \item Immigration: 8 new monkeys join from surrounding tribes every year
+\end{itemize}
+
+The Initial Value Problem (IVP) describing this system is:
+
+\begin{align*}
+    \frac{dM}{dt} &= 0.04M + 8 \\
+    M(0) &= 100
+\end{align*}
+
+where $M(t)$ represents the number of monkeys at time $t$.
+
+\textbf{Solution:} $M(t) = 300e^{0.04t} - 200$
+
+\vspace{0.5cm}
+
+\textbf{Example 2: Rabbit Population Growth}
+
+A population of rabbits doubles in size every year.
+
+\textbf{Question:} What is the growth rate assuming exponential growth?
+
+\textbf{Solution:}
+Let's assume the population follows the exponential growth model:
+
+\[P(t) = P_0e^{rt}\]
+
+where:
+\begin{itemize}
+    \item $P(t)$ is the population at time $t$
+    \item $P_0$ is the initial population
+    \item $r$ is the growth rate
+    \item $t$ is time in years
+\end{itemize}
+
+Given:
+\begin{align*}
+    P(0) &= P_0 \\
+    P(1) &= 2P_0
+\end{align*}
+
+Substituting into our model:
+
+\[2P_0 = P_0e^r\]
+
+Simplifying:
+
+\[2 = e^r\]
+
+Taking the natural logarithm of both sides:
+
+\[r = \ln(2) \approx 0.693\]
+
+Therefore, the growth rate is approximately 69.3\% per year.
+
+\textbf{Logistic Model:} This model accounts for finite resources and competition.
+
+\begin{equation}
+    \frac{dp}{dt} = (r-ap)p
+\end{equation}
+
+where:
+\begin{itemize}
+    \item $R(p) = r-ap$ is the per capita growth rate
+    \item When $p$ is small, $R(p) \approx r$
+    \item As $p$ grows, $R(p)$ decreases
+    \item At $p = \frac{r}{a}$, $R(p) = 0$ (this is called the carrying capacity)
+\end{itemize}
+
+\textbf{Stationary solutions:} Set $(r-ap) = 0$
+\[\Rightarrow p = 0 \text{ or } p = \frac{r}{a}\]
+
+\textbf{Phase-line portrait:}
+
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}
+        % Main axis
+        \draw[->, thick] (-1,0) -- (5,0) node[right] {$p$};
+        
+        % Equilibrium points
+        \draw[fill] (0,0) circle (2pt) node[below] {0};
+        \draw[fill] (4,0) circle (2pt) node[below] {$\frac{r}{a}$};
+        
+        % Arrows on the line
+        \draw[->, thick] (0.5,0) -- (1.5,0);
+        \draw[->, thick] (2.5,0) -- (3.5,0);
+        \draw[->, thick] (4.5,0) -- (4.1,0);
+        
+        % Labels for equilibrium points
+        \node[above] at (0,0.2) {Unstable};
+        \node[above] at (4,0.2) {Stable};
+        
+        % Labels for regions
+        \node[above] at (2,0.5) {Growth};
+        \node[below] at (2,-0.5) {$\frac{dp}{dt} > 0$};
+        
+        \node[above] at (4.5,0.5) {Decay};
+        \node[below] at (4.5,-0.5) {$\frac{dp}{dt} < 0$};
+        
+        % Additional labels
+        \node[below] at (-0.5,-0.5) {Irrelevant};
+        \node[below] at (5,-0.5) {Population too large};
+    \end{tikzpicture}
+    \caption{Phase-line portrait for the logistic model}
+\end{figure}
+
+
+\subsection*{Additional Phase Line Portraits}
+
+Here are three more examples of phase line portraits:
+
+\begin{enumerate}
+    \item Simple linear model:
+    \begin{tikzpicture}[baseline]
+        \draw[->, thick] (-2,0) -- (2,0) node[right] {$x$};
+        \draw[fill] (0,0) circle (2pt) node[below] {0};
+        \draw[->, thick] (-1.5,0) -- (-0.5,0);
+        \draw[->, thick] (0.5,0) -- (1.5,0);
+        \node[above] at (-1,0.2) {$-$};
+        \node[above] at (1,0.2) {$+$};
+    \end{tikzpicture}
+
+    \item Logistic model:
+    \begin{tikzpicture}[baseline]
+        \draw[->, thick] (-2,0) -- (2,0) node[right] {$x$};
+        \draw[fill] (1,0) circle (2pt) node[below] {$r/a$};
+        \draw[->, thick] (-1.5,0) -- (-0.5,0);
+        \draw[->, thick] (0.5,0) -- (0.9,0);
+        \draw[->, thick] (1.5,0) -- (1.1,0);
+        \node[above] at (-1,0.2) {$-$};
+        \node[above] at (0.5,0.2) {$+$};
+        \node[above] at (1.5,0.2) {$-$};
+    \end{tikzpicture}
+
+
+    \item Reversed logistic model:
+    \begin{tikzpicture}[baseline]
+        \draw[->, thick] (-2,0) -- (2,0) node[right] {$x$};
+        \draw[fill] (0,0) circle (2pt) node[below] {0};
+        \draw[fill] (1,0) circle (2pt) node[below] {$r/a$};
+        \draw[->, thick] (-1.5,0) -- (-0.5,0);
+        \draw[->, thick] (0.5,0) -- (0.1,0);
+        \draw[->, thick] (1.5,0) -- (1.1,0);
+        \node[above] at (-1,0.2) {$+$};
+        \node[above] at (0.5,0.2) {$-$};
+    \end{tikzpicture}
+
+\end{enumerate}
+
+
+Variant logistic model:
+
+$\frac{dp}{dt} = -(r-ap)p$
+
+\begin{tikzpicture}[baseline]
+    \draw[->, thick] (-2,0) -- (2,0) node[right] {$p$};
+    \draw[fill] (0,0) circle (2pt) node[below] {0};
+    \draw[fill] (1,0) circle (2pt) node[below] {$r/a$};
+    \draw[->, thick] (-1.5,0) -- (-0.5,0);
+    \draw[->, thick] (0.5,0) -- (0.1,0);
+    \draw[->, thick] (1.5,0) -- (1.9,0);
+    \node[above] at (-1,0.2) {$-$};
+    \node[above] at (0.5,0.2) {$-$};
+    \node[above] at (1.5,0.2) {$+$};
+\end{tikzpicture}
+
+\noindent This phase line portrait for $\frac{dp}{dt} = -(r-ap)p$ shows:
+\begin{itemize}
+    \item Two equilibrium points: at $p=0$ and $p=r/a$
+    \item For $p < 0$, $\frac{dp}{dt} < 0$, so $p$ decreases (moves left)
+    \item For $0 < p < r/a$, $\frac{dp}{dt} < 0$, so $p$ decreases (moves left)
+    \item For $p > r/a$, $\frac{dp}{dt} > 0$, so $p$ increases (moves right)
+\end{itemize}
+
+This describes a context where a population needs a certtin critical size r/a to be able to grow otherwise it will die out.
+
+
+
+\section*{Lecture 5, Tuesday 9/10/2024}
+
+\subsection*{I.6 Motion: Falling Objects (continued)}
+
+Consider an object with mass $m$ and force $F$ acting on it. Newton's Second Law of Motion states:
+
+\[F = ma\]
+
+where $a$ is the acceleration, defined as:
+
+\[a = \frac{dv(t)}{dt}\]
+
+and $v(t)$ is the velocity.
+
+For our analysis, we will use the following coordinate system:
+
+\begin{tikzpicture}
+    \draw[->] (0,-2) -- (0,2) node[above] {$y$};
+    \draw[->] (0,1.5) -- (0,2) node[right] {$+$};
+    \draw[->] (0,-1.5) -- (0,-2) node[right] {$-$};
+\end{tikzpicture}
+
+
+For falling objects, the total force is composed of gravity and drag:
+
+\begin{tikzpicture}
+    % Coordinate system
+    \draw[->] (0,-3) -- (0,3) node[above] {$y$};
+    \draw[->] (-2,0) -- (2,0) node[right] {$x$};
+    
+    % Object (more realistic shape)
+    \draw[fill=gray!30] (-0.3,-0.3) rectangle (0.3,0.3);
+    \node at (0,0) {Object};
+    
+    % Gravity force (longer arrow)
+    \draw[->, thick, red] (0,-0.3) -- (0,-2) node[left, midway] {$F_\text{grav}$};
+    
+    % Drag force (straight arrow to show air resistance)
+    \draw[->, thick, blue] 
+        (0,0.3) -- (0,1.5) node[right] {$F_\text{drag}$};
+    
+    % Air flow lines to indicate drag
+    \foreach \y in {-2.5,-2,...,2.5}
+    {
+        \draw[gray, dashed] (-1.5,\y) -- (1.5,\y);
+    }
+    
+    % Ground reference
+    \draw[thick, brown] (-2,-2.8) -- (2,-2.8);
+    \node[brown] at (1.7,-3) {Ground};
+\end{tikzpicture}
+
+Where:
+\begin{align*}
+    F_\text{grav} &= \text{force from gravity} = mg \\
+    F_\text{drag} &= \text{drag force} = -cv^2
+\end{align*}
+
+Here, $g = -9.8 \text{ m/s}^2$, $c$ is a constant, and $v$ is velocity.
+
+Therefore, our ODE model for a falling object is:
+
+\[ma = m\frac{dv}{dt} = mg - cv^2\]
+
+
+\noindent
+Let $c$ be the drag constant.
+
+\vspace{0.5em}
+
+Cancelling out $m$, we get:
+\[
+v' = g + cv^2
+\]
+
+This is a non-linear equation, but it is separable.
+
+\vspace{0.5em}
+
+Stationary solutions are found by solving:
+\[
+g + cv^2 = 0 \quad \Rightarrow \quad v = \pm\sqrt{-g/c}
+\]
+
+For falling objects, we are interested in the negative velocity solution. Thus,
+\[
+v_\infty = -\sqrt{-g/c}
+\]
+is called the terminal velocity.
+
+\vspace{0.5em}
+
+\begin{center}
+\begin{tikzpicture}[scale=1.5]
+    % Draw the horizontal line
+    \draw[-] (-2,0) -- (2,0);
+    
+    % Add labels and points
+    \node[below] at (2,-0.1) {$v$};
+    \filldraw (0,0) circle (2pt) node[above] {$0$};
+    \filldraw (-1,0) circle (2pt) node[above] {$v_\infty$};
+    
+    % Add arrows to show direction
+    \draw[->, thick] (-0.5,0) -- (-0.9,0);
+    \draw[->, thick] (0.5,0) -- (0.1,0);
+    \draw[->, thick] (-1.5,0) -- (-1.1,0);
+    
+    % Add signs
+    \node at (0.5,0.3) {$-$};
+    \node at (-0.5,0.3) {$-$};
+    \node at (-1.5,0.3) {$+$};
+\end{tikzpicture}
+\end{center}
+
+This horizontal phase line portrait shows:
+\begin{itemize}
+    \item The equilibrium points at $v=0$ and $v=v_\infty$
+    \item Arrows indicating the direction of change
+    \item Signs showing whether $v'$ is positive or negative in each region
+\end{itemize}
+
+We can observe that:
+\begin{itemize}
+    \item For $v > 0$, $v'$ is negative, so $v$ decreases towards 0
+    \item For $v_\infty < v < 0$, $v'$ is still negative, so $v$ continues to decrease towards $v_\infty$
+    \item For $v < v_\infty$, $v'$ becomes positive, so $v$ increases back towards $v_\infty$
+\end{itemize}
+
+This confirms that $v_\infty$ is indeed the terminal velocity, as the system will eventually settle at this value regardless of the initial conditions.
+
+
+A skydiver with mass $m = 60\text{ kg}$ jumps from an airplane and assumes a position with drag coefficient $c = 0.002\text{ m}^{-1}$. Find her terminal velocity.
+
+\textbf{Solution:}
+
+$v(0) = 0, c = 0.002, g = -9.8$
+
+$\Rightarrow v' = g+0.002v^2$
+
+terminal velocity $v_\infty = -\sqrt{\frac{-g}{c}}$
+
+To find the terminal velocity, we use the formula derived earlier:
+
+\[
+v_\infty = -\sqrt{\frac{-g}{c}}
+\]
+
+
+Substituting the given values:
+
+\[
+v_\infty = -\sqrt{\frac{9.8\text{ m/s}^2}{0.002\text{ m}^{-1}}} = -70.0\text{ m/s}
+\]
+
+Therefore, the skydiver's terminal velocity is approximately 70.0 m/s (or 252 km/h) downward.
+
+Now, let's solve the ODE analytically:
+
+Rewrite the ODE:
+\begin{align*}
+v' &= g + cv^2 \\
+   &= c\left(\frac{g}{c} + v^2\right) \\
+   &= c(v^2 - v_\infty^2) \\
+   &= c(v - v_\infty)(v + v_\infty)
+\end{align*}
+
+Separate variables:
+\[
+\frac{v'}{(v - v_\infty)(v + v_\infty)} = c
+\]
+
+Integrate both sides:
+\[
+\int \frac{v'}{(v - v_\infty)(v + v_\infty)} \, dv = \int c \, dt
+\]
+
+Using partial fractions decomposition:
+\[
+\frac{1}{2v_\infty}\left(\ln|v - v_\infty| - \ln|v + v_\infty|\right) = ct + C_0
+\]
+
+Apply initial condition $v(0) = 0$:
+\[
+C_0 = \frac{1}{2v_\infty}\left(\ln|-v_\infty| - \ln|v_\infty|\right) = 0
+\]
+
+Therefore, the solution is:
+\[
+\ln\left|\frac{v - v_\infty}{v + v_\infty}\right| = 2cv_\infty t
+\]
+
+
+\subsection{I.7: Numerical Methods}
+
+Consider the initial value problem:
+\[
+y' = f(t, y), \quad y(t_I) = y_I
+\]
+
+Our goal is to approximate $y(t_f)$, where $t_f > t_I$.
+
+To do this, we divide the interval $[t_I, t_f]$ into $n$ equal steps:
+
+\begin{center}
+\begin{tikzpicture}
+\draw[->] (0,0) -- (10,0) node[right] {$t$};
+\draw (0,-0.2) -- (0,0.2) node[above] {$t_I = t_0$};
+\draw (2,-0.2) -- (2,0.2) node[above] {$t_1$};
+\draw (4,-0.2) -- (4,0.2) node[above] {$t_2$};
+\draw (8,-0.2) -- (8,0.2) node[above] {$t_{N-1}$};
+\draw (10,-0.2) -- (10,0.2) node[above] {$t_N = t_f$};
+\draw[dotted] (5,0) -- (7,0);
+\end{tikzpicture}
+\end{center}
+
+We then use an iterative process to approximate the solution:
+
+\begin{enumerate}
+    \item Use $y(t_0) = y_I$ to approximate $y(t_1)$
+    \item Use the approximation of $y(t_1)$ to approximate $y(t_2)$
+    \item $\vdots$
+    \item Use the approximation of $y(t_{N-1})$ to approximate $y(t_N)$
+\end{enumerate}
+
+This process forms the basis of numerical methods for solving differential equations.
+
+
+For good methods, the accuracy of the approximation increases as N increases.
+
+We will use uniform step sizes:
+
+\[
+\text{step size} = h = \frac{t_f - t_I}{N}
+\]
+
+\[
+t_i = t_I + ih \quad \text{for } i = 0, 1, 2, \ldots, N
+\]
+
+\textbf{Euler method:}
+
+Idea: The derivative can be approximated by the difference quotient
+\[
+f'(t) \approx \lim_{h \to 0} \frac{f(t+h) - f(t)}{h}
+\]
+
+For small $h$, we have the approximation:
+\[
+f(t+h) \approx f(t) + hf'(t)
+\]
+
+% (A graph would be inserted here)
+
+If $y(t)$ is the solution to $y' = f(t,y)$ with $y(t_i) = y_i$, then:
+
+\[
+y(t_i + h) \approx y(t_i) + hy'(t_i) = y(t_i) + hf(t_i, y(t_i))
+\]
+
+Thus,
+\[
+y(t_1) \approx y(t_0) + hf(t_0, y(t_0))
+\]
+\[
+y(t_2) \approx y(t_1) + hf(t_1, y(t_1))
+\]
+
+\textbf{Algorithm:}
+\begin{enumerate}
+    \item Set $y_0 = y_I$
+    \item For $i = 1, 2, \ldots, N$:
+    \[
+    y_i = y_{i-1} + hf(t_{i-1}, y_{i-1})
+    \]
+    \item Then $y(t_f) \approx y(t_N) = y_N$
+\end{enumerate}
+
+
+\textbf{Example:} Let $y(t)$ be the solution to $y' = t^2 + y^2$, $y(0) = 1$.
+
+Approximate $y(0.2)$ with step size $h = 0.1$ using the Euler method.
+
+\textbf{Solution:}
+\begin{align*}
+    t_0 &= 0, \quad t_1 = 0.1, \quad t_2 = 0.2 \\[6pt]
+    y_0 &= 1 \\[6pt]
+    y_1 &= y_0 + hf(t_0, y_0) = 1 + 0.1(0^2 + 1^2) = 1.1 \\[6pt]
+    y_2 &= y_1 + hf(t_1, y_1) = 1.1 + 0.1((0.1)^2 + 1.1^2) = 1.222
+\end{align*}
+
+Therefore, $y(0.2) \approx 1.222$.
+
+
+\textbf{Note:} In textbooks, this is often referred to as the explicit Euler method. We will not cover the implicit Euler method in this course.
+
+The Euler Method approximation is derived from a Taylor series expansion:
+
+\[
+y(t+h) = y(t) + hy'(t) + \frac{h^2}{2}y''(t) + \cdots
+\]
+
+The terms $\frac{h^2}{2}y''(t) + \cdots$ are of order $O(h^2)$, which means they approach zero faster than $h$ as $h \to 0$.
+
+
+
+\textbf{Error Analysis:}
+\begin{itemize}
+    \item $O(h^2)$ represents the local error, i.e., the error at each step.
+    \item The global error (total error) is the sum of the local errors: $N \cdot O(h^2)$.
+    \item Since $N = \frac{T_f - T_I}{h} = \frac{\text{constant}}{h}$, we have:
+    \[
+    \frac{\text{constant}}{h} \cdot O(h^2) = O(h)
+    \]
+\end{itemize}
+
+\textbf{Upshot:} ``Error is $O(h)$" implies that if we scale $h$ by a constant $c$, the error should also scale by $c$.
+
+\subsection*{Higher-order Taylor Series Approximations}
+
+\textbf{Example: Order 2}
+
+The second-order Taylor series approximation for $y(t+h)$ is:
+
+\[
+y(t+h) = y(t) + hy'(t) + \frac{h^2}{2} y''(t) + O(h^3)
+\]
+
+If $y(t)$ is the solution to $y' = f(t,y)$, then:
+
+\begin{align*}
+y'(t) &= f(t,y) \\
+y''(t) &= \frac{d}{dt}f(t,y(t)) = \frac{\partial f}{\partial t}(t,y(t)) + \frac{\partial f}{\partial y}(t,y(t)) \cdot y'(t)
+\end{align*}
+
+Substituting these into the Taylor series approximation:
+
+\[
+y(t+h) \approx y(t) + hf(t,y(t)) + \frac{h^2}{2} \left(\frac{\partial f}{\partial t}(t,y(t)) + \frac{\partial f}{\partial y}(t,y(t)) \cdot f(t,y(t))\right)
+\]
+
+This method would have error $O(h^2)$
 
 
 
