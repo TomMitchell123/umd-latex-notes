@@ -1402,21 +1402,198 @@ The number of all straights is equal to $(4^5-4) \times$ number of options for t
     Which is equivalent to $P(B|A) = P(B)$, meaning the occurrence of $A$ does not affect the probability of $B$.
     
     
+    \section*{Lecture 6: Tuesday 9/12/2024}
     
+    \subsection*{Review: Conditional Probability and Independence}
     
+    On Tuesday, we discussed conditional probability and independence.
+    
+    \begin{itemize}
+        \item Conditional Probability: $P(B|A) = \frac{P(A \cap B)}{P(A)}$, where $P(A) > 0$
+        \item We added the requirement $P(B) > 0$, not necessary for the equation to hold true, but useful for computing $P(A|B)$ based on $P(B|A)$
+    \end{itemize}
+    
+    \subsection*{Independence}
+    
+    Events $A$ and $B$ are independent if $P(A \cap B) = P(A)P(B)$
+    
+    If we assume $P(A) > 0$, then $P(B) = \frac{P(A \cap B)}{P(A)} = P(B|A)$
+    
+    \subsection*{Example: Rolling Two Fair Dice}
+    
+    Consider an experiment of rolling two fair dice. Alice and Bob are given the following question:
+    
+    \begin{quote}
+    If Alice rolls the dice and tells Bob that the sum of the dice was 4, does this give Bob new information about whether the number 2 was rolled on the first die?
+    \end{quote}
+    
+    \subsubsection*{Analysis}
+    
+    \begin{itemize}
+        \item Sample Space: $\Omega = \{(i,j) | i,j = 1,2,3,4,5,6\}$
+        \item $P(\{i,j\}) = \frac{1}{6} \cdot \frac{1}{6} = \frac{1}{36}$ (assuming independence)
+        \item Alternate approach: All outcomes are equally likely
+    \end{itemize}
+    
+    Let's define events:
+    \begin{itemize}
+        \item $A$: The sum of the numbers is 4
+        \item $B$: The first die roll results in a 2
+    \end{itemize}
+    
+    \begin{align*}
+        A &= \{(1,3), (2,2), (3,1)\} \\
+        B &= \{(2,1), (2,2), (2,3), (2,4), (2,5), (2,6)\} \\
+        A \cap B &= \{(2,2)\}
+    \end{align*}
+    
+    \begin{align*}
+        P(B) &= \frac{6}{36} = \frac{1}{6} \\
+        P(A \cap B) &= \frac{1}{36} \\
+        P(B|A) &= \frac{P(A \cap B)}{P(A)} = \frac{\frac{1}{36}}{\frac{3}{36}} = \frac{1}{3} \neq \frac{1}{6} = P(B)
+    \end{align*}
+    Therefore, Alice's information does give Bob new information about the probability of rolling a 2 on the first die.
 
+    \subsection*{Independence as an Assumption}
 
+    It's important to note that independence is often an assumption, and it may not always be justified. Consider the following example:
 
+    \subsubsection*{Sally Clark Case and SIDS}
 
+    In the Sally Clark case, a misuse of probability led to a wrongful conviction:
 
+    \begin{itemize}
+        \item Probability of SIDS (Sudden Infant Death Syndrome) was estimated as $\frac{1}{7000}$
+        \item Probability of two SIDS deaths was calculated as $(\frac{1}{7000})^2 = \frac{1}{49 \times 10^6}$
+        \item This low probability was incorrectly interpreted as indicating guilt
+    \end{itemize}
 
+    However, this calculation had two major flaws:
+    \begin{enumerate}
+        \item The assumption of independence was not justified
+        \item Low probability events do occur
+    \end{enumerate}
 
+    \subsection*{Frequentist Interpretation of Probability}
 
+    The frequentist interpretation of probability is defined as:
 
+    \[
+    P(A) = \lim_{n \to \infty} \frac{\text{number of times A occurred}}{n}
+    \]
 
+    where $n$ is the number of independent repetitions of the experiment.
 
+    \subsubsection*{Example: Fair Coin Toss}
 
+    For a fair coin toss:
 
+    \[
+    P(\text{H}) = \frac{1}{2} = \lim_{n \to \infty} \frac{\text{number of heads}}{n}
+    \]
+
+    In practice, we approximate this as:
+
+    \[
+    P(\text{H}) \approx \frac{\text{number of heads observed}}{\text{total number of tosses}}
+    \]
+
+    \textbf{Note:} R Project 2 includes exercises related to these concepts.
+
+    \subsection*{Bayes' Theorem - Required Terminology \& Proving Intermediate Results}
+    
+    \textbf{Note:} This will be on the list of proofs for exams.
+    
+    \subsubsection*{Partition}
+    
+    A partition of $\Omega$ is a collection of sets $\{A_\alpha : \alpha \in A\}$ such that:
+    
+    \begin{enumerate}
+        \item $A_\alpha \cap A_\beta = \emptyset$ for all $\alpha, \beta \in A$ and $\alpha \neq \beta$
+        \item $\bigcup_{\alpha \in A} A_\alpha = \Omega$
+    \end{enumerate}
+
+    Here is a visual example of a partition:
+    
+    \begin{center}
+    \begin{tikzpicture}[scale=1.2]
+        % Sample space
+        \draw[thick] (0,0) rectangle (5,5);
+        \node at (5.2,5.2) {$\Omega$};
+        
+        % Partition elements
+        \fill[red!30] (0,0) -- (2,5) -- (5,3) -- cycle;
+        \fill[blue!30] (0,0) -- (5,0) -- (5,3) -- cycle;
+        \fill[green!30] (0,0) -- (2,5) -- (0,5) -- cycle;
+        \fill[yellow!30] (2,5) -- (5,3) -- (5,5) -- cycle;
+        
+        % Labels
+        \node at (2.5,2.5) {$A_1$};
+        \node at (3.5,1.5) {$A_2$};
+        \node at (1,4.5) {$A_3$};
+        \node at (4,4.5) {$A_4$};
+    \end{tikzpicture}
+    \end{center}
+    
+    A partition breaks up the sample space into distinct, non-overlapping pieces.
+
+    Note:
+
+    1) Given $A \subseteq \Omega$, the intersections $\{A \cap A_\alpha : \alpha \in \mathcal{A}\}$ form a partition of $A$.
+    
+    Here is a visual example:
+
+    \begin{center}
+    \begin{tikzpicture}[scale=1.2]
+        % Draw the sample space
+        \draw[thick] (0,0) rectangle (5,5);
+        \node at (5.2,5.2) {$\Omega$};
+        
+        % Define partition lines
+        \draw[dotted, thick, red] (2.5,0) -- (2.5,5) node[midway, right] {$A_2$};
+        \draw[dotted, thick, green] (0,2.5) -- (5,2.5) node[midway, above] {$A_3$};
+        
+        % Fill partition regions with light colors
+        \fill[red!15] (0,0) rectangle (2.5,5); % A1
+        \fill[blue!15] (2.5,0) rectangle (5,2.5); % A2
+        \fill[green!15] (0,2.5) rectangle (2.5,5); % A3
+        \fill[yellow!15] (2.5,2.5) rectangle (5,5); % A4
+        
+        % Draw set A with thick dashed line
+        \draw[thick, dashed] (1,1) rectangle (4,4) node[pos=0.85, above right] {$A$};
+        
+        % Draw dotted lines inside A to show partitions
+        \draw[dotted, thick, red] (2.5,1) -- (2.5,4);
+        \draw[dotted, thick, green] (1,2.5) -- (4,2.5);
+        
+        % Fill intersections within A with solid colors
+        \fill[red!60, opacity=0.7] (1,1) rectangle (2.5,2.5); % A ∩ A1
+        \fill[blue!60, opacity=0.7] (2.5,1) rectangle (4,2.5); % A ∩ A2
+        \fill[yellow!60, opacity=0.7] (2.5,2.5) rectangle (4,4); % A ∩ A4
+        \fill[green!60, opacity=0.7] (1,2.5) rectangle (2.5,4); % A ∩ A3
+        
+        % Labels for intersections
+        \node at (1.75,1.75) {$A \cap A_1$};
+        \node at (3.25,1.75) {$A \cap A_2$};
+        \node at (3.25,3.25) {$A \cap A_4$};
+        \node at (1.75,3.25) {$A \cap A_3$};
+        
+    \end{tikzpicture}
+    \end{center}
+    
+    We typically consider problems where the partition $\{A_i\}$ is finite. That is, the partition splits up the sample space into finitely many non-overlapping pieces. For example, we might have $|\{A_i\}| = 2$ or $|\{A_i\}| = 3$.
+
+    \vspace{0.5cm}
+
+    \textbf{Law of Total Probability}
+
+    Let $\{A_1, \ldots, A_n\}$ be a partition of the sample space $\Omega$ with $P(A_i) > 0$ for all $i$, and let $B$ be an event with $P(B) > 0$. Then:
+
+    \begin{equation*}
+    P(B) = \sum_{i=1}^n P(A_i \cap B) = \sum_{i=1}^n P(B|A_i)P(A_i)
+    \end{equation*}
+
+    This law allows us to calculate the probability of an event $B$ by considering its interaction with each part of the partition.
 
 
 
