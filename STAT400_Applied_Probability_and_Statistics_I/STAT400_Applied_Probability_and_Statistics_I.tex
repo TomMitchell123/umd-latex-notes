@@ -1596,6 +1596,464 @@ The number of all straights is equal to $(4^5-4) \times$ number of options for t
     This law allows us to calculate the probability of an event $B$ by considering its interaction with each part of the partition.
 
 
+    \section*{Lecture 7: Tuesday 9/17/2024}
+
+    \subsection*{Conditional Probability}
+
+    \begin{itemize}
+        \item \textbf{Definition of Conditional Probability}
+        \item \textbf{Independence}
+        \item \textbf{Bayes' Theorem}
+    \end{itemize}
+
+    \subsubsection*{Partition}
+    A \textbf{partition} of the sample space \(\Omega\) is a collection \( \{B_1, \dots, B_n\} \) of events such that:
+    \begin{align*}
+        B_i \cap B_j &= \emptyset \quad \text{for all } i \neq j, \\
+        \bigcup_{i=1}^{n} B_i &= \Omega.
+    \end{align*}
+
+    The diagrams above illustrate how the sample space is split into non-overlapping regions.
+
+    \subsubsection*{Law of Total Probability}
+    Suppose that \( \{B_1, \dots, B_n\} \) is a partition of the sample space \(\Omega\) with \( P(B_i) > 0 \) for all \(i\). Then, for any event \( A \) with \( P(A) > 0 \), we have:
+    \[
+        P(A) = \sum_{i=1}^{n} P(A \cap B_i) = \sum_{i=1}^{n} P(A \mid B_i) P(B_i)
+    \]
+
+    Consider the event \( A \), where 
+    \[
+        A = \bigcup_{i=1}^{n} (A \cap B_i)
+    \]
+
+    Note that the events \( A \cap B_i \) are pairwise disjoint (as shown in the above diagram).
+
+    \[
+        P(A) = P\left( \bigcup_{i=1}^{n} A \cap B_i \right) = \sum_{i=1}^{n} P(A \cap B_i)
+    \]
+
+    Additionally, the conditional probability is given by:
+    \[
+        P(A \mid B_i) = \frac{P(A \cap B_i)}{P(B_i)}
+    \]
+
+    Therefore:
+    \[
+        P(A \cap B_i) = P(A \mid B_i) P(B_i)
+    \]
+    \[
+        P(A) = \sum_{i=1}^{n} P(A \mid B_i) P(B_i)
+    \]
+
+    \subsubsection*{Bayes' Theorem}
+    
+    Suppose \( B_1, B_2, \ldots, B_n \) is a partition of the sample space \( \Omega \) with \( P(B_i) > 0 \) for all \( i \). Let \( A \) be an event with \( P(A) > 0 \). Then, for any \( k \) where \( 1 \leq k \leq n \),
+    
+    \[
+        P(B_k \mid A) = \frac{P(A \mid B_k) P(B_k)}{\sum_{j=1}^{n} P(A \mid B_j) P(B_j)}
+    \]
+    
+    \textbf{Proof:} By the definition of conditional probability,
+    
+    \[
+        P(B_k \mid A) = \frac{P(A \cap B_k)}{P(A)} = \frac{P(A \mid B_k) P(B_k)}{P(A)}
+    \]
+    
+    Using the Law of Total Probability,
+    
+    \[
+        P(A) = \sum_{j=1}^{n} P(A \mid B_j) P(B_j)
+    \]
+    
+    Therefore,
+    
+    \[
+        P(B_k \mid A) = \frac{P(A \mid B_k) P(B_k)}{\sum_{j=1}^{n} P(A \mid B_j) P(B_j)}
+    \]
+    
+    The Law of Total Probability allows us to change the order of conditioning.
+    
+    \textbf{Example:} Suppose an experiment consists of tossing a fair coin followed by rolling a fair die if the coin comes up heads, and rolling a fair four-sided die if it comes up tails.
+    
+    What is the probability that we see heads given that we see a one?
+    
+    Let \( H \) be the event that the coin comes up heads, and \( F \) be the event that the die rolls a one. Then,
+    
+    \[
+        P(F) = P(F \mid H) P(H) + P(F \mid T) P(T)
+    \]
+    
+    \begin{figure}[h!]
+        \centering
+        \begin{tikzpicture}[
+            grow=right,
+            level distance=4cm,
+            sibling distance=10cm,
+            every node/.style={align=center, font=\small}
+        ]
+            \node {Start}
+                child { 
+                    node {Heads (H)}
+                        edge from parent node[midway, above] {\(\frac{1}{2}\)}
+                        child [sibling distance=1.5cm] {
+                            child { node {1} edge from parent node[midway, above] {\(\frac{1}{6}\)} }
+                            child { node {2} edge from parent node[midway, above] {\(\frac{1}{6}\)} }
+                            child { node {3} edge from parent node[midway, above] {\(\frac{1}{6}\)} }
+                            child { node {4} edge from parent node[midway, above] {\(\frac{1}{6}\)} }
+                            child { node {5} edge from parent node[midway, above] {\(\frac{1}{6}\)} }
+                            child { node {6} edge from parent node[midway, above] {\(\frac{1}{6}\)} }
+                        }
+                }
+                child { 
+                    node {Tails (T)}
+                        edge from parent node[midway, below] {\(\frac{1}{2}\)}
+                        child [sibling distance=1.5cm] {
+                            child { node {1} edge from parent node[midway, above] {\(\frac{1}{4}\)} }
+                            child { node {2} edge from parent node[midway, above] {\(\frac{1}{4}\)} }
+                            child { node {3} edge from parent node[midway, above] {\(\frac{1}{4}\)} }
+                            child { node {4} edge from parent node[midway, above] {\(\frac{1}{4}\)} }
+                        }
+                };
+        \end{tikzpicture}
+        \caption{Experiment Diagram: Coin Toss and Die Roll}
+        \label{fig:coin-die-diagram}
+    \end{figure}
+
+    \textbf{Solution:}
+    
+    We are to find \( P(H \mid F) \).
+
+    Using Bayes' Theorem,
+
+    \[
+        P(H \mid F) = \frac{P(F \mid H) \cdot P(H)}{P(F \mid H) \cdot P(H) + P(F \mid T) \cdot P(T)}
+    \]
+
+    Plugging in the values,
+
+    \[
+        P(H \mid F) = \frac{\left(\frac{1}{6}\right) \cdot \left(\frac{1}{2}\right)}{\left(\frac{1}{6} \cdot \frac{1}{2}\right) + \left(\frac{1}{4} \cdot \frac{1}{2}\right)} 
+        = \frac{\frac{1}{12}}{\frac{1}{12} + \frac{1}{8}} 
+        = \frac{\frac{1}{12}}{\frac{5}{24}} 
+        = \frac{2}{5}
+    \]
+
+    Therefore, the probability that the coin was heads given that we saw a one is \( \boxed{\frac{2}{5}} \).
+
+    \[
+        \Omega = \{ (H, 1), (H, 2), (H, 3), (H, 4), (H, 5), (H, 6), (T, 1), (T, 2), (T, 3), (T, 4) \}
+    \]
+
+    \textbf{Bayes' Theorem:} Let \( H \) be the event that the coin comes up heads, and \( T \) be the event that it comes up tails.
+
+    \begin{itemize}
+        \item \( P(H) = \frac{1}{2} = P(T) \)
+        \item \( H \cup T = \Omega \)
+        \item \( H \cap T = \emptyset \)
+    \end{itemize}
+
+    Thus, \( H \) and \( T \) form a partition of \( \Omega \).
+
+    \[
+        P(i \mid H) = \frac{1}{6} \quad \text{for all } i \in \{1, 2, 3, 4, 5, 6\}
+    \]
+
+    \[
+        P(i \mid T) = \frac{1}{4} \quad \text{for all } i \in \{1, 2, 3, 4\}
+    \]
+
+    \textbf{Bayes' Theorem:}
+    
+    \[
+        P(\text{Heads} \mid \text{One}) = \frac{P(\text{One} \mid \text{Heads}) \cdot P(\text{Heads})}{P(\text{One} \mid \text{Heads}) \cdot P(\text{Heads}) + P(\text{One} \mid \text{Tails}) \cdot P(\text{Tails})}
+    \]
+    
+    \bigskip
+    
+    \textbf{Problem Statement:}
+    
+    A doctor is called to see a sick child in a particular neighborhood (nhd). The doctor has prior information that sick children in the nhd are suffering from either measles or the flu, and no child has both. Additionally, the doctor knows that:
+    \begin{itemize}
+        \item \(90\%\) of sick children have measles.
+        \item The probability that a child with measles has a rash is \(0.95\).
+        \item The probability that a child with the flu has a rash is \(0.08\).
+    \end{itemize}
+    
+    The child that the doctor sees has a rash. What is the probability that the child has measles?
+    
+    \bigskip
+    
+    \textbf{Definitions:}
+    \begin{itemize}
+        \item \(\Omega\): Sick children from the nhd.
+        \item \(M\): The child has measles.
+        \item \(F\): The child has the flu.
+        \item \(R\): The child has a rash.
+    \end{itemize}
+    
+    \(M\) and \(F\) form a partition of the sample space \(\Omega\).
+    
+    \bigskip
+    
+    \textbf{Given:}
+    \[
+        P(M) = 0.1, \quad P(F) = 0.9
+    \]
+    \[
+        P(R \mid M) = 0.95, \quad P(R \mid F) = 0.08
+    \]
+    
+    \bigskip
+    
+    \textbf{Applying Bayes' Theorem:}
+    \[
+        P(M \mid R) = \frac{P(R \mid M) \cdot P(M)}{P(R \mid M) \cdot P(M) + P(R \mid F) \cdot P(F)}
+    \]
+    
+    \[
+        = \frac{0.95 \times 0.1}{0.95 \times 0.1 + 0.08 \times 0.9}
+    \]
+    
+    \[
+        = \frac{0.095}{0.095 + 0.072} = \frac{0.095}{0.167} \approx 0.569
+    \]
+    
+    \bigskip
+    
+    \textbf{Conclusion:} The probability that the child has measles given that the child has a rash is approximately \( \boxed{0.569} \).
+
+    Suppose that you have 3 cards identical in every way except for their color. One card is red on both sides, one card is blue on both sides, and one card is red on one side and blue on the other. 
+    You put the cards into a hat and mix them up. You pick one and put it on a desk. You see the color red. What is the probability that the other side is blue?
+
+    \bigskip
+
+    Let \(RR\) denote card 1, \(BB\) denote card 2, and \(RB\) denote card 3.
+
+    Let \(R\) be the event that we see red when we put the card on the desk.
+
+    \(RB\), \(BB\), and \(RR\) form a partition of \(\omega\).
+
+    \[
+        P(RB) = P(BB) = P(RR) = \frac{1}{3}
+    \]
+
+    \[
+        P(R \mid RB) = \frac{1}{2}, \quad P(R \mid BB) = 0, \quad P(R \mid RR) = 1
+    \]
+
+    \[
+        P(RB \mid R) = \frac{P(R \mid RB) \cdot P(RB)}{P(R \mid RR) \cdot P(RR) + P(R \mid RB) \cdot P(RB) + P(R \mid BB) \cdot P(BB)}
+    \]
+
+    \[
+        P(RB \mid R) = \frac{\left(\frac{1}{2}\right) \cdot \left(\frac{1}{3}\right)}{\left(\frac{1}{2}\right) \cdot \left(\frac{1}{3}\right) + 0 \cdot \left(\frac{1}{3}\right) + 1 \cdot \left(\frac{1}{3}\right)} = \frac{\frac{1}{6}}{\frac{1}{6} + 0 + \frac{1}{3}} = \frac{\frac{1}{6}}{\frac{1}{2}} = \frac{1}{3}
+    \]
+
+
+    \section*{Lecture 8: Thursday 9/19/2024}
+
+    \section*{Random Variables}
+
+    A \textbf{random variable} is a function from the sample space to the real numbers.
+    \[
+        X : \Omega \to \mathbb{R}
+    \]
+
+    \textbf{Notes:}
+    \begin{itemize}
+        \item The actual definition has a lot more technicalities to rule out pathologies. We will not worry about these.
+    \end{itemize}
+
+    Random variables are based on the fact that in many situations we care about a value associated with our pick from the sample space rather than the pick itself.
+
+    \textit{Example:} A study involving the effect of a new medication on blood pressure.
+
+    A random variable is a function. Thinking in terms of examples may better highlight why the terminology is what it is.
+
+    In order for a random variable to be useful, we should be able to compute 
+    \[
+        P(X \in A) = P(\{\omega : X(\omega) \in A\})
+    \]
+    for \(A \subseteq \mathbb{R}\).
+
+    \(P(X \in A)\) is the probability of running across an outcome that causes the function to take a value inside of \(A\).
+
+    \textit{Example (cont):}
+    \[
+        P(X \in [119, 125]) = P(\{\omega \mid X(\omega) \in [119, 125]\})
+    \]
+
+    \textbf{How do we convey this information?}
+
+    \textbf{Distribution function for a random variable \(X\):}
+    \[
+        D_X : \mathcal{P}(\mathbb{R}) \to \mathbb{R}
+    \]
+    \[
+        D_X(A) = P(X \in A)
+    \]
+
+    Since \(\mathcal{P}(\mathbb{R})\) contains very complicated subsets of real numbers, it is unlikely that we are able to express \(D_X\) in a form that is suitable for computation.
+
+    For a random variable \(X\), the \textbf{cumulative distribution function} (CDF) is defined as:
+    \[
+        F_X : \mathbb{R} \to \mathbb{R}
+    \]
+    \[
+        F_X(a) = P(X \leq a) = P(X \in (-\infty, a])
+    \]
+
+    Suppose that an experiment consists of tossing a fair coin. Let \(X\) track the outcome of the coin toss in the natural way. (\(\Omega = \{H, T\}\)) Define \(X(T) = 0\) and \(X(H) = 1\). Compute the CDF and the distribution function of \(X\).
+
+    \[
+        F_X(a) = P(X \leq a) = P(X \in (-\infty, a])
+    \]
+
+    Suppose \(a = -1.32975\):
+    \[
+        F_X(a) = P(X \leq a) = 0
+    \]
+    since no outcome of \(X\) can have a value less than \(a\).
+
+    Note, this is true for any \(a < 0\):
+    \[
+        F_X(a) = 0 \quad \text{for all } a < 0
+    \]
+
+    \[
+        F_X(0) = P(X \leq 0) = \frac{1}{2}
+    \]
+
+    Suppose \(a = 0.5\):
+    \[
+        F_X(a) = P(X \leq 0.5) = P(X = 0) = \frac{1}{2}
+    \]
+
+    Suppose \(a = 1\):
+    \[
+        F_X(a) = P(X \leq a) = P(X \leq 1) = P(X = 0 \text{ or } X = 1) = 1
+    \]
+
+    Suppose \(a > 1\):
+    \[
+        F_X(a) = P(X \leq a) = P(X \leq 1) = 1
+    \]
+    since any outcome of \(X\) must be less than or equal to 1.
+
+    \[
+        F_X(a) = 
+        \begin{cases} 
+            0 & \text{if } a < 0 \\
+            0.5 & \text{if } 0 \leq a < 1 \\
+            1 & \text{if } a \geq 1 
+        \end{cases}
+    \]
+
+    \begin{enumerate}
+        \item \(\lim_{a \to -\infty} F_X(a) = 0\)
+        \item \(\lim_{a \to \infty} F_X(a) = 1\)
+        \item \(F_X\) is monotonically increasing, i.e., if \(a < b\), \(F_X(a) \leq F_X(b)\)
+        \item \(F_X\) is right continuous, i.e., \(\lim_{a \to a^+} F_X(a) = F_X(a)\)
+    \end{enumerate}
+
+    \textbf{Definition:} \(X\) and \(Y\) are said to have the same distribution if \(D_X(A) = D_Y(A)\) for all \(A \subseteq \mathbb{R}\). (i.e., \(X\) and \(Y\) cannot be distinguished by looking at the probabilities alone.)
+
+    \textbf{Example:}
+
+    Generate the numbers 0 and 1 so that both are equally likely.
+    \begin{itemize}
+        \item Toss a fair coin.
+        \item Pick a number uniformly at random from the interval \([0, 1]\).
+    \end{itemize}
+
+    \(Y: [0, 1] \rightarrow \mathbb{R}\)
+    \[
+        Y(\omega) = 
+        \begin{cases} 
+            0 & \text{if } 0 < \omega < \frac{1}{2} \\
+            1 & \text{if } \frac{1}{2} < \omega < 1 
+        \end{cases}
+    \]
+
+    We cannot tell \(X\) and \(Y\) apart by looking at probabilities alone.
+
+    \textbf{Fact:} \(D_X = D_Y\) if and only if \(F_X = F_Y\).
+
+    \[
+        D_X(A) = 
+        \begin{cases} 
+            0 & \text{if } 0, 1 \not\in A \\
+            0.5 & \text{if } \{0\}, \{1\} \subseteq A \text{ but not } \{0, 1\} \subseteq A \\
+            1 & \text{if } \{0, 1\} \subseteq A 
+        \end{cases}
+    \]
+
+    \(D_X(A) = P(X \in A)\)
+
+    \textbf{Example:} Suppose you roll a fair die.
+
+    Let \(Y: \Omega \rightarrow \mathbb{R}\) be given by \(Y(\omega) = \omega\), where \(\Omega = \{1, 2, 3, 4, 5, 6\}\).
+
+    What is \(F_Y\)?
+
+    Case 1: \(a < 1\)
+    \[
+        F_Y(a) = 0
+    \]
+
+    Case 2: \(1 \leq a < 2\)
+    \[
+        F_Y(a) = P(Y \leq a) = P(\{1\}) = \frac{1}{6}
+    \]
+
+    Case 3: \(2 \leq a < 3\)
+    \[
+        F_Y(a) = P(Y \leq a) = P(\{1, 2\}) = \frac{2}{6} = \frac{1}{3}
+    \]
+
+    Case 4: \(3 \leq a < 4\)
+    \[
+        F_Y(a) = P(Y \leq a) = P(\{1, 2, 3\}) = \frac{3}{6} = \frac{1}{2}
+    \]
+
+    Case 5: \(4 \leq a < 5\)
+    \[
+        F_Y(a) = P(Y \leq a) = P(\{1, 2, 3, 4\}) = \frac{4}{6} = \frac{2}{3}
+    \]
+
+    Case 6: \(5 \leq a < 6\)
+    \[
+        F_Y(a) = P(Y \leq a) = P(\{1, 2, 3, 4, 5\}) = \frac{5}{6}
+    \]
+
+    Case 7: \(a \geq 6\)
+    \[
+        F_Y(a) = P(Y \leq a) = P(\{1, 2, 3, 4, 5, 6\}) = 1
+    \]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

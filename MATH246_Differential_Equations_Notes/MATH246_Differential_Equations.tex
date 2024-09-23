@@ -2553,14 +2553,600 @@ Therefore, the general solution is:
 
 This is the implicit form of the general solution to the given ODE.
 
+\section*{Lecture 7, Tuesday 9/17/2024}
+
+
+\subsection*{Quiz 3 - I.6.3, I.7, I.9(.1-.2)}
+
+\subsubsection*{I.9 continued}
+
+\textbf{Example:} \(\frac{dy}{dt} = -\frac{y \sin(ty)}{t \sin(ty) + y}\)
+
+\textbf{Solution:} 
+\[
+(t \sin(ty) + y) \frac{dy}{dt} = -y \sin(ty) \implies y \sin(ty) + (t \sin(ty) + y) \frac{dy}{dt} = 0
+\]
+
+Let \( M = y \sin(ty) \) and \( N = t \sin(ty) + y \).
+
+\[
+\frac{\partial M}{\partial y} = \sin(ty) + ty \cos(ty)
+\]
+\[
+\frac{\partial N}{\partial t} = \sin(ty) + ty \cos(ty)
+\]
+
+Since \(\frac{\partial M}{\partial y} = \frac{\partial N}{\partial t}\), the ODE is exact.
+
+We seek \( H(t, y) \) such that \(\frac{\partial H}{\partial t} = M\) and \(\frac{\partial H}{\partial y} = N\).
+
+From \(\frac{\partial H}{\partial y} = N\):
+\[
+H(t, y) = \int y \sin(ty) \, dy = -\cos(ty) + C(y)
+\]
+
+Now, using \(\frac{\partial H}{\partial t} = M\):
+\[
+\frac{\partial H}{\partial t} = t \sin(ty) \cos(ty) + C'(y) = t \sin(ty) + y
+\]
+
+Thus, 
+\[
+C'(y) = y \implies C(y) = \frac{y^2}{2} + K
+\]
+
+Thus, the general solution is:
+\[
+H(t, y) = -\cos(ty) + \frac{y^2}{2} = C
+\]
+
+
+\subsection*{Integrating Factors}
+
+\textbf{Example:} \(2ty + (2t^2 - e^y)y' = 0\)
+
+Find the general solution.
+
+Let \( M = 2t \) and \( N = 2t^2 - e^y \).
+
+Check:
+\[
+\frac{\partial M}{\partial y} = 0, \quad \frac{\partial N}{\partial t} = 4t
+\]
+
+Since \(\frac{\partial M}{\partial y} \neq \frac{\partial N}{\partial t}\), the ODE is not exact.
+
+Try multiplying the entire equation by \( y \):
+\[
+2ty^2 + (2yt^2 - ye^y)y' = 0
+\]
+
+Now, let \( M = 2ty \) and \( N = 2yt^2 - ye^y \).
+
+Check again:
+\[
+\frac{\partial M}{\partial y} = 2t, \quad \frac{\partial N}{\partial t} = 4ty
+\]
+
+Now the ODE is exact.
+
+Solve:
+\[
+t^2y^2 - (y - 1)e^y = C
+\]
+
+This \( y \) is called an integrating factor.
+
+Compare with the standard form:
+\[
+y' + a(t)y = 0
+\]
+
+Multiplying by an integrating factor \( \rho \):
+\[
+\rho y' + \rho a(t)y = 0
+\]
+
+Let \( \rho = e^{A(t)} \), then:
+\[
+e^{A(t)}y' + a(t)e^{A(t)}y = 0
+\]
+
+In general, for \( M + N \frac{dy}{dx} = 0 \) which is not exact, we want to multiply by a function \( \rho(x, y) \) so that \( \rho M + \rho N \frac{dy}{dx} = 0 \) is exact.
+
+The function \( \rho \) is called an integrating factor.
+
+The equation is exact if:
+\[
+\frac{\partial (\rho M)}{\partial y} = \frac{\partial (\rho N)}{\partial x}
+\]
+
+This leads to the partial differential equation (PDE):
+\[
+\rho_y M + \rho \frac{\partial M}{\partial y} = \rho_x N + \rho \frac{\partial N}{\partial x}
+\]
+
+Solving this PDE can be very challenging.
+
+In order to solve, we make an assumption:
+
+either (1) \(\rho\) is only a function of \(x\)
+
+\[
+\rho_x = \rho', \quad \rho_y = 0
+\]
+
+or (2) \(\rho\) is only a function of \(y\)
+
+\[
+\rho_x = 0, \quad \rho_y = \rho'
+\]
+
+For example, consider the equation:
+\[
+2xy + (2x^2 - e^y) \frac{dy}{dx} = 0
+\]
+
+Here, \(M = 2x\) and \(N = 2x^2 - e^y\).
+
+We look for an integrating factor \(\rho\) such that:
+\[
+\frac{\partial}{\partial y} (\rho M) = \frac{\partial}{\partial x} (\rho N)
+\]
+
+This gives:
+\[
+\rho_y M + \rho \frac{\partial M}{\partial y} = \rho_x N + \rho \frac{\partial N}{\partial x}
+\]
+
+Substituting \(M\) and \(N\):
+\[
+\rho_y (2xy) + \rho (2x) = \rho_x (2x^2 - e^y) + \rho (4x)
+\]
+
+Assuming \(\rho\) is only a function of \(y\):
+\[
+\rho_x = 0, \quad \rho_y = \rho'
+\]
+
+This simplifies to:
+\[
+\rho' (2xy) + \rho (2x) = \rho (4x)
+\]
+
+Which reduces to:
+\[
+2xy \rho' = 2x \rho
+\]
+
+Solving for \(\rho\):
+\[
+\rho' = \frac{\rho}{y}
+\]
+
+Integrating both sides:
+\[
+\int \frac{1}{\rho} d\rho = \int \frac{1}{y} dy
+\]
+
+This gives:
+\[
+\ln|\rho| = \ln|y| + C
+\]
+
+Thus:
+\[
+|\rho| = c|y|
+\]
+
+We can choose \(\rho = y\).
 
 
 
+\textbf{Example:} Find an integrating factor for \((1 + 3x^2 \sin y) - (x \cot y) y' = 0\)
+
+We have:
+\[
+M = 1 + 3x^2 \sin y, \quad N = -x \cot y
+\]
+
+Calculating the partial derivatives:
+\[
+M_y = 3x^2 \cos y, \quad N_x = -\cot y
+\]
+
+Since \(M_y \neq N_x\), we look for an integrating factor \(\rho\).
+
+We start with:
+\[
+(\rho M)_y = (\rho N)_x
+\]
+
+Expanding this, we get:
+\[
+\rho_y M + \rho M_y = \rho_x N + \rho N_x
+\]
+
+Substituting \(M\) and \(N\):
+\[
+\rho_y (1 + 3x^2 \sin y) + \rho (3x^2 \cos y) = \rho_x (-x \cot y) + \rho (-\cot y)
+\]
+
+First, try \(\rho = \rho(x)\):
+\[
+\rho_y = 0, \quad \rho_x = \rho' = \frac{d\rho}{dx}
+\]
+
+This simplifies to:
+\[
+\rho (3x^2 \cos y) = \rho' x \cot y + \rho \cot y
+\]
+
+Multiplying by \(\tan y\):
+\[
+\rho (3x^2 \sin y) = x \rho' + \rho
+\]
+
+Rearranging:
+\[
+x \rho' = \rho (3x^2 \sin y - 1)
+\]
+
+This gives:
+\[
+\rho' = \frac{\rho (3x^2 \sin y - 1)}{x}
+\]
+
+Since the expression for \(\frac{d\rho}{dx}\) has both \(x\) and \(y\), our assumption must not work.
+
+Next, try \(\rho = \rho(y)\):
+\[
+\rho_x = 0, \quad \rho_y = \rho' = \frac{d\rho}{dy}
+\]
+
+This simplifies to:
+\[
+\rho' (1 + 3x^2 \sin y) + \rho (3x^2 \cos y) = \rho (-x \cot y)
+\]
+
+Rearranging:
+\[
+\rho' (1 + 3x^2 \sin y) = \rho (-\cot y - 3x^2 \cos y)
+\]
+
+This gives:
+\[
+\rho' = \frac{-\rho (\cot y + 3x^2 \cos y)}{1 + 3x^2 \sin y}
+\]
+
+Simplifying further:
+\[
+\rho' = -\rho \cot y
+\]
+
+This gives:
+\[
+\frac{1}{\rho} \frac{d\rho}{dy} = -\cot y
+\]
+
+Integrating both sides:
+\[
+\int \frac{1}{\rho} d\rho = \int -\cot y \, dy
+\]
+
+This gives:
+\[
+\ln|\rho| = -\ln|\sin y| + C
+\]
+
+Thus:
+\[
+\rho = e^{-\ln(\sin y)} 
+\]
+
+We can choose \(\rho = e^C \sin y\). For simplicity, let \(e^C = 1\), so:
+\[
+\rho = \csc y
+\]
+
+
+Multiplying by \(\rho\) might add or subtract solutions.
+
+For example, consider the equation:
+\[
+y + \left(2x + \frac{1}{y}\right)y' = 0
+\]
+Note that \(y = 0\) is not a solution.
+
+\(\rho = y\) works as an integrating factor:
+\[
+y^2 + (2xy + 1)y' = 0
+\]
+Now, \(y = 0\) is a solution. The solution is added because \(y = 0\) corresponds to \(p = 0\).
+
+Fact: Solutions can only be added when \(\rho = 0\).
+
+For example, consider the equation:
+\[
+-y^2 + x^2 y' = 0
+\]
+Note that \(y = x\) is a solution. Check:
+\[
+-(x)^2 + x^2(1) = 0
+\]
+
+It turns out \(\rho = \frac{1}{(x - y)^2}\) works as an integrating factor:
+\[
+\Rightarrow \frac{-y^2}{(x - y)^2} + \frac{x^2}{(x - y)^2}y' = 0
+\]
+This is exact when \(y \neq x\).
+
+Solve:
+\[
+\frac{xy}{x - y} = C
+\]
+This misses \(y = x\) because \(\rho\) isn't defined for \(y = x\).
+
+
+\section*{Lecture 8, 9/19/2024}
+% Exam 1:
+
+% one or two ode, solve find general solution
+% will not tell seperable linear,
+% won't ask on 1.4 existence and Uniqueness
+% still have to know interval of definition
+% no plotting direction field in 2d
+% no partial fractions
+% nothing about taylor series or higher order approximation
+% need to know explicit euler, midpoint, and trapezoid
+% application, physics, tank problems, on exams
+% won't ask about adding or losing solutions
+% no compound interest
+
+\subsection*{II.1, II.2: Higher-Order Linear Differential Equations}
+
+\textbf{Standard Form:}
+\[
+\frac{d^n y}{dt^n} + a_{n-1}(t) \frac{d^{n-1} y}{dt^{n-1}} + \dots + a_1(t) \frac{dy}{dt} + a_0(t)y = f(t)
+\]
+where \(a_{n-1}(t), \dots, a_0(t)\) are coefficient functions and \(f(t)\) is the forcing function.
+
+If \(f(t) = 0\), the ODE is homogeneous; otherwise, it is nonhomogeneous.
+
+A function \(Y(t)\) is a solution over an interval \((a, b)\) if:
+\begin{itemize}
+    \item \(y(t), y'(t), \dots, y^{(n)}(t)\) exist for all \(t \in (a, b)\)
+    \item Coefficients and forcing function exist for all \(t \in (a, b)\)
+    \item \(y^{(n)}(t) + a_{n-1}(t) y^{(n-1)}(t) + \dots + a_0(t)y(t) = f(t)\) for all \(t \in (a, b)\)
+\end{itemize}
+
+An IVP for an \(n\)th-order ODE has the initial conditions:
+\[
+y(t_I) = y_0, \quad y'(t_I) = y_1, \quad \dots, \quad y^{(n-1)}(t_I) = y_{n-1}
+\]
+where all \(t_I\) are the same.
+
+\textbf{Theorem (Existence and Uniqueness):}  
+If \(a_0(t), \dots, a_{n-1}(t)\) and \(f(t)\) are continuous on \((a, b)\), then for any \(t_I \in (a, b)\) and any initial data \(y_0, \dots, y_{n-1}\), there is a unique solution to the IVP on \((a, b)\).
+
+\textbf{Example:} Show that \(\sin(t^2)\) is not a solution to any second-order homogeneous linear ODE with coefficients continuous on \((-1, 1)\).
+
+\textbf{Solution:}  
+Say \(y = \sin(t^2)\) is a solution to \(y'' + p(t)y' + q(t)y = 0\).
+
+\[
+y(0) = \sin(0) = 0
+\]
+\[
+y'(t) = 2t \cos(t^2), \quad \text{so} \quad y'(0) = 0
+\]
+
+Thus, \(\sin(t^2)\) is the solution to the IVP:
+\[
+\begin{cases}
+y'' + a_1(t)y' + a_0(t)y = 0 \\
+y(0) = 0 \\
+y'(0) = 0
+\end{cases}
+\]
+
+If \(a_0(t)\) and \(a_1(t)\) are continuous on \((-1, 1)\), then the solution to the IVP is unique.
+
+However, \(y = 0\) is also a solution to the IVP, leading to a contradiction.
+
+\textbf{Example:} Determine the interval of definition for the solution to the IVP (i.e., the largest interval on which the solution exists):
+
+\[
+t y'' + \frac{\tan(t)}{t-3} y' - y = e^t, \quad y(1) = 2, \quad y'(1) = 4
+\]
+
+\textbf{Solution:} Given \(t_I = 1\), we seek the largest interval containing 1 on which the coefficients and forcing function are continuous.
+
+Rewrite in standard form:
+
+\[
+y'' + \frac{\tan(t)}{t(t-3)} y' - \frac{1}{t} y = \frac{e^t}{t}
+\]
+
+Identify discontinuities:
+
+\[
+a_1(t) = \frac{\tan(t)}{t(t-3)} \quad \text{has discontinuities at} \quad t = 0, 3, \frac{\pi}{2} + k\pi
+\]
+
+\[
+a_0(t) = -\frac{1}{t} \quad \text{has a discontinuity at} \quad t = 0
+\]
+
+\[
+f(t) = \frac{e^t}{t} \quad \text{has a discontinuity at} \quad t = 0
+\]
+
+\begin{center}
+\begin{tikzpicture}
+
+% Draw the line
+\draw[thick, <->] (-2,0) -- (2,0) node[right] {$t$};
+
+% Mark and label specific points
+\foreach \x/\xtext in {-1.5/$-1$, 0/$0$, 1.5/$1$}
+  \draw[thick] (\x,3pt) -- (\x,-3pt) node[below] {\xtext};
+
+% Mark the point 1
+\draw[thick] (1.5,3pt) -- (1.5,-3pt) node[below] {$1$};
+
+% Draw the interval of continuity
+\draw[thick,<->] (0,0.5) -- (1.5,0.5);
+\node at (0.75,0.75) [above] {$0 \leq t \leq 1$};
+
+\end{tikzpicture}
+\end{center}
+
+Thus, the largest interval of continuity including \(t = 1\) is \((0, 3)\).
 
 
 
+\section*{II.2: Homogeneous Linear Equations}
 
+A homogeneous linear differential equation has the form:
+\[
+y^{(n)} + a_{n-1}(t)y^{(n-1)} + \dots + a_1(t)y' + a_0(t)y = 0
+\]
 
+If \( y_1(t) \) and \( y_2(t) \) are two solutions, then \( c_1 y_1(t) + c_2 y_2(t) \) is also a solution for any constants \( c_1 \) and \( c_2 \).
+
+\textbf{Check:}
+\[
+\frac{d}{dt}(c_1 y_1 + c_2 y_2) = c_1 y_1' + c_2 y_2'
+\]
+
+If \( y_1 \) and \( y_2 \) are solutions, then:
+\[
+(c_1 y_1 + c_2 y_2)^{(n)} + a_{n-1}(t)(c_1 y_1 + c_2 y_2)^{(n-1)} + \dots + a_1(t)(c_1 y_1 + c_2 y_2)' + a_0(t)(c_1 y_1 + c_2 y_2) = 0
+\]
+
+This simplifies to:
+\[
+c_1 (y_1^{(n)} + a_{n-1} y_1^{(n-1)} + \dots + a_1 y_1' + a_0 y_1) + c_2 (y_2^{(n)} + a_{n-1} y_2^{(n-1)} + \dots + a_1 y_2' + a_0 y_2) = 0
+\]
+
+Since \( y_1 \) and \( y_2 \) are solutions:
+\[
+c_1 \cdot 0 + c_2 \cdot 0 = 0
+\]
+
+Thus, \( c_1 y_1 + c_2 y_2 \) is a solution.
+
+\textbf{Example:} We know (i.e., we can check) that \( e^{2t} \) and \( e^{-t} \) are solutions to \( y'' - y' - 2y = 0 \).
+
+Find a solution to the IVP with \( y(0) = 4 \) and \( y'(0) = 2 \).
+
+\textbf{Solution:} We can try to look for a solution of the form:
+\[
+y = c_1 e^{2t} + c_2 e^{-t}
+\]
+
+Then,
+\[
+y'(t) = 2c_1 e^{2t} - c_2 e^{-t}
+\]
+
+Using the initial conditions:
+\[
+y(0) = c_1 + c_2 = 4
+\]
+\[
+y'(0) = 2c_1 - c_2 = 2
+\]
+
+Solving these equations, we get:
+\[
+c_1 = 2, \quad c_2 = 2
+\]
+
+Thus, the solution is:
+\[
+y = 2e^{2t} + 2e^{-t}
+\]
+
+\textbf{Example:} We can check that \( \sin(2t) \) and \( \cos(2t) \) are solutions to \( y'' + 4y = 0 \).
+
+Find a solution to the IVP with \( y(0) = 3 \) and \( y'(0) = -2 \).
+
+\textbf{Solution:} We can try to look for a solution of the form:
+\[
+y = c_1 \sin(2t) + c_2 \cos(2t)
+\]
+
+Then,
+\[
+y'(t) = 2c_1 \cos(2t) - 2c_2 \sin(2t)
+\]
+
+Using the initial conditions:
+\[
+y(0) = c_2 = 3
+\]
+\[
+y'(0) = 2c_1 = -2 \quad \Rightarrow \quad c_1 = -1
+\]
+
+Thus, the solution is:
+\[
+y = -\sin(2t) + 3\cos(2t)
+\]
+
+\textbf{Non-example:} We know that \( e^{-t} \) and \( 2e^{-t} \) are solutions to \( y'' - y' - 2y = 0 \). Solve \( y(0) = 4 \) and \( y'(0) = 2 \).
+
+\textbf{Solution:} We can try to look for a solution of the form:
+\[
+y = c_1 e^{-t} + c_2 e^{-2t}
+\]
+
+Then,
+\[
+y'(t) = -c_1 e^{-t} - 2c_2 e^{-2t}
+\]
+
+Using the initial conditions:
+\[
+y(0) = c_1 + c_2 = 4
+\]
+\[
+y'(0) = -c_1 - 2c_2 = 2
+\]
+
+Solving these equations, we get:
+\[
+0 \neq 6
+\]
+
+Thus, there is no solution.
+
+\textbf{Example:} Solve the IVP \( y'' - y' - 2y = 0 \) with \( y(0) = y_0 \) and \( y'(0) = y_1 \).
+
+\textbf{Solution:} Guess that \( y = c_1 e^{-t} + c_2 e^{-2t} \) solves the ODE.
+
+Using the initial conditions:
+\[
+ c_1 + c_2 = y_0
+\]
+\[
+2c_1 - c_2 = y_1
+\]
+
+Solving these equations simultaneously, we get:
+\[
+c_1 = \frac{y_1 + y_0}{3}
+\]
+\[
+c_2 = \frac{2y_0 - y_1}{3}
+\]
+
+Thus, the solution to the IVP is:
+\[
+y = \frac{y_1 + y_0}{3} e^{-t} + \frac{2y_0 - y_1}{3} e^{-2t}
+\]
 
 
 
