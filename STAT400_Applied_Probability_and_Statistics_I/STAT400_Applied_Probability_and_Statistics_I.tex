@@ -1682,37 +1682,33 @@ The number of all straights is equal to $(4^5-4) \times$ number of options for t
     \[
         P(F) = P(F \mid H) P(H) + P(F \mid T) P(T)
     \]
-    
     \begin{figure}[h!]
         \centering
         \begin{tikzpicture}[
             grow=right,
             level distance=4cm,
-            sibling distance=10cm,
+            level 1/.style={sibling distance=6cm},
+            level 2/.style={sibling distance=1.3cm},
             every node/.style={align=center, font=\small}
         ]
             \node {Start}
                 child { 
-                    node {Heads (H)}
-                        edge from parent node[midway, above] {\(\frac{1}{2}\)}
-                        child [sibling distance=1.5cm] {
-                            child { node {1} edge from parent node[midway, above] {\(\frac{1}{6}\)} }
-                            child { node {2} edge from parent node[midway, above] {\(\frac{1}{6}\)} }
-                            child { node {3} edge from parent node[midway, above] {\(\frac{1}{6}\)} }
-                            child { node {4} edge from parent node[midway, above] {\(\frac{1}{6}\)} }
-                            child { node {5} edge from parent node[midway, above] {\(\frac{1}{6}\)} }
-                            child { node {6} edge from parent node[midway, above] {\(\frac{1}{6}\)} }
-                        }
+                    node {Tails (T)}
+                        child { node {1} edge from parent node[above] {\(\frac{1}{4}\)} }
+                        child { node {2} edge from parent node[above] {\(\frac{1}{4}\)} }
+                        child { node {3} edge from parent node[above] {\(\frac{1}{4}\)} }
+                        child { node {4} edge from parent node[above] {\(\frac{1}{4}\)} }
+                    edge from parent node[above] {\(\frac{1}{2}\)}
                 }
                 child { 
-                    node {Tails (T)}
-                        edge from parent node[midway, below] {\(\frac{1}{2}\)}
-                        child [sibling distance=1.5cm] {
-                            child { node {1} edge from parent node[midway, above] {\(\frac{1}{4}\)} }
-                            child { node {2} edge from parent node[midway, above] {\(\frac{1}{4}\)} }
-                            child { node {3} edge from parent node[midway, above] {\(\frac{1}{4}\)} }
-                            child { node {4} edge from parent node[midway, above] {\(\frac{1}{4}\)} }
-                        }
+                    node {Heads (H)}
+                        child { node {1} edge from parent node[above] {\(\frac{1}{6}\)} }
+                        child { node {2} edge from parent node[above] {\(\frac{1}{6}\)} }
+                        child { node {3} edge from parent node[above] {\(\frac{1}{6}\)} }
+                        child { node {4} edge from parent node[above] {\(\frac{1}{6}\)} }
+                        child { node {5} edge from parent node[above] {\(\frac{1}{6}\)} }
+                        child { node {6} edge from parent node[above] {\(\frac{1}{6}\)} }
+                    edge from parent node[above] {\(\frac{1}{2}\)}
                 };
         \end{tikzpicture}
         \caption{Experiment Diagram: Coin Toss and Die Roll}
@@ -1722,6 +1718,36 @@ The number of all straights is equal to $(4^5-4) \times$ number of options for t
     \textbf{Solution:}
     
     We are to find \( P(H \mid F) \).
+
+    \[
+        \Omega = \{ (H, 1), (H, 2), (H, 3), (H, 4), (H, 5), (H, 6), (T, 1), (T, 2), (T, 3), (T, 4) \}
+    \]
+
+    \textbf{Bayes' Theorem:} Let \( H \) be the event that the coin comes up heads, and \( T \) be the event that it comes up tails.
+
+    \begin{itemize}
+        \item \( P(H) = \frac{1}{2} = P(T) \)
+        \item \( H \cup T = \Omega \)
+        \item \( H \cap T = \emptyset \)
+    \end{itemize}
+
+    \pagebreak
+
+    Thus, \( H \) and \( T \) form a partition of \( \Omega \).
+
+    \[
+        P(i \mid H) = \frac{1}{6} \quad \text{for all } i \in \{1, 2, 3, 4, 5, 6\}
+    \]
+
+    \[
+        P(i \mid T) = \frac{1}{4} \quad \text{for all } i \in \{1, 2, 3, 4\}
+    \]
+
+    \textbf{Bayes' Theorem:}
+    
+    \[
+        P(\text{Heads} \mid \text{One}) = \frac{P(\text{One} \mid \text{Heads}) \cdot P(\text{Heads})}{P(\text{One} \mid \text{Heads}) \cdot P(\text{Heads}) + P(\text{One} \mid \text{Tails}) \cdot P(\text{Tails})}
+    \]
 
     Using Bayes' Theorem,
 
@@ -1739,40 +1765,10 @@ The number of all straights is equal to $(4^5-4) \times$ number of options for t
     \]
 
     Therefore, the probability that the coin was heads given that we saw a one is \( \boxed{\frac{2}{5}} \).
-
-    \[
-        \Omega = \{ (H, 1), (H, 2), (H, 3), (H, 4), (H, 5), (H, 6), (T, 1), (T, 2), (T, 3), (T, 4) \}
-    \]
-
-    \textbf{Bayes' Theorem:} Let \( H \) be the event that the coin comes up heads, and \( T \) be the event that it comes up tails.
-
-    \begin{itemize}
-        \item \( P(H) = \frac{1}{2} = P(T) \)
-        \item \( H \cup T = \Omega \)
-        \item \( H \cap T = \emptyset \)
-    \end{itemize}
-
-    Thus, \( H \) and \( T \) form a partition of \( \Omega \).
-
-    \[
-        P(i \mid H) = \frac{1}{6} \quad \text{for all } i \in \{1, 2, 3, 4, 5, 6\}
-    \]
-
-    \[
-        P(i \mid T) = \frac{1}{4} \quad \text{for all } i \in \{1, 2, 3, 4\}
-    \]
-
-    \textbf{Bayes' Theorem:}
-    
-    \[
-        P(\text{Heads} \mid \text{One}) = \frac{P(\text{One} \mid \text{Heads}) \cdot P(\text{Heads})}{P(\text{One} \mid \text{Heads}) \cdot P(\text{Heads}) + P(\text{One} \mid \text{Tails}) \cdot P(\text{Tails})}
-    \]
-    
-    \bigskip
     
     \textbf{Problem Statement:}
     
-    A doctor is called to see a sick child in a particular neighborhood (nhd). The doctor has prior information that sick children in the nhd are suffering from either measles or the flu, and no child has both. Additionally, the doctor knows that:
+    A doctor is called to see a sick child in a particular neighborhood. The doctor has prior information that sick children in the neighborhood are suffering from either measles or the flu, and no child has both. Additionally, the doctor knows that:
     \begin{itemize}
         \item \(90\%\) of sick children have measles.
         \item The probability that a child with measles has a rash is \(0.95\).
@@ -1785,7 +1781,7 @@ The number of all straights is equal to $(4^5-4) \times$ number of options for t
     
     \textbf{Definitions:}
     \begin{itemize}
-        \item \(\Omega\): Sick children from the nhd.
+        \item \(\Omega\): Sick children from the neighborhood.
         \item \(M\): The child has measles.
         \item \(F\): The child has the flu.
         \item \(R\): The child has a rash.
@@ -1793,7 +1789,7 @@ The number of all straights is equal to $(4^5-4) \times$ number of options for t
     
     \(M\) and \(F\) form a partition of the sample space \(\Omega\).
     
-    \bigskip
+    \pagebreak
     
     \textbf{Given:}
     \[
@@ -1822,6 +1818,7 @@ The number of all straights is equal to $(4^5-4) \times$ number of options for t
     
     \textbf{Conclusion:} The probability that the child has measles given that the child has a rash is approximately \( \boxed{0.569} \).
 
+    \textbf{Problem Statement:}
     Suppose that you have 3 cards identical in every way except for their color. One card is red on both sides, one card is blue on both sides, and one card is red on one side and blue on the other. 
     You put the cards into a hat and mix them up. You pick one and put it on a desk. You see the color red. What is the probability that the other side is blue?
 
@@ -1846,9 +1843,8 @@ The number of all straights is equal to $(4^5-4) \times$ number of options for t
     \]
 
     \[
-        P(RB \mid R) = \frac{\left(\frac{1}{2}\right) \cdot \left(\frac{1}{3}\right)}{\left(\frac{1}{2}\right) \cdot \left(\frac{1}{3}\right) + 0 \cdot \left(\frac{1}{3}\right) + 1 \cdot \left(\frac{1}{3}\right)} = \frac{\frac{1}{6}}{\frac{1}{6} + 0 + \frac{1}{3}} = \frac{\frac{1}{6}}{\frac{1}{2}} = \frac{1}{3}
+        P(RB \mid R) = \frac{\left(\frac{1}{2}\right) \cdot \left(\frac{1}{3}\right)}{\left(\frac{1}{2}\right) \cdot \left(\frac{1}{3}\right) + 0 \cdot \left(\frac{1}{3}\right) + 1 \cdot \left(\frac{1}{3}\right)} = \frac{\frac{1}{6}}{\frac{1}{6} + 0 + \frac{1}{3}} = \frac{\frac{1}{6}}{\frac{1}{2}} = \boxed{\frac{1}{3}}
     \]
-
 
     \section*{Lecture 8: Thursday 9/19/2024}
 
@@ -1866,19 +1862,19 @@ The number of all straights is equal to $(4^5-4) \times$ number of options for t
 
     Random variables are based on the fact that in many situations we care about a value associated with our pick from the sample space rather than the pick itself.
 
-    \textit{Example:} A study involving the effect of a new medication on blood pressure.
+    \textbf{Example:} A study involving the effect of a new medication on blood pressure.
 
     A random variable is a function. Thinking in terms of examples may better highlight why the terminology is what it is.
 
     In order for a random variable to be useful, we should be able to compute 
     \[
-        P(X \in A) = P(\{\omega : X(\omega) \in A\})
+        P(X \in A) = P(\{\omega : X(\omega) \in A\}) \quad \text{for } A \subseteq \mathbb{R}.
     \]
-    for \(A \subseteq \mathbb{R}\).
+   
 
     \(P(X \in A)\) is the probability of running across an outcome that causes the function to take a value inside of \(A\).
 
-    \textit{Example (cont):}
+    \textbf{Example (cont):}
     \[
         P(X \in [119, 125]) = P(\{\omega \mid X(\omega) \in [119, 125]\})
     \]
@@ -1906,7 +1902,7 @@ The number of all straights is equal to $(4^5-4) \times$ number of options for t
     Suppose that an experiment consists of tossing a fair coin. Let \(X\) track the outcome of the coin toss in the natural way. (\(\Omega = \{H, T\}\)) Define \(X(T) = 0\) and \(X(H) = 1\). Compute the CDF and the distribution function of \(X\).
 
     \[
-        F_X(a) = P(X \leq a) = P(X \in (-\infty, a])
+        F_X(a) = P(X \leq a)
     \]
 
     Suppose \(a = -1.32975\):
@@ -1920,6 +1916,7 @@ The number of all straights is equal to $(4^5-4) \times$ number of options for t
         F_X(a) = 0 \quad \text{for all } a < 0
     \]
 
+    Suppose \(a = 0\):
     \[
         F_X(0) = P(X \leq 0) = \frac{1}{2}
     \]
@@ -1929,16 +1926,53 @@ The number of all straights is equal to $(4^5-4) \times$ number of options for t
         F_X(a) = P(X \leq 0.5) = P(X = 0) = \frac{1}{2}
     \]
 
+    Suppose \(0 \leq a < 1\):
+    \[
+        F_X(a) = \frac{1}{2}
+    \]
+
     Suppose \(a = 1\):
     \[
         F_X(a) = P(X \leq a) = P(X \leq 1) = P(X = 0 \text{ or } X = 1) = 1
     \]
 
-    Suppose \(a > 1\):
+    Suppose \(a = 1.5\) so \(a > 1\):
     \[
-        F_X(a) = P(X \leq a) = P(X \leq 1) = 1
+        F_X(a) = P(X \leq a) = P(X \leq 1.5) = 1
     \]
     since any outcome of \(X\) must be less than or equal to 1.
+
+
+    \begin{figure}[h!]
+        \centering
+        \begin{tikzpicture}[scale=1.5]
+            % Axes
+            \draw[->] (-0.5,0) -- (2.5,0) node[right] {$a$};
+            \draw[->] (0,-0.5) -- (0,1.5) node[above] {$F_X(a)$};
+            
+            % Function
+            \draw[thick] (-0.5,0) -- (0,0);
+            \draw[thick] (0,0.5) -- (1,0.5);
+            \draw[thick] (1,1) -- (2.5,1);
+            
+            % Points
+            \fill (0,0.5) circle (1.5pt);
+            \fill (1,1) circle (1.5pt);
+            
+            % Open circles
+            \draw (0,0) circle (1.5pt);
+            \draw (1,0.5) circle (1.5pt);
+            
+            % Labels
+            \node[below] at (-0.1,0) {0};
+            \node[below] at (1,-0.1) {1};
+            \node[left] at (0,0.5) {0.5};
+            \node[left] at (0,1) {1};
+        \end{tikzpicture}
+        \caption{CDF of $X$}
+        \label{fig:cdf-of-X}
+    \end{figure}
+
 
     \[
         F_X(a) = 
@@ -1953,7 +1987,7 @@ The number of all straights is equal to $(4^5-4) \times$ number of options for t
         \item \(\lim_{a \to -\infty} F_X(a) = 0\)
         \item \(\lim_{a \to \infty} F_X(a) = 1\)
         \item \(F_X\) is monotonically increasing, i.e., if \(a < b\), \(F_X(a) \leq F_X(b)\)
-        \item \(F_X\) is right continuous, i.e., \(\lim_{a \to a^+} F_X(a) = F_X(a)\)
+        \item \(F_X\) is right continuous, i.e., \(\lim_{a \to a^+} F_X(a) = F_X(a)\) (there are no points of discontinuity when approaching from the right side)
     \end{enumerate}
 
     \textbf{Definition:} \(X\) and \(Y\) are said to have the same distribution if \(D_X(A) = D_Y(A)\) for all \(A \subseteq \mathbb{R}\). (i.e., \(X\) and \(Y\) cannot be distinguished by looking at the probabilities alone.)
@@ -2033,12 +2067,503 @@ The number of all straights is equal to $(4^5-4) \times$ number of options for t
 
 
 
+    \section*{Lecture 9: Tuesday 9/24/2024}
+    (Was out this lecture and did not post a full recording will post when i have access to the notes - sry)
 
 
 
 
+    \section*{Lecture 10: Thursday 9/26/2024}
+
+    \subsection*{Discrete Random Variables}
+
+    \textbf{Example:} Suppose that you toss a fair coin until you see heads for the first time.
+
+    Let \(X\) be a random variable that counts the number of tosses.
+
+    Explain why \(X\) is a discrete random variable and compute its \textbf{probability mass function} (PMF).
+
+    \(X\) can only take countably many values. 
+
+    \(X\) takes values from the set \(\{*, 1, 2, 3, \ldots\}\).
+
+    This set is countable, therefore \(X\) is discrete.
+
+    Note: The asterisk (*) is used to denote all tails.
+
+    \[
+        P(X = n) = \frac{1}{2^n}
+    \]
+
+    \[
+        P_X(n) = 
+        \begin{cases} 
+            \frac{1}{2^n} & \text{if } n \in \{1, 2, 3, \ldots\} \\
+            0 & \text{otherwise}
+        \end{cases}
+    \]
+
+    \begin{figure}[h]
+        \centering
+        \begin{tikzpicture}[scale=3]
+            \draw[->] (-0.2,0) -- (5.2,0) node[right] {$a$};
+            \draw[->] (0,-0.1) -- (0,1.2) node[above] {$F_X(a)$};
+            
+            \draw[thick] (0,0) -- (1,0);
+            \draw[thick] (1,0.5) -- (2,0.5);
+            \draw[thick] (2,0.75) -- (3,0.75);
+            \draw[thick] (3,0.875) -- (4,0.875);
+            \draw[thick] (4,0.9375) -- (5,0.9375);
+            
+            \draw[dashed] (1,0) -- (1,0.5);
+            \draw[dashed] (2,0) -- (2,0.75);
+            \draw[dashed] (3,0) -- (3,0.875);
+            \draw[dashed] (4,0) -- (4,0.9375);
+            
+            \foreach \x/\y in {1/0, 2/0.5, 3/0.75, 4/0.875}
+                \draw (\x,\y) circle (0.7pt);
+            
+            \foreach \x/\y in {1/0.5, 2/0.75, 3/0.875, 4/0.9375}
+                \filldraw (\x,\y) circle (0.7pt);
+            
+            \foreach \x/\y/\label in {1/0.5/\frac{1}{2}, 2/0.75/\frac{3}{4}, 3/0.875/\frac{7}{8}, 4/0.9375/\frac{15}{16}}
+                \node[above right, font=\footnotesize] at (\x,\y) {$(\x,\label)$};
+            
+            \foreach \x in {1,2,3,4}
+                \node[below, font=\footnotesize] at (\x,-0.05) {\x};
+            
+            \foreach \y/\label in {0.5/\frac{1}{2}, 1/1}
+                \node[left, font=\footnotesize] at (-0.1,\y) {$\label$};
+        \end{tikzpicture}
+        \caption{CDF of X}
+        \label{fig:cdf_of_X}
+    \end{figure}
+    \subsubsection*{CDF of \(X\)}
+
+    \[
+        F_X(a) = 
+        \begin{cases} 
+            0 & \text{if } a < 1 \\
+            \frac{1}{2} & \text{if } 1 \leq a < 2 \\
+            \frac{3}{4} & \text{if } 2 \leq a < 3 \\
+            \frac{7}{8} & \text{if } 3 \leq a < 4 \\
+            \frac{15}{16} & \text{if } 4 \leq a < 5 \\
+            \vdots & \\
+        \end{cases}
+    \]
+
+    Recall, \(\lim_{a \to \infty} F_X(a) = 1\).
+
+    \subsection*{Continuous Random Variables}
+
+    A random variable \(X\) is said to be (absolutely) continuous if there exists a function \(f_X\) such that 
+
+    \[
+        f_X(x) \geq 0 \quad \text{and} \quad P(a \leq X \leq b) = \int_a^b f_X(x) \, dx
+    \]
+
+    \(f_X(x)\) is called the \textbf{probability density function} (PDF) of \(X\).
+
+    Note: The definition of continuous random variables is a little bit broader. We say a random variable \(X\) is continuous if its cdf is continuous. But we will not encounter them in this course, so we take absolutely continuous random variables to mean continuous random variables.
+
+    \subsubsection*{Example}
+
+    Suppose that \(X\) is a continuous random variable with a pdf 
+
+    \[
+        f_X(x) =
+        \begin{cases} 
+            1 & \text{if } x \in [0, 1] \\
+            0 & \text{otherwise}
+        \end{cases}
+    \]
+
+    \begin{enumerate}
+        \item Verify that \(f_X(x)\) is a pdf.
+        \item Compute \(P\left(\frac{1}{2} < X < \frac{3}{4}\right)\).
+        \item Compute \(P\left(X > \frac{3}{4} \mid X > \frac{1}{2}\right)\).
+        \item Compute the cdf of \(X\).
+    \end{enumerate}
 
 
+
+
+    \subsubsection*{Solution}
+
+    1) A pdf has to satisfy the following properties:
+    \begin{itemize}
+        \item \(f_X(x) \geq 0\)
+        \item \(\int_{- \infty}^{\infty} f_X(x) \, dx = 1\)
+    \end{itemize}
+
+    For the given pdf:
+    \[
+        f_X(x) =
+        \begin{cases} 
+            1 & \text{if } x \in [0, 1] \\
+            0 & \text{otherwise}
+        \end{cases}
+    \]
+
+    \begin{center}
+        \begin{tikzpicture}
+            \draw[->] (-0.5,0) -- (1.5,0) node[right] {$x$};
+            \draw[->] (0,-0.5) -- (0,1.5) node[above] {$f_X(x)$};
+            \draw[thick] (0,1) -- (1,1);
+            \draw[dashed] (0,0) -- (0,1);
+            \draw[dashed] (1,0) -- (1,1);
+            \filldraw[fill=black] (0,1) circle (1.5pt);
+            \filldraw[fill=black] (1,1) circle (1.5pt);
+            \filldraw[fill=white] (0,0) circle (1.5pt);
+            \filldraw[fill=white] (1,0) circle (1.5pt);
+            \node[below] at (1,0) {1};
+            \node[left] at (0,1) {1};
+            \node[below] at (1.5,0) {$x$};
+            \node[below left] at (0,0) {0};
+        \end{tikzpicture}
+    \end{center}
+
+    \[
+        \int_{- \infty}^{0} f_X(x) \, dx = 0
+    \]
+    \[
+        \int_{0}^{1} f_X(x) \, dx = 1
+    \]
+    \[
+        \int_{1}^{\infty} f_X(x) \, dx = 0
+    \]
+
+    Therefore:
+    \[
+        \int_{- \infty}^{\infty} f_X(x) \, dx = 1
+    \]
+
+    2) Compute \(P\left(\frac{1}{2} < X < \frac{3}{4}\right)\):
+
+    \textbf{Things to notice:} Suppose \(Y\) is a continuous random variable with pdf \(f_Y(y)\). Then for any \(a \in \mathbb{R}\), \(P(Y=a) = 0\).
+
+    \[
+        P(Y=a) = P(a \leq Y \leq a) = \int_a^a f_Y(y) \, dy = 0
+    \]
+
+    \textbf{Note:}
+    \begin{itemize}
+        \item ``Possible but not probable'': $P(X = \frac{1}{2}) = 0$
+        \item ``Impossible'': $P(X = -3) = 0$
+    \end{itemize}
+
+
+
+    For our problem:
+    \[
+        P\left(\frac{1}{2} < X < \frac{3}{4}\right) = \int_{\frac{1}{2}}^{\frac{3}{4}} f_X(x) \, dx
+    \]
+    \[
+        P\left(\frac{1}{2} < X < \frac{3}{4}\right) = \int_{\frac{1}{2}}^{\frac{3}{4}} 1 \, dx = \left. x \right|_{\frac{1}{2}}^{\frac{3}{4}} = \frac{3}{4} - \frac{1}{2} = \frac{1}{4}
+    \]
+
+    \begin{center}
+        \begin{tikzpicture}
+            \draw[->] (-0.5,0) -- (1.5,0) node[right] {$x$};
+            \draw[->] (0,-0.5) -- (0,1.5) node[above] {$f_X(x)$};
+            \draw[thick] (0,0) -- (0,1) -- (1,1) -- (1,0);
+            \fill[gray, opacity=0.5] (0.5,0) rectangle (0.75,1);
+            \node at (0.5,-0.3) {$\frac{1}{2}$};
+            \node at (0.75,-0.3) {$\frac{3}{4}$};
+            \node at (-0.2,1) {1};
+        \end{tikzpicture}
+    \end{center}
+
+    3) Compute \(P\left(X > \frac{3}{4} \mid X > \frac{1}{2}\right)\):
+    
+    \begin{center}
+        \begin{tikzpicture}
+            % Axes
+            \draw[->] (-0.2,0) -- (1.2,0) node[right] {$x$};
+            \draw[->] (0,-0.2) -- (0,1.2) node[above] {$f_X(x)$};
+            
+            % PDF
+            \draw[thick] (0,0) -- (0,1) -- (1,1) -- (1,0);
+            
+            % Shaded area for P(X > 3/4 | X > 1/2)
+            \fill[gray, opacity=0.3] (0.75,0) rectangle (1,1);
+            
+            % Vertical lines
+            \draw[dashed] (0.5,0) -- (0.5,1);
+            \draw[dashed] (0.75,0) -- (0.75,1);
+            
+            % Labels
+            \node[below] at (0.5,0) {$\frac{1}{2}$};
+            \node[below] at (0.75,0) {$\frac{3}{4}$};
+            \node[left] at (0,1) {1};
+        \end{tikzpicture}
+    \end{center}
+    
+    \[
+        P\left(X > \frac{3}{4} \mid X > \frac{1}{2}\right) = \frac{P\left(X > \frac{3}{4} \cap X > \frac{1}{2}\right)}{P\left(X > \frac{1}{2}\right)}
+    \]
+    \[
+        P\left(X > \frac{3}{4}\right) = \int_{\frac{3}{4}}^{1} 1 \, dx = 1 - \frac{3}{4} = \frac{1}{4}
+    \]
+    \[
+        P\left(X > \frac{1}{2}\right) = \int_{\frac{1}{2}}^{1} 1 \, dx = 1 - \frac{1}{2} = \frac{1}{2}
+    \]
+    \[
+        P\left(X > \frac{3}{4} \mid X > \frac{1}{2}\right) = \frac{\frac{1}{4}}{\frac{1}{2}} = \frac{1}{2}
+    \]
+
+    4) Compute the cdf of \(X\):
+
+    \[
+        F_X(a) = P(x \leq a) = \int_{- \infty}^{a} f_X(x) \, dx
+    \]
+
+    Case 1: \(a < 0\)
+    \[
+        F_X(a) = \int_{- \infty}^{a} 0 \, dx = 0
+    \]
+
+
+    \[
+        F_X(a) = 
+        \begin{cases} 
+            0 & \text{if } a < 0 \\
+            a & \text{if } 0 \leq a < 1 \\
+            1 & \text{if } a \geq 1 
+        \end{cases}
+    \]
+    \begin{center}
+        \begin{tikzpicture}
+            \begin{scope}[xshift=-3cm]
+                \draw[->] (-0.5,0) -- (1.5,0) node[right] {$x$};
+                \draw[->] (0,-0.5) -- (0,1.5) node[above] {$f_X(x)$};
+                
+                % Draw the PDF
+                \draw[thick, red] (0,1) -- (1,1);
+                \draw[thick, red] (-0.5,0) -- (0,0);
+                \draw[thick, red] (1,1) -- (1,0);
+                \draw[thick, red] (1,0) -- (1.5,0);
+                
+                % Add labels
+                \node at (1,-0.2) {1};
+                \node at (-0.2,1) {1};
+                \node[below left] at (0,0) {0};
+                
+                % Title
+                \node[above] at (0.5,2.5) {PDF of $X$};
+            \end{scope}
+            
+            \begin{scope}[xshift=3cm]
+                \draw[->] (-0.5,0) -- (1.5,0) node[right] {$x$};
+                \draw[->] (0,-0.5) -- (0,1.5) node[above] {$F_X(x)$};
+                
+                % Draw the CDF
+                \draw[thick, blue] (-0.5,0) -- (0,0);
+                \draw[thick, blue] (0,0) -- (1,1);
+                \draw[thick, blue] (1,1) -- (1.5,1);
+                
+                % Add labels and gridlines
+                \draw[dashed] (1,0) -- (1,1);
+                \draw[dashed] (0,1) -- (1,1);
+                \node at (1,-0.2) {1};
+                \node at (-0.2,1) {1};
+                
+                % Add labels for each part of the function
+                \node[below left] at (0,0) {0};
+                \node[above] at (0.5,0.5) {$x$};
+                \node[right] at (1.25,1) {1};
+                
+                % Title
+                \node[above] at (0.5,2.5) {CDF of $X$};
+            \end{scope}
+        \end{tikzpicture}
+    \end{center}
+
+    \textbf{Facts:} Let \(X\) and \(Y\) be two continuous random variables with pdfs \(f_X(x)\) and \(f_Y(y)\). Then:
+    \[
+        D_X = D_Y \text{ if and only if } F_X = F_Y \text{ if and only if } f_X(x) = f_Y(y) \text{ almost everywhere.}
+    \]
+
+    \textbf{Example:} Suppose \(X\) is a continuous random variable with pdf:
+    \[
+        f_X(x) = 
+        \begin{cases} 
+            e^{-x} & \text{if } x \geq 0 \\
+            0 & \text{otherwise}
+        \end{cases}
+    \]
+
+    Compute \(P(X > \frac{1}{2})\):
+    \begin{align*}
+        P(X > \frac{1}{2}) &= \int_{\frac{1}{2}}^{\infty} e^{-x} \, dx \\
+        &= \lim_{b \to \infty} \int_{\frac{1}{2}}^{b} e^{-x} \, dx \\
+        &= \lim_{b \to \infty} \left[ -e^{-x} \right]_{\frac{1}{2}}^{b} \\
+        &= \lim_{b \to \infty} \left[ (-e^{-b}) - (-e^{-\frac{1}{2}}) \right] \\
+        &= \lim_{b \to \infty} \left[ -e^{-b} + e^{-\frac{1}{2}} \right] \\
+        &= 0 + e^{-\frac{1}{2}} \\
+        &= e^{-\frac{1}{2}} \\
+        &= \frac{1}{\sqrt{e}}
+    \end{align*}
+
+    \begin{center}
+        \begin{tikzpicture}[scale=1.5]
+            \draw[->] (-0.5,0) -- (4.5,0) node[right] {$x$};
+            \draw[->] (0,-0.1) -- (0,1.2) node[above] {$f_X(x)$};
+            
+            % Draw the exponential function
+            \draw[thick, blue, domain=0:4, smooth, variable=\x] plot ({\x},{exp(-\x)});
+            
+            % Add labels and gridlines
+            \draw[dashed] (0,1) -- (4,1);
+            \node at (-0.2,1) {1};
+            \node at (1,-0.2) {1};
+            \node at (2,-0.2) {2};
+            \node at (3,-0.2) {3};
+            
+            % Label the function
+            \node[right] at (4,0.2) {$e^{-x}$};
+            
+            % Title
+            \node[above] at (2,1.5) {PDF of $X$: $f_X(x) = e^{-x}$ for $x \geq 0$};
+        \end{tikzpicture}
+    \end{center}
+    Compute the cdf of \(X\):
+    \begin{align*}
+        F_X(a) &= P(X \leq a) \\
+               &= \int_{-\infty}^a f_X(t) \, dt \\
+               &= \begin{cases} 
+                    0 & \text{if } a < 0 \\
+                    \int_0^a e^{-t} \, dt & \text{if } a \geq 0 
+                  \end{cases} \\
+               &= \begin{cases} 
+                    0 & \text{if } a < 0 \\
+                    [-e^{-t}]_0^a & \text{if } a \geq 0 
+                  \end{cases} \\
+               &= \begin{cases} 
+                    0 & \text{if } a < 0 \\
+                    -e^{-a} - (-e^0) = 1 - e^{-a} & \text{if } a \geq 0 
+                  \end{cases}
+    \end{align*}
+
+    Therefore, the cdf of \(X\) is:
+    \[
+        F_X(a) = 
+        \begin{cases} 
+            0 & \text{if } a < 0 \\
+            1 - e^{-a} & \text{if } a \geq 0 
+        \end{cases}
+    \]
+
+    \begin{center}
+        \begin{tikzpicture}[scale=1.5]
+            \draw[->] (-1,0) -- (4.5,0) node[right] {$a$};
+            \draw[->] (0,-0.1) -- (0,1.2) node[above] {$F_X(a)$};
+            
+            % Draw the CDF
+            \draw[thick] (-1,0) -- (0,0);
+            \draw[thick, blue, domain=0:4, smooth, variable=\a] plot ({\a},{1 - exp(-\a)});
+            
+            % Add labels and gridlines
+            \draw[dashed] (0,1) -- (4,1);
+            \node at (-0.2,1) {1};
+            \node at (1,-0.2) {1};
+            \node at (2,-0.2) {2};
+            \node at (3,-0.2) {3};
+            
+            % Label the function
+            \node[right] at (4,0.98) {$1 - e^{-a}$};
+            
+            % Title
+            \node[above] at (2,1.5) {CDF of $X$: $F_X(a) = 1 - e^{-a}$ for $a \geq 0$};
+        \end{tikzpicture}
+    \end{center}
+
+    \textbf{Properties of CDF:}
+    \begin{enumerate}
+        \item Limits:
+        \[
+            \lim_{a \to -\infty} F_X(a) = 0
+        \]
+        \[
+            \lim_{a \to \infty} F_X(a) = 1
+        \]
+        \item Right-continuity:
+        \[
+            \lim_{a \to x^+} F_X(a) = F_X(x)
+        \]
+        \item Monotonicity:
+        \[
+            \text{If } a < b, \text{ then } F_X(a) \leq F_X(b)
+        \]
+    \end{enumerate}
+
+    \textbf{Probability calculations using CDF:}
+    \begin{align*}
+        P(X \leq a) &= F_X(a) \\
+        P(X > a) &= 1 - F_X(a) \\
+        P(a < X \leq b) &= F_X(b) - F_X(a)
+    \end{align*}
+
+    \textbf{Example:} For our exponential distribution with $F_X(a) = 1 - e^{-a}$ for $a \geq 0$:
+    \begin{align*}
+        P(X > \frac{1}{2}) &= 1 - P(X \leq \frac{1}{2}) = 1 - F_X(\frac{1}{2}) \\
+        &= 1 - (1 - e^{-\frac{1}{2}}) = e^{-\frac{1}{2}}
+    \end{align*}
+
+    \begin{align*}
+        P(\frac{1}{2} < X < 10) &= F_X(10) - F_X(\frac{1}{2}) \\
+        &= (1 - e^{-10}) - (1 - e^{-\frac{1}{2}}) \\
+        &= e^{-\frac{1}{2}} - e^{-10}
+    \end{align*}
+
+    \textbf{Fact:} If $F_X$ is differentiable, with possibly finitely many exceptions, then
+    \[
+        F'_X(x) = f_X(x) \quad \text{(except where $F_X$ is not differentiable)}
+    \]
+
+    \subsection*{Expected Value}
+
+    The expected value of a random variable X, denoted as E(X), is defined as:
+
+    \[
+    E(X) = 
+    \begin{cases} 
+        \sum_{i} x_i P(X = x_i) & \text{if X is discrete} \\
+        \int_{-\infty}^{\infty} x f_X(x) \, dx & \text{if X is continuous}
+    \end{cases}
+    \]
+
+    \textbf{Properties of Expected Value:}
+    \begin{itemize}
+        \item E(X) is a ``weighted sum'' or ``weighted average'' of possible values of X.
+        \item E(X) provides a single value summary of the random variable X.
+        \item E(X) represents the long-run average of the random variable over many trials.
+    \end{itemize}
+
+    \subsection*{Important Inequalities}
+
+    \textbf{Markov's Inequality:}
+    For a non-negative random variable X and any positive number a,
+    \[
+    P(X \geq a) \leq \frac{E(X)}{a}
+    \]
+
+    \textbf{Chebyshev's Inequality:}
+    For any random variable X with finite expected value $\mu$ and finite non-zero variance $\sigma^2$,
+    \[
+    P(|X - \mu| \geq k\sigma) \leq \frac{1}{k^2}
+    \]
+
+    \subsection*{Law of Large Numbers}
+
+    \textbf{Strong Law of Large Numbers (SLLN):} 
+    If we generate a large number of independent and identically distributed random variables $X_1, \ldots, X_n$, and compute their average, then this average will converge to the expected value E(X) as n approaches infinity:
+
+    \[
+    \frac{1}{n}\sum_{i=1}^{n} X_i \approx E(X)
+    \]
+
+    This law provides a theoretical foundation for the empirical average to approximate the expected value for a large number of trials.
 
 
 
