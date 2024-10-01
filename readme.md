@@ -19,7 +19,7 @@ This repository houses meticulously crafted LaTeX notes for a range of UMD cours
 
 - MATH246: Differential Equations
 - STAT400: Applied Statistics I
-- [Add other courses as they become available]
+- MATH240: Linear Algebra
 
 ## Usage
 
@@ -58,6 +58,7 @@ If you use or build upon these notes in your work, please provide appropriate cr
 
 ## License
 
+Note these notes are based off of academic property that belongs to the University of Maryland. Please do not use it in a way that would not be approved by them and give credits where necessary.
 This project is licensed under the MIT License. You are free to use, modify, and distribute these notes, provided proper attribution is given.
 
 ---
