@@ -9,6 +9,10 @@
 \usepackage{graphicx}
 \usepackage{pgfplots}
 \usepackage{tikz}
+\usepackage{array}
+\usetikzlibrary{shapes.geometric, calc}
+\usetikzlibrary{intersections, calc}
+\usepackage{geometry}
 
 \title{Differential Equations - MATH246}
 \author{Tom Mitchell}
@@ -1292,7 +1296,8 @@ This example demonstrates an unstable stationary solution at $y = 0$.
     \label{fig:ty_plane_behavior}
 \end{figure}
 
-This figure illustrates the behavior of solutions to $y'=y^2$ near the stationary solution $y=0$. The blue curves represent solutions moving away from $y=0$, while the red curves represent solutions approaching $y=0$. This demonstrates that $y=0$ is an unstable or repelling stationary solution.
+This figure illustrates the behavior of solutions to $y'=y^2$ near the stationary solution $y=0$. The blue curves represent solutions moving away from $y=0$, while the red curves represent solutions approaching $y=0$. 
+This demonstrates that $y=0$ is an unstable or repelling stationary solution.
 
 
 
@@ -3452,6 +3457,356 @@ This is the general solution to \( y'' + 4y = 0 \).
 
 
 Theorem: if the coeffcients of a homogeneous linear ODE are continuous on \((a, b)\) and \(Y_1, \ldots, Y_n\) are solutions, then \(\text{Wr}(Y_1, \ldots, Y_n)(t)\) is never 0 on \((a, b)\) or always 0 on \((a, b)\).
+
+
+\section*{Lecture 11, Tuesday 10/1/2024}
+
+\textbf{Quiz Coverage:} II.1, II.2 (up to \& including 3), II.3.
+
+\textbf{Note:} Thursday's class is prerecorded.
+
+\textbf{Recall:} If $y_1, \ldots, y_n$ are solutions of an $n$th order linear homogeneous ODE, then:
+
+\[
+\text{Wr}(y_1, \ldots, y_n)(t) \neq 0
+\]
+
+\textbf{Reminder:} The Wronskian is defined as:
+\[
+\text{Wr}(y_1, \ldots, y_n)(t) = \det 
+\begin{pmatrix}
+y_1 & \cdots & y_n \\
+y_1' & \cdots & y_n' \\
+\vdots & \ddots & \vdots \\
+y_1^{(n-1)} & \cdots & y_n^{(n-1)}
+\end{pmatrix}
+\]
+
+Then functions of the form $y = c_1y_1 + \cdots + c_ny_n$ are solutions to every IVP with initial $t$-value $t_0$.
+
+We call such a set of functions $\{y_1, \ldots, y_n\}$ a \textit{fundamental set of solutions} at $t_0$.
+
+And $y = c_1y_1 + \cdots + c_ny_n$ is called the \textit{general solution} to the ODE (at $t_0$).
+
+\textbf{Example:} We saw $y_1 = e^{2t}$, $y_2 = e^{-t}$ are solutions to $y'' - y' - 2y = 0$
+
+and $\text{Wr}(e^{2t}, e^{-t})(t) \neq 0 \Rightarrow \{e^{2t}, e^{-t}\}$ is a fundamental set of solutions at $t$.
+
+And $y = c_1e^{2t} + c_2e^{-t}$ is the general solution at $t$.
+
+\subsection*{Natural Fundamental Sets of Solutions}
+
+Fix an initial $t$-value $t_I$. Consider the ODE:
+\[
+y^{(n)} + a_{n-1}(t)y^{(n-1)} + \cdots + a_1(t)y' + a_0(t)y = 0
+\]
+
+Define $N_k(t)$ for $k = 0, 1, \ldots, n-1$ as the solution to the IVP:
+
+\[
+\begin{cases}
+y^{(j)}(t_I) = 0 & \text{for } j \neq k \\
+y^{(k)}(t_I) = 1
+\end{cases}
+\]
+
+Explicitly:
+\begin{align*}
+N_0(t): & \quad y(t_I) = 1, \quad y'(t_I) = 0, \quad \ldots, \quad y^{(n-1)}(t_I) = 0 \\
+N_1(t): & \quad y(t_I) = 0, \quad y'(t_I) = 1, \quad \ldots, \quad y^{(n-1)}(t_I) = 0 \\
+& \vdots \\
+N_{n-1}(t): & \quad y(t_I) = 0, \quad y'(t_I) = 0, \quad \ldots, \quad y^{(n-1)}(t_I) = 1
+\end{align*}
+
+Then $\{N_0, N_1, \ldots, N_{n-1}\}$ is a fundamental set of solutions at $t_I$.
+
+Why? 
+\begin{align*}
+\text{Wr}(N_0, \ldots, N_{n-1})(t_I) &= \det
+\begin{pmatrix}
+N_0(t_I) & \cdots & N_{n-1}(t_I) \\
+N_0'(t_I) & \cdots & N_{n-1}'(t_I) \\
+\vdots & \ddots & \vdots \\
+N_0^{(n-1)}(t_I) & \cdots & N_{n-1}^{(n-1)}(t_I)
+\end{pmatrix} \\
+&= \det(I_n) = 1 \neq 0
+\end{align*}
+
+This is called the \textit{natural} fundamental set of solutions at $t_I$.
+
+\textbf{Why is this important?} The natural fundamental set of solutions allows us to easily solve initial value problems (IVPs). Consider the IVP:
+
+\[
+y^{(n-1)}(t_I) = y_{n-1}, \quad y^{(n-2)}(t_I) = y_{n-2}, \quad \ldots, \quad y'(t_I) = y_1, \quad y(t_I) = y_0
+\]
+
+The solution to this IVP is given by:
+
+\[
+y(t) = y_0N_0(t) + y_1N_1(t) + \cdots + y_{n-1}N_{n-1}(t)
+\]
+
+We can verify that this solution satisfies the initial conditions:
+
+\begin{align*}
+y(t_I) &= y_0N_0(t_I) + y_1N_1(t_I) + \cdots + y_{n-1}N_{n-1}(t_I) = y_0 \cdot 1 + y_1 \cdot 0 + \cdots + y_{n-1} \cdot 0 = y_0 \\
+y'(t_I) &= y_0N_0'(t_I) + y_1N_1'(t_I) + \cdots + y_{n-1}N_{n-1}'(t_I) = y_0 \cdot 0 + y_1 \cdot 1 + \cdots + y_{n-1} \cdot 0 = y_1 \\
+&\vdots \\
+y^{(n-1)}(t_I) &= y_0N_0^{(n-1)}(t_I) + y_1N_1^{(n-1)}(t_I) + \cdots + y_{n-1}N_{n-1}^{(n-1)}(t_I) = y_0 \cdot 0 + y_1 \cdot 0 + \cdots + y_{n-1} \cdot 1 = y_{n-1}
+\end{align*}
+This demonstrates that the natural fundamental set of solutions provides a straightforward method for constructing solutions to IVPs.
+
+\subsection*{Example: Natural Fundamental Set and IVP Solution}
+
+Consider the differential equation $y''+4y = 0$ with solutions $y_1(t) = \cos(2t)$ and $y_2(t) = \sin(2t)$.
+
+\textbf{Task 1:} Find a natural fundamental set of solutions at $t = 0$.
+
+Let $N_0(t) = c_1\cos(2t)$ and $N_1(t) = c_2\sin(2t)$.
+
+For $N_0(t)$:
+\begin{align*}
+N_0(0) &= 1 \implies c_1\cos(0) = 1 \implies c_1 = 1
+\end{align*}
+
+For $N_1(t)$:
+\begin{align*}
+N_1(0) &= 0 \quad \text{(satisfied automatically)} \\
+N_1'(0) &= 1 \implies 2c_2\cos(0) = 1 \implies c_2 = \frac{1}{2}
+\end{align*}
+
+Thus, the natural fundamental set of solutions at $t=0$ is:
+\begin{align*}
+N_0(t) &= \cos(2t) \\
+N_1(t) &= \frac{1}{2}\sin(2t)
+\end{align*}
+
+\textbf{Task 2:} Solve the following IVP:
+\begin{equation*}
+\begin{cases}
+y''+4y = 0 \\
+y(0) = 7 \\
+y'(0) = -3
+\end{cases}
+\end{equation*}
+
+The solution is given by:
+\begin{align*}
+y(t) &= 7N_0(t) - 3N_1(t) \\
+&= 7\cos(2t) - 3\left(\frac{1}{2}\sin(2t)\right) \\
+&= 7\cos(2t) - \frac{3}{2}\sin(2t)
+\end{align*}
+
+\subsection*{Linear Independence}
+
+A set of functions $\{y_1, \ldots, y_n\}$ is linearly independent on an interval $(a,b)$ if:
+\begin{equation*}
+c_1y_1(t) + \cdots + c_ny_n(t) = 0 \quad \text{for all } t \in (a,b)
+\end{equation*}
+implies $c_1 = \cdots = c_n = 0$.
+
+\textbf{Non-example:} Consider $y_1 = e^{-t}$ and $y_2 = 2e^{-t}$. Then:
+\begin{equation*}
+2y_1 - y_2 = 2e^{-t} - 2e^{-t} = 0
+\end{equation*}
+Therefore, $y_1$ and $y_2$ are linearly dependent.
+
+\textbf{Theorem 1:} If $\text{Wr}(y_1, \ldots, y_n)(t) \neq 0$ on $(a,b)$, then $y_1, \ldots, y_n$ are linearly independent on $(a,b)$.
+
+\textbf{Theorem 2:} If $\text{Wr}(y_1, \ldots, y_n)(t) = 0$ on $(a,b)$, then $y_1, \ldots, y_n$ are linearly dependent on $(a,b)$.
+
+\subsection*{II.4: Homogeneous Linear ODEs with Constant Coefficients}
+
+The general form of a homogeneous linear ODE with constant coefficients is:
+\begin{equation*}
+y^{(n)} + a_{n-1}y^{(n-1)} + \cdots + a_1y' + a_0y = 0
+\end{equation*}
+where $a_0, \ldots, a_{n-1}$ are constants.
+
+\textbf{Example:} Consider the equation $y'' - y' - 2y = 0$
+
+We have already seen that $y = e^{2t}$ and $y = e^{-t}$ are solutions.
+
+Let's guess that our solutions are of the form $y = e^{zt}$. Then:
+\begin{align*}
+y &= e^{zt} \\
+y' &= ze^{zt} \\
+y'' &= z^2e^{zt}
+\end{align*}
+
+Substituting into the original equation:
+\begin{equation*}
+z^2e^{zt} - ze^{zt} - 2e^{zt} = 0
+\end{equation*}
+
+Dividing by $e^{zt}$:
+\begin{equation*}
+z^2 - z - 2 = 0
+\end{equation*}
+
+Solving this quadratic equation:
+\begin{equation*}
+z = 2 \text{ or } z = -1
+\end{equation*}
+
+Therefore, we have solutions $y = e^{2t}$ and $y = e^{-t}$.
+
+In general, for a linear ODE with constant coefficients, we can use the characteristic polynomial to find the solutions.
+
+If we plug $y=e^{zt}$ into our ODE, we get (remembering $\frac{d^k}{dt^k} e^{zt} = z^k e^{zt}$):
+\begin{equation*}
+z^n e^{zt} + a_1 z^{n-1} e^{zt} + \cdots + a_n e^{zt} = 0
+\end{equation*}
+
+Factoring out $e^{zt}$:
+\begin{equation*}
+(z^n + a_1 z^{n-1} + \cdots + a_n) e^{zt} = 0
+\end{equation*}
+
+This gives us the characteristic polynomial:
+\[
+p(z) = z^n + a_1 z^{n-1} + \cdots + a_n
+\]
+
+Therefore, if $z$ is any root of $p(z) = 0$, then $y = e^{zt}$ is a solution to our ODE.
+
+\textbf{Note:} An $n$th order ODE corresponds to an $n$th degree polynomial, which has the potential to have $n$ roots.
+
+\textbf{Problem:} $p(z) = 0$ may have repeated roots or complex roots.
+
+\textbf{Easier case:} Simple (non-repeated) real roots
+
+In this case, we can factor $p(z)$ as:
+\[
+p(z) = (z-r_1)(z-r_2) \cdots (z-r_n)
+\]
+where $r_1, \ldots, r_n$ are distinct real numbers.
+
+\textbf{Consequence:} $e^{r_1t}, \ldots, e^{r_nt}$ are solutions
+
+It turns out that $\text{Wr}(e^{r_1t}, \ldots, e^{r_nt})(t) \neq 0$
+
+We can verify this by computing the Wronskian:
+\[
+\text{Wr}(e^{r_1t}, \ldots, e^{r_nt})(t) = 
+\begin{vmatrix}
+e^{r_1t} & e^{r_2t} & \cdots & e^{r_nt} \\
+r_1e^{r_1t} & r_2e^{r_2t} & \cdots & r_ne^{r_nt} \\
+\vdots & \vdots & \ddots & \vdots \\
+r_1^{n-1}e^{r_1t} & r_2^{n-1}e^{r_2t} & \cdots & r_n^{n-1}e^{r_nt}
+\end{vmatrix}
+\]
+
+For $n = 2$, we have:
+\[
+\begin{vmatrix}
+e^{r_1t} & e^{r_2t} \\
+r_1e^{r_1t} & r_2e^{r_2t}
+\end{vmatrix} = e^{(r_1+r_2)t}(r_2 - r_1) \neq 0
+\]
+
+since $r_2 \neq r_1$ and $e^{(r_1+r_2)t} > 0$ for all $t$.
+
+Hence, $\{e^{r_1t}, \ldots, e^{r_nt}\}$ is a fundamental set of solutions, and the general solution is:
+
+\[
+y = c_1e^{r_1t} + \cdots + c_ne^{r_nt}
+\]
+
+\textbf{Example 1:} Solve $y''+7y'+12y = 0$.
+
+Solution:
+\begin{align*}
+p(z) &= z^2+7z+12 \\
+     &= (z+3)(z+4)
+\end{align*}
+
+The roots are $r_1 = -3$ and $r_2 = -4$. Therefore, $e^{-3t}$ and $e^{-4t}$ are solutions.
+
+The general solution is:
+\[
+y = c_1e^{-4t} + c_2e^{-3t}
+\]
+
+\textbf{Example 2:} Solve $y''-2y'-y = 0$.
+Solution:
+\begin{align*}
+p(z) &= z^2-2z-1 \\
+     &= (z-(1+\sqrt{2}))(z-(1-\sqrt{2}))
+\end{align*}
+
+The characteristic equation has two distinct real roots:
+\[
+r_1 = 1+\sqrt{2} \quad \text{and} \quad r_2 = 1-\sqrt{2}
+\]
+
+Therefore, the general solution is:
+
+\[
+y = c_1e^{r_1t} + c_2e^{r_2t} = c_1e^{(1+\sqrt{2})t} + c_2e^{(1-\sqrt{2})t}
+\]
+
+where $c_1$ and $c_2$ are arbitrary constants.
+
+\textbf{Example 3:} Solve $y''' + 2y'' - y' - 2y = 0$.
+
+\textbf{Solution:}
+Let's find the characteristic equation and its roots:
+
+\begin{align*}
+p(z) &= z^3 + 2z^2 - z - 2 \\
+     &= (z+2)(z+1)(z-1)
+\end{align*}
+
+To find the roots, we can use the Rational Root Theorem:
+
+\textit{Theorem:} If $p(z) = a_nz^n + \cdots + a_1z + a_0$ is a polynomial with integer coefficients, then any rational root of $p(z) = 0$ is of the form $\pm \frac{p}{q}$, where $p$ is a factor of $a_0$ and $q$ is a factor of $a_n$.
+
+In our case, $a_0 = -2$ and $a_3 = 1$. The possible rational roots are $\pm 1, \pm 2$.
+
+Testing these values, we find the roots:
+
+\[
+r_1 = -2, \quad r_2 = -1, \quad r_3 = 1
+\]
+
+Therefore, the general solution is:
+
+\[
+y = c_1e^{-2t} + c_2e^{-t} + c_3e^t
+\]
+
+where $c_1$, $c_2$, and $c_3$ are arbitrary constants.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
