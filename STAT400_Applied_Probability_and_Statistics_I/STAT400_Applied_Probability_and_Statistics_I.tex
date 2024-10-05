@@ -3259,17 +3259,240 @@ The number of all straights is equal to $(4^5-4) \times$ number of options for t
 
 
 
+    \section*{Lecture 12: Thursday 10/3/2024}
 
-   
+    \subsection*{Special Distributions (Discrete)}
 
-                
-                
-            
+    \begin{itemize}
+        \item Bernoulli Distribution
+        \item Geometric Distribution
+        \item Binomial Distribution
+        \item Hypergeometric Distribution
+    \end{itemize}
+
+    \subsubsection*{Bernoulli Distribution}
+
+    \begin{itemize}
+        \item A Bernoulli trial is an experiment with only two possible outcomes: success (S) or failure (F).
+        \item A Bernoulli random variable $X$ is a discrete random variable with probability mass function:
         
+        \[
+        P_X(x) = 
+        \begin{cases} 
+            p & \text{if } x = 1 \text{ (success)} \\
+            q = 1 - p & \text{if } x = 0 \text{ (failure)}
+        \end{cases}
+        \]
+        
+        \item The probability of success is $p$.
+        \item We denote this as $X \sim \text{Ber}(p)$.
+        \item $p$ is a parameter that keeps track of the probability of success, which may differ between experiments modeled by Bernoulli trials.
+    \end{itemize}
+
+    \textbf{Properties:}
+    \begin{align*}
+        E(X) &= \sum xP_X(x) = 0 \cdot (1-p) + 1 \cdot p = p \\
+        V(X) &= E(X^2) - (E(X))^2 = \sum x^2 P_X(x) - p^2 = p - p^2 = p(1-p)
+    \end{align*}
+
+    \subsubsection*{Geometric Distribution}
+
+    Consider an experiment where you repeat independent Bernoulli trials until you observe the first success, at which point you stop. Let $X$ be the number of trials needed to see the first success.
+
+    \begin{itemize}
+        \item $X$ is a discrete random variable.
+        \item Let $p$ be the probability of success for an individual Bernoulli trial, where $0 < p < 1$.
+        \item We want to find the probability mass function (PMF) of $X$.
+    \end{itemize}
+
+    \textbf{Probability Mass Function:}
+
+    For $k = 1, 2, 3, \ldots$, the PMF of $X$ is given by:
+
+    \[
+    P(X = k) = (1-p)^{k-1} p
+    \]
+
+    This can be interpreted as:
+    \begin{itemize}
+        \item $(1-p)^{k-1}$: probability of $k-1$ consecutive failures
+        \item $p$: probability of success on the $k$-th trial
+    \end{itemize}
+
+    \textbf{Visual Representation:}
+
+    \begin{tikzpicture}[scale=0.8]
+        % Tree diagram
+        \node (start) at (0,0) {Start};
+        \node (f1) at (2,-1) {F};
+        \node (s1) at (2,1) {S};
+        \node (f2) at (4,-2) {F};
+        \node (s2) at (4,0) {S};
+        \node (f3) at (6,-3) {F};
+        \node (s3) at (6,-1) {S};
+        \node (dots) at (8,-4) {$\cdots$};
+        \node (sn) at (8,-2) {S};
+        
+        \draw[->] (start) -- (f1) node[midway,below left] {$1-p$};
+        \draw[->] (start) -- (s1) node[midway,above] {$p$};
+        \draw[->] (f1) -- (f2) node[midway,below left] {$1-p$};
+        \draw[->] (f1) -- (s2) node[midway,above] {$p$};
+        \draw[->] (f2) -- (f3) node[midway,below left] {$1-p$};
+        \draw[->] (f2) -- (s3) node[midway,above] {$p$};
+        \draw[->] (f3) -- (dots) node[midway,below left] {$1-p$};
+        \draw[->] (f3) -- (sn) node[midway,above] {$p$};
+       
+    \end{tikzpicture}
+
+    Where F represents failure and S represents success.
+
+    \textbf{Note:} The geometric distribution models the number of trials until the first success, including the successful trial.
+
+    The probability mass function $P_X(x)$ for the geometric distribution is:
+
+    \[
+    P_X(x) = 
+    \begin{cases}
+        (1-p)^{x-1}p & \text{for } x = 1, 2, 3, \ldots \\
+        0 & \text{otherwise}
+    \end{cases}
+    \]
+
+    where $p$ is the probability of success on each trial.
+
+    We denote this as $X \sim \text{Geom}(p)$
+
+    The expected value is:
+    \[
+    E(X) = \frac{1}{p}
+    \]
+
+    \subsubsection*{Example: Lottery}
+    Suppose there is a lottery where the chances of winning are $\frac{1}{10^6}$. What does $X \sim \text{Geom}(\frac{1}{10^6})$ and $E(X) = 10^6$ tell you about this? Say you always buy the ticket with your collection of lucky numbers.
+
+    \begin{itemize}
+        \item $X$ represents the number of times the lottery is played until you win.
+        \item On average $(E(X))$, you need to play the lottery $10^6$ times to see your first win.
+    \end{itemize}
+    
+    \subsubsection*{Example: Probability Calculation}
+    Suppose that $X \sim \text{Geom}(\frac{1}{3})$. What is the probability that $X > 2$ (i.e., $P(X > 2)$)?
+    
+    \begin{align*}
+    P(X > 2) &= 1 - P(X \leq 2) \\
+    &= 1 - \sum_{x=1}^{2} \frac{1}{3} \left(\frac{2}{3}\right)^{x-1} \\
+    &= 1 - \left[\frac{1}{3} + \frac{1}{3} \cdot \frac{2}{3}\right] \\
+    &= 1 - \frac{5}{9} = \frac{4}{9}
+    \end{align*}
+    
+    Note: $p = \frac{1}{3}$ and $1-p = \frac{2}{3}$
+
+    \subsubsection*{Binomial Distribution}
+
+    Suppose that a fixed number of Bernoulli trials $n$, each trial with a probability of success $p$, are conducted in an independent manner. Let $X$ be the total number of successes. $X$ is a discrete random variable and we say that $X \sim \text{Bin}(n, p)$. In other words, $X$ has a binomial distribution with parameters $n$ and $p$.
+
+    Note: $X \sim \text{Bin}(1, p)$ is the same as $X \sim \text{Ber}(p)$.
+
+    To derive $P_X(x)$:
+
+    \begin{itemize}
+        \item Consider a sequence: $\underbrace{S \ldots S}_{(k \text{ successes})} \underbrace{F \ldots F}_{(n-k \text{ failures})}$
+        \item Probability of this sequence: $p^k(1-p)^{n-k}$
+        \item Number of possible rearrangements: $\binom{n}{k}$
+    \end{itemize}
+
+    \textbf{Note:} recall that $\binom{n}{k} = \frac{n!}{k!(n-k)!}$
+
+    Therefore, the probability mass function is:
+
+    \[
+    P_X(x) = 
+    \begin{cases}
+        \binom{n}{x} p^x (1-p)^{n-x}, & x = 0, 1, 2, \ldots, n \\
+        0, & \text{otherwise}
+    \end{cases}
+    \]
+    
+    \textbf{Properties of Binomial Distribution:}
+    \begin{align*}
+        E(X) &= np \\
+        V(X) &= npq \quad \text{where } q = 1-p
+    \end{align*}
+
+    Consider a biased coin that comes up heads with a probability of $\frac{1}{4}$. We flip this coin 32 times in succession. Calculate the following:
+
+    \begin{enumerate}
+        \item What is the probability we see exactly 12 heads?
+        \item What is the probability we see between 7 and 12 heads?
+        \item What is the probability we see 20 tails?
+        \item What is the average number of heads (expected number of heads)?
+    \end{enumerate}
+
+    If we define $X$ as the random variable representing the number of heads observed, then $X$ follows a binomial distribution with parameters $n=32$ and $p=\frac{1}{4}$, i.e., $X \sim \text{Bin}(32, \frac{1}{4})$
+
+    \begin{enumerate}
+        \item $P(X = 12)$:
+            \[P_X(x) = \begin{cases} 
+                \binom{32}{12} \left(\frac{1}{4}\right)^{12} \left(\frac{3}{4}\right)^{20} & \text{if } x = 12 \\
+                0 & \text{otherwise}
+            \end{cases}\]
+
+            So $P(X = 12) = \binom{32}{12} \left(\frac{1}{4}\right)^{12} \left(\frac{3}{4}\right)^{20}$
+        \item $P(7 < X < 12)$ (There is some ambiguity in whether 7 and 12 are included but unless indicated otherwise between \textbf{excludes} endpoints):
+            \[P_X(x) = \begin{cases} 
+                \binom{32}{x} \left(\frac{1}{4}\right)^{x} \left(\frac{3}{4}\right)^{32-x} & \text{if } x = 7, 8, 9, 10, 11, 12 \\
+                0 & \text{otherwise}
+            \end{cases}\]
+
+            So $P(7 < X < 12) = \sum_{x=8}^{11} P_X(x) = \sum_{x=8}^{11} \binom{32}{x} \left(\frac{1}{4}\right)^{x} \left(\frac{3}{4}\right)^{32-x}$
+
+        \item $P(Y = 20)$ (equivalent to 20 tails):
+            \[P_Y(y) = \begin{cases} 
+                \binom{32}{20} \left(\frac{3}{4}\right)^{20} \left(\frac{1}{4}\right)^{12} & \text{if } y = 20 \\
+                0 & \text{otherwise}
+            \end{cases}\]
+
+            So $P(Y = 20) = \binom{32}{20} \left(\frac{3}{4}\right)^{20} \left(\frac{1}{4}\right)^{12}$
+
+        \item $E(X) = np = 32 \cdot \frac{1}{4} = 8$
+
+        \item $V(X) = npq = 32 \cdot \frac{1}{4} \cdot \frac{3}{4} = 6$
+    \end{enumerate}
+
+    
 
 
 
 
+
+
+    
+
+
+    
+
+    
+    
+
+
+    
+
+
+    
+    
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
 
 
 
