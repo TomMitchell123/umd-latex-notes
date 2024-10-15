@@ -3460,19 +3460,150 @@ The number of all straights is equal to $(4^5-4) \times$ number of options for t
         \item $V(X) = npq = 32 \cdot \frac{1}{4} \cdot \frac{3}{4} = 6$
     \end{enumerate}
 
-    
+    \section*{Lecture 13: Tuesday 10/8/2024}
+
+    (went over study guide for exam 1 $-$ I don't see a reason to put this here)
 
 
+    \section*{Lecture 14: Thursday 10/10/2024}
 
+    (Exam 1)
 
+    \pagebreak
 
+    \section*{Lecture 15: Tuesday 10/15/2024}
 
-    
+    \subsection*{Special Discrete Distributions}
 
+    \begin{itemize}
+        \item Bernoulli Distribution
+        \item Geometric Distribution
+        \item Binomial Distribution
+        \item Hypergeometric Distribution
+        \item Poisson Distribution
+        \item Poisson Process
+    \end{itemize}
 
-    
+    \subsubsection*{Hypergeometric Distribution}
 
-    
+    Suppose an experiment involves randomly selecting $n$ items from a population of size $N$ that contains $M$ successes.
+
+    Let $X$ be a random variable that counts the number of successes in the sample.
+
+    Then $X$ follows a hypergeometric distribution with parameters $N$, $M$, and $n$, denoted as:
+
+    $X \sim \text{Hypergeometric}(N, M, n)$
+
+    Where:
+    \begin{itemize}
+        \item $N$ is the total population size
+        \item $M$ is the number of successes in the population
+        \item $n$ is the number of items drawn from the population
+    \end{itemize}
+
+    The probability mass function is given by:
+
+    \[P(X = x) = \frac{\binom{M}{x} \binom{N-M}{n-x}}{\binom{N}{n}}\]
+
+    for $x = 0, 1, 2, ..., \min(n, M)$
+
+    Note: The binomial distribution can approximate the hypergeometric distribution under suitable circumstances.
+
+    \subsubsection*{Poisson Distribution}
+
+    Let $\lambda > 0$ be fixed. A random variable $X$ has a Poisson distribution with parameter $\lambda$, written as $X \sim \text{Poisson}(\lambda)$, if:
+
+    \[P_X(x) = P(X = x) = \frac{\lambda^x e^{-\lambda}}{x!} \quad \text{for } x = 0, 1, 2, ...\]
+
+    Where $\lambda$ is the average number of successes per unit of time or space.
+
+    Verify that $P_X(x)$ is a valid PMF:
+
+    \textbf{Verification that $P_X(x)$ is a valid PMF:}
+
+    \begin{enumerate}
+        \item $P_X(x) \geq 0$ for all $x$:
+            \begin{itemize}
+                \item By convention, $P_X(x) = 0$ for $x \notin \{0, 1, 2, \ldots\}$
+                \item For $x \in \mathbb{N} \cup \{0\}$, $P_X(x) > 0$ because:
+                    \begin{itemize}
+                        \item $e^{-\lambda} > 0$
+                        \item $\lambda^x > 0$
+                        \item $x! > 0$
+                    \end{itemize}
+            \end{itemize}
+            Therefore, $P_X(x)$ is non-negative for all $x$.
+
+        \item $\sum_{x=0}^{\infty} P_X(x) = 1$:
+            \begin{align*}
+                \sum_{x=0}^{\infty} P_X(x) &= \sum_{x=0}^{\infty} \frac{\lambda^x e^{-\lambda}}{x!} \\
+                &= e^{-\lambda} \sum_{x=0}^{\infty} \frac{\lambda^x}{x!} \\
+                &= e^{-\lambda} \cdot e^{\lambda} \\
+                &= 1
+            \end{align*}
+    \end{enumerate}
+
+    Therefore, $P_X(x)$ is a valid PMF.
+
+    \textbf{Expected Value and Variance:}
+
+    \begin{itemize}
+        \item Expected Value:
+            \begin{align*}
+                E(X) &= \sum_{x=0}^{\infty} x \cdot P_X(x) \\
+                &= \sum_{x=0}^{\infty} x \cdot \frac{\lambda^x e^{-\lambda}}{x!} \\
+                &= \lambda e^{-\lambda} \sum_{x=1}^{\infty} \frac{\lambda^{x-1}}{(x-1)!} \\
+                &= \lambda e^{-\lambda} \cdot e^{\lambda} \\
+                &= \lambda
+            \end{align*}
+
+        \item Variance:
+            \begin{align*}
+                V(X) &= E(X^2) - (E(X))^2 \\
+                &= \lambda + \lambda^2 - \lambda^2 \\
+                &= \lambda
+            \end{align*}
+    \end{itemize}
+
+    \textbf{Poisson Approximation to Binomial:}
+
+    Let $X \sim \text{Bin}(n, p)$ and $Y \sim \text{Poisson}(np)$. Then for any subset $A \subseteq \{0, 1, 2, \ldots\}$:
+
+    \[|P(X \in A) - P(Y \in A)| \leq np^2\]
+
+    Note: $E(X) = E(Y) = np$
+
+    Examples:
+    \begin{itemize}
+        \item For $n = 100$, $p = \frac{1}{2}$:
+            \[|P(X \in A) - P(Y \in A)| \leq 100 \cdot \left(\frac{1}{2}\right)^2 = 25\]
+        
+        \item For $n = 100$, $p = \frac{1}{10^4}$:
+            \[|P(X \in A) - P(Y \in A)| \leq 100 \cdot \left(\frac{1}{10^4}\right)^2 = \frac{1}{10^6}\]
+    \end{itemize}
+
+    The Poisson distribution can be used to approximate probabilities of rare events (when $np$ is small). This is known as the law of rare events.
+
+    \textbf{Example:} Suppose a large factory with many workers experiences 3 accidents each month on average. Approximate the probability that a particular month has 2 accidents.
+
+    Solution:
+    \begin{itemize}
+        \item Let $X$ be the number of accidents in a fixed month
+        \item Assume $X \sim \text{Poisson}(3)$ since $E(X) = 3$
+        \item $P(X = 2) = e^{-3} \frac{3^2}{2!} \approx 0.2240$
+    \end{itemize}
+
+    \textbf{Poisson Process:}
+
+    A Poisson process models occurrences of events over time. A Poisson Process with intensity or rate $\lambda > 0$ is a collection of random points on $[0, \infty)$ with the following properties:
+
+    \begin{enumerate}
+        \item The points are distinct.
+        \item The number of points in a bounded interval $I \subseteq [0, \infty)$, denoted by $N(I)$, follows a Poisson distribution with parameter $\lambda \cdot \text{length}(I)$.
+        \item If $I_1, I_2, \ldots, I_n$ are non-overlapping intervals in $[0, \infty)$, then $N(I_1), N(I_2), \ldots, N(I_n)$ are independent random variables.
+    \end{enumerate}
+
+   
     
 
 
