@@ -3603,19 +3603,279 @@ The number of all straights is equal to $(4^5-4) \times$ number of options for t
         \item If $I_1, I_2, \ldots, I_n$ are non-overlapping intervals in $[0, \infty)$, then $N(I_1), N(I_2), \ldots, N(I_n)$ are independent random variables.
     \end{enumerate}
 
-   
-    
+   \pagebreak
 
+   \section*{Lecture 16: Thursday 10/17/2024}
 
-    
+   \subsection*{Poisson Process}
 
+   \begin{tikzpicture}
+   \draw[->] (0,0) -- (10,0) node[right] {$[0,\infty)$};
+   \foreach \x in {1,3,4,6,8}
+     \draw (\x,0.1) -- (\x,-0.1) node[below] {X};
+   \end{tikzpicture}
 
-    
-    
-    
-    
+   (X is a event that takes place)
 
+   A Poisson process with intensity (rate) $\lambda > 0$ is a collection of random points on $[0, \infty)$ with the following properties:
+
+   \begin{itemize}
+     \item The points are distinct.
+     \item The number of points in any interval $I \subseteq [0, \infty)$, denoted by $N(I)$, follows a Poisson distribution with parameter $\lambda \cdot \text{length}(I)$.
+     \item If $I_1, I_2, \ldots, I_n$ are non-overlapping intervals in $[0, \infty)$, then $N(I_1), N(I_2), \ldots, N(I_n)$ are independent random variables.
+   \end{itemize}
+
+   \textbf{Example:} Suppose customers arrive at a store according to a Poisson process with intensity 5/hr. The store is open from 9am to 6pm.
+
+   \begin{enumerate}
+     \item[i)] Find the probability that no customer comes to the store within one hour of opening.
+     
+     $N([9, 10]) \sim \text{Poisson}(5)$
+     
+     $P(N([9, 10]) = 0) = e^{-5} \frac{5^0}{0!} = e^{-5}$
+
+     \item[ii)] Find the probability that there are two customers between 9-10, three customers between 10-10:30, and five between 2-3:30.
+     
+     $P(N([9, 10]) = 2, N([10, 10:30]) = 3, N([14, 15:30]) = 5)$
+     
+     $= P(N([9, 10]) = 2) \cdot P(N([10, 10:30]) = 3) \cdot P(N([14, 15:30]) = 5)$
+     
+     Where:
+     \begin{align*}
+       N([9, 10]) &\sim \text{Poisson}(5) \\
+       N([10, 10:30]) &\sim \text{Poisson}(2.5) \\
+       N([14, 15:30]) &\sim \text{Poisson}(7.5)
+     \end{align*}
+     
+     Required probability:
+     \begin{align*}
+       &= \frac{5^2}{2!} e^{-5} \cdot \frac{2.5^3}{3!} e^{-2.5} \cdot \frac{7.5^5}{5!} e^{-7.5} \\
+       &= e^{-15} \cdot \frac{5^2}{2!} \cdot \frac{2.5^3}{3!} \cdot \frac{7.5^5}{5!}
+     \end{align*}
+
+     \item[iii)] Find the probability that three customers arrive between 10-10:30 given 12 customers showed up between 10-12.
+     
+     \begin{align*}
+         P(N([10, 10.5]) = 3 \mid N([10, 12]) = 12) &= \frac{P(N([10, 10.5]) = 3, N([10.5, 12]) = 9)}{P(N([10, 12]) = 12)} \\[1ex]
+         &= \frac{P(N([10, 10.5]) = 3) \cdot P(N([10.5, 12]) = 9)}{P(N([10, 12]) = 12)} \\[1ex]
+         &= \frac{e^{-2.5} \frac{2.5^3}{3!} \cdot e^{-7.5} \frac{7.5^9}{9!}}{e^{-10} \frac{10^{12}}{12!}} \\[1ex]
+         &= \frac{2.5^3 \cdot 7.5^9 \cdot 12!}{3! \cdot 9! \cdot 10^{12}}
+     \end{align*}
+    \end{enumerate}
+
+    \subsection*{Special Distributions}
+
+    \subsubsection*{Continuous Distributions}
+
+    \begin{itemize}
+        \item Uniform Distribution
+        \item Exponential Distribution
+        \item Normal Distribution
+    \end{itemize}
+
+    \subsubsection*{Uniform Distribution}
+
+    In the discrete case, uniform meant that each individual outcome was equally likely.
+
+    For any continuous random variable $X$, $P(X = a) = \int_{a}^{a} f(x) dx = 0$ for any specific value $a$.
+
+    So directly extending this idea doesn't work. For a continuous random variable, a reasonable way to extend this is to say that no one region should have a higher probability of producing an outcome as any other as long as both regions have the same length.
+
+    If $X \sim U([a, b])$, then:
+
+    \[
+    f_X(x) = \begin{cases} 
+        \frac{1}{b-a} & \text{if } a \leq x \leq b \\
+        0 & \text{otherwise}
+    \end{cases}
+    \]
+
+    \[
+    F_X(x) = \begin{cases} 
+        0 & \text{if } x < a \\
+        \frac{x-a}{b-a} & \text{if } a \leq x \leq b \\
+        1 & \text{if } x > b
+    \end{cases}
+    \]
+
+    % PDF of Uniform Distribution
+    \begin{figure}[h]
+        \centering
+        \begin{tikzpicture}
+            \begin{axis}[
+                width=0.45\textwidth,
+                height=0.3\textwidth,
+                xlabel=$x$,
+                ylabel=$f_X(x)$,
+                xmin=0, xmax=4,
+                ymin=0, ymax=0.6,
+                xtick={1,3},
+                xticklabels={$a$,$b$},
+                ytick={0,0.5},
+                yticklabels={0,$\frac{1}{b-a}$},
+                title={PDF of $U(a,b)$},
+                axis lines=left,
+                clip=false
+            ]
+                \addplot[
+                    domain=1:3,
+                    fill=blue!20,
+                    draw=blue,
+                    thick
+                ] {0.5} \closedcycle;
+                \draw[dashed] (axis cs:1,0) -- (axis cs:1,0.5);
+                \draw[dashed] (axis cs:3,0) -- (axis cs:3,0.5);
+                \addplot[domain=0:1, draw=black, thick] {0};
+                \addplot[domain=3:4, draw=black, thick] {0};
+            \end{axis}
+        \end{tikzpicture}
+        \hfill
+        \begin{tikzpicture}
+            \begin{axis}[
+                width=0.45\textwidth,
+                height=0.3\textwidth,
+                xlabel=$x$,
+                ylabel=$F_X(x)$,
+                xmin=0, xmax=4,
+                ymin=0, ymax=1.1,
+                xtick={1,3},
+                xticklabels={$a$,$b$},
+                ytick={0,1},
+                title={CDF of $U(a,b)$},
+                axis lines=left,
+                clip=false
+            ]
+                \addplot[domain=0:1, draw=blue, thick] {0};
+                \addplot[
+                    domain=1:3,
+                    draw=blue,
+                    thick
+                ] {(x-1)/2};
+                \addplot[domain=3:4, draw=blue, thick] {1};
+            \end{axis}
+        \end{tikzpicture}
+        \caption{PDF and CDF of Uniform Distribution $U(a,b)$}
+    \end{figure}
+
+    \[
+    E(X) = \int_{-\infty}^{\infty} x f_X(x) dx = \int_{a}^{b} x \frac{1}{b-a} dx = \frac{a+b}{2}
+    \]
     
+    \[
+    V(X) = E(X^2) - (E(X))^2 = \int_{-\infty}^{\infty} x^2 f_X(x) dx - (\frac{a+b}{2})^2 = \frac{(b-a)^2}{12}
+    \]
+
+    \subsubsection*{Exponential Distribution}
+
+    The exponential distribution is related to the Poisson distribution.
+
+    We say that $X \sim \text{Exp}(\lambda)$ if:
+
+    \[
+    f_X(x) = \begin{cases} 
+        \lambda e^{-\lambda x} & \text{if } x \geq 0 \\
+        0 & \text{otherwise}
+    \end{cases}
+    \]
+
+    \begin{figure}[h]
+        \centering
+        \begin{tikzpicture}
+            \begin{axis}[
+                width=0.8\textwidth,
+                height=0.5\textwidth,
+                xlabel=$x$,
+                ylabel=$f_X(x)$,
+                xmin=0, xmax=5,
+                ymin=0, ymax=1.2,
+                samples=200,
+                domain=0:5,
+                legend pos=north east,
+                title={PDF of Exponential Distribution},
+                grid=major,
+                axis lines=left,
+                ytick={0,0.2,0.4,0.6,0.8,1,1.2},
+                xtick={0,1,2,3,4,5}
+            ]
+                \addplot[red, thick, smooth] {0.5*exp(-0.5*x)};
+                \addlegendentry{$\lambda = 0.5$}
+                
+                \addplot[blue, thick, smooth] {exp(-x)};
+                \addlegendentry{$\lambda = 1$}
+                
+                \addplot[green!60!black, thick, smooth] {2*exp(-2*x)};
+                \addlegendentry{$\lambda = 2$}
+            \end{axis}
+        \end{tikzpicture}
+        \caption{Probability Density Function (PDF) of Exponential Distribution for different $\lambda$ values}
+    \end{figure}
+
+    The exponential distribution is often used to model wait times, with $\lambda = \frac{1}{\text{average wait}}$.
+
+    \[
+    E(X) = \frac{1}{\lambda}
+    \]
+
+    \[
+    V(X) = \frac{1}{\lambda^2}
+    \]
+
+    \[
+    F_X(x) = \begin{cases} 
+        0 & \text{if } x < 0 \\
+        1 - e^{-\lambda x} & \text{if } x \geq 0
+    \end{cases}
+    \]
+
+    \begin{figure}[h]
+        \centering
+        \begin{tikzpicture}
+            \begin{axis}[
+                width=0.8\textwidth,
+                height=0.4\textwidth,
+                xlabel=$x$,
+                ylabel=$F_X(x)$,
+                xmin=0, xmax=5,
+                ymin=0, ymax=1,
+                samples=100,
+                domain=0:5,
+                legend pos=south east,
+                title={CDF of Exponential Distribution}
+            ]
+                \addplot[red, thick] {1 - exp(-0.5*x)};
+                \addlegendentry{$\lambda = 0.5$}
+                
+                \addplot[blue, thick] {1 - exp(-x)};
+                \addlegendentry{$\lambda = 1$}
+                
+                \addplot[green, thick] {1 - exp(-2*x)};
+                \addlegendentry{$\lambda = 2$}
+            \end{axis}
+        \end{tikzpicture}
+        \caption{Cumulative Distribution Function (CDF) of Exponential Distribution for different $\lambda$ values}
+    \end{figure}
+
+    \[
+    F_X(x) = \int_{-\infty}^{x} f_X(t) dt = 1 - e^{-\lambda x}
+    \]
+
+    \[
+    F_X(x) = \int_{0}^{x} \lambda e^{-\lambda t} dt = 1 - e^{-\lambda x}
+    \]
+
+    \subsubsection*{Example: Restaurant Wait Times}
+
+    The average wait time at a restaurant to be seated is 2 minutes. Two customers walk into the restaurant at different times of the day. What is the probability they both were seated within 4 minutes of their arrival? (Assume that the wait times are exponentially distributed)
+
+    Let $X_1 \sim \text{Exp}(0.5)$ be the wait time for the 1st customer and $X_2 \sim \text{Exp}(0.5)$ be the wait time for the 2nd customer.
+
+    \begin{align*}
+    P(X_1 \leq 4, X_2 \leq 4) &= P(X_1 \leq 4) \cdot P(X_2 \leq 4) \quad \text{(Assuming independence)} \\
+    &= (1 - e^{-0.5 \cdot 4}) \cdot (1 - e^{-0.5 \cdot 4}) \\
+    &= (1 - e^{-2})^2
+    \end{align*}
+
+    Note: It's often faster to use the CDF instead of computing integrals.
 
     
 
