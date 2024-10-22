@@ -3155,6 +3155,11 @@ y = \frac{y_1 + y_0}{3} e^{-t} + \frac{2y_0 - y_1}{3} e^{-2t}
 
 \pagebreak
 
+\section*{Lecture 9, Tuesday 9/24/2024}
+
+(Exam 1)
+
+\pagebreak
 
 \section*{Lecture 10, Thursday 9/26/2024}
 
@@ -3778,78 +3783,822 @@ y = c_1e^{-2t} + c_2e^{-t} + c_3e^t
 
 where $c_1$, $c_2$, and $c_3$ are arbitrary constants.
 
+\section*{Lecture 12, Thursday 10/3/2024}
+
+\subsection*{II.4 Continued: Real Roots with Multiplicity}
+
+\textbf{Recall:} For a linear homogeneous ODE of order $n$:
+\[
+y^{(n)} + a_{n-1}y^{(n-1)} + \cdots + a_1y' + a_0y = 0
+\]
+The characteristic polynomial is:
+\[
+p(z) = z^n + a_{n-1}z^{n-1} + \cdots + a_1z + a_0
+\]
+
+\textbf{Key Points:}
+\begin{itemize}
+    \item If $r$ is a real root of $p(z)$, then $e^{rt}$ is a solution to the ODE.
+    \item For real roots with multiplicity $k > 1$:
+    \begin{itemize}
+        \item $(z-r)$ appears $k$ times in the factorization of $p(z)$
+        \item If $p(z) = (z-r)^k q(z)$, then $e^{rt}, te^{rt}, t^2e^{rt}, \ldots, t^{k-1}e^{rt}$ are solutions to the ODE.
+    \end{itemize}
+\end{itemize}
+
+\textbf{Example:} Solve $y''' + 2y'' + y' = 0$
+
+\textbf{Solution:}
+\begin{enumerate}
+    \item Characteristic polynomial: $p(z) = z^3 + 2z^2 + z$
+    \item Factor $p(z)$: $z(z+1)^2 = 0$
+    \item Roots: $z = 0$ (multiplicity 1), $z = -1$ (multiplicity 2)
+    \item Solutions: $e^{0t} = 1$, $e^{-t}$, $te^{-t}$
+    \item General solution: $y = c_1 + c_2e^{-t} + c_3te^{-t}$
+\end{enumerate}
+
+\textbf{Theorem:} $e^{rt}, te^{rt}, \ldots, t^{k-1}e^{rt}$ are linearly independent.
+
+\textbf{Proof sketch for $k=2$:}
+Calculate the Wronskian:
+\[
+\text{Wr}(e^{rt}, te^{rt})(t) = \begin{vmatrix}
+e^{rt} & te^{rt} \\
+re^{rt} & e^{rt} + rte^{rt}
+\end{vmatrix} = e^{2rt} \neq 0
+\]
+
+\textbf{Why this works:}
+When we substitute $y = e^{zt}$ into the ODE, we get $p(z)e^{zt} = 0$.
+This is because:
+\[
+\frac{d^k}{dt^k} (e^{zt}) = z^k e^{zt}
+\]
 
+Note: $te^{zt} = \frac{\partial}{\partial z}(e^{zt})$
+
+So:
+\begin{align*}
+\frac{d^k}{dt^k}(te^{zt}) &= z^k e^{zt} + k z^{k-1} e^{zt} \\
+&= e^{zt}(tz^k + k z^{k-1})
+\end{align*}
+
+Plugging $te^{zt}$ into the ODE, we get:
+\[
+p'(z) + tp(z)e^{zt}
+\]
+This is called a key identity.
+
+\textbf{Fact:} $r$ is a double root of $p(z)$ if and only if $p(z) = (z-r)^2 q(z)$ for some polynomial $q(z)$.
+
+In this case, $p(r) = 0$ and $p'(r) = 0$.
+
+If $r$ is a double root, then plugging $z = r$ into the key identity shows that $te^{rt}$ is a solution:
+\[
+(p'(r) + tp(r))e^{rt} = 0 \implies te^{rt} \text{ is a solution}
+\]
+
+Similarly, plugging $t^2e^{rt}$ into the ODE gives:
+\[
+(p''(r) + 2tp'(r) + t^2p(r))e^{rt} = 0 \implies t^2e^{rt} \text{ is a solution}
+\]
+
+\textbf{Example:} Solve $y^{(7)} - 6y^{(5)} + 9y^{(3)} = 0$
+
+\textbf{Solution:} 
+Characteristic polynomial: $p(z) = z^7 - 6z^5 + 9z^3 = z^3(z^2-3)^2$
+
+Roots:
+\begin{itemize}
+    \item $z = 0$ (multiplicity 3)
+    \item $z = \sqrt{3}$ (multiplicity 2)
+    \item $z = -\sqrt{3}$ (multiplicity 2)
+\end{itemize}
+
+Solutions: $1, t, t^2, e^{\sqrt{3}t}, te^{\sqrt{3}t}, e^{-\sqrt{3}t}, te^{-\sqrt{3}t}$
+
+General solution:
+\[
+y = c_1 + c_2t + c_3t^2 + c_4e^{\sqrt{3}t} + c_5te^{\sqrt{3}t} + c_6e^{-\sqrt{3}t} + c_7te^{-\sqrt{3}t}
+\]
+
+\subsection*{Complex Roots}
+
+\textbf{Example:} Solve $y'' + 2y' + 2y = 0$
 
+\textbf{Solution:} 
+Characteristic polynomial: $p(z) = z^2 + 2z + 2$
 
+Roots: $z = -1 \pm i$
 
+For complex roots, we use Euler's identity: $e^{i\theta} = \cos\theta + i\sin\theta$
+
+In general, for a complex root $r + si$:
+\[
+e^{(r+si)t} = e^{rt}(\cos(st) + i\sin(st)) = e^{rt}\cos(st) + ie^{rt}\sin(st)
+\]
+Whenever we have a root $r + si$ of $p(z)$, we also get the conjugate root $r - si$.
+\subsection*{Complex Roots}
+
+For complex roots $r \pm si$, we use the following properties:
+
+\begin{align*}
+\cos(-x) &= \cos(x) \\
+\sin(-x) &= -\sin(x)
+\end{align*}
+
+This leads to two linearly independent solutions:
+\begin{align*}
+e^{rt}\cos(st) &\text{ is a solution} \\
+e^{rt}\sin(st) &\text{ is a solution}
+\end{align*}
+
+\textbf{Upshot:} When $r \pm si$ is a root of the characteristic polynomial, we get two solutions: $e^{rt}\cos(st)$ and $e^{rt}\sin(st)$.
+
+\textbf{Example 1:} Solve $y'' + 2y' + 2y = 0$
+
+\textbf{Solution:} 
+The characteristic polynomial $p(z) = z^2 + 2z + 2$ has roots $-1 \pm i$.
+Therefore, the solutions are $e^{-t}\cos(t)$ and $e^{-t}\sin(t)$.
+
+General solution: $y = c_1e^{-t}\cos(t) + c_2e^{-t}\sin(t)$
+
+\textbf{Example 2:} Solve $y''+4y=0$
+
+\textbf{Solution:} 
+Characteristic polynomial: $p(z) = z^2 + 4$
+Roots: $z = \pm 2i$
+Solutions: $e^{2it}$, $e^{-2it}$
+
+General solution: $y = c_1\cos(2t) + c_2\sin(2t)$
+
+\textbf{Example 3:} Find the general solution of $(D+5)^3(D^2+4D+5)(D^2+4)y = 0$, where $D = \frac{d}{dt}$
+
+\textbf{Solution:}
+Characteristic polynomial: $(z+5)^3(z^2+4z+5)(z^2+4) = 0$
+
+Roots:
+\begin{itemize}
+    \item $z = -5$ (multiplicity 3)
+    \item $z = -2 \pm i$ (multiplicity 1)
+    \item $z = \pm 2i$ (multiplicity 1)
+\end{itemize}
+
+Solutions:
+\begin{itemize}
+    \item $e^{-5t}$, $te^{-5t}$, $t^2e^{-5t}$
+    \item $e^{-2t}\cos(t)$, $e^{-2t}\sin(t)$
+    \item $\cos(2t)$, $\sin(2t)$
+\end{itemize}
+
+General solution:
+\[
+y = c_1e^{-5t} + c_2te^{-5t} + c_3t^2e^{-5t} + c_4e^{-2t}\cos(t) + c_5e^{-2t}\sin(t) + c_6\cos(2t) + c_7\sin(2t)
+\]
+
+\subsection*{Complex Roots with Multiplicity > 1}
+
+If $r \pm si$ is a root of $p(z)$ with multiplicity $k > 1$, then the solutions are:
+\[
+\begin{aligned}
+&e^{rt}\cos(st), \quad te^{rt}\cos(st), \quad \ldots, \quad t^{k-1}e^{rt}\cos(st) \\
+&e^{rt}\sin(st), \quad te^{rt}\sin(st), \quad \ldots, \quad t^{k-1}e^{rt}\sin(st)
+\end{aligned}
+\]
+
+\textbf{Example 4:} Solve $y^{(4)} + 4y'' + 4y = 0$
+
+\textbf{Solution:}
+\begin{itemize}
+    \item Characteristic polynomial: $p(z) = z^4 + 4z^2 + 4 = (z^2+2)^2 = 0$
+    \item Roots: $z = \pm i\sqrt{2}$ (multiplicity 2)
+    \item Solutions: $\cos(\sqrt{2}t)$, $t\cos(\sqrt{2}t)$, $\sin(\sqrt{2}t)$, $t\sin(\sqrt{2}t)$
+\end{itemize}
+
+General solution:
+\[
+y = c_1\cos(\sqrt{2}t) + c_2t\cos(\sqrt{2}t) + c_3\sin(\sqrt{2}t) + c_4t\sin(\sqrt{2}t)
+\]
+
+\textbf{Example 5:} Solve $(D^3-2D^2)(D^2-2D+10)^3(D^2+4D+29)y = 0$
+
+\textbf{Solution:}
+\begin{itemize}
+    \item Characteristic polynomial: $(z^3-2z^2)(z^2-2z+10)^3(z^2+4z+29) = 0$
+    \item Roots:
+    \begin{itemize}
+        \item $z = 0$ (multiplicity 2)
+        \item $z = 2$ (multiplicity 1)
+        \item $z = 1 \pm 3i$ (multiplicity 3)
+        \item $z = -2 \pm 5i$ (multiplicity 1)
+    \end{itemize}
+    \item Solutions:
+    \begin{itemize}
+        \item $1$, $t$
+        \item $e^{2t}$
+        \item $e^t\cos(3t)$, $e^t\sin(3t)$, $te^t\cos(3t)$, $te^t\sin(3t)$, $t^2e^t\cos(3t)$, $t^2e^t\sin(3t)$
+        \item $e^{-2t}\cos(5t)$, $e^{-2t}\sin(5t)$
+    \end{itemize}
+\end{itemize}
+
+General solution:
+\begin{align*}
+y = &c_1 + c_2t + c_3e^{2t} \\
+&+ (c_4 + c_5t + c_6t^2)e^t\cos(3t) + (c_7 + c_8t + c_9t^2)e^t\sin(3t) \\
+&+ c_{10}e^{-2t}\cos(5t) + c_{11}e^{-2t}\sin(5t)
+\end{align*}
+
+\section*{Lecture 13, Tuesday 10/8/2024}
+
+\subsection*{II.5: Nonhomogeneous Equations}
+
+Consider the linear differential equation:
+\[
+L(y) = y^{(n)} + a_{n-1}y^{(n-1)} + \cdots + a_1y' + a_0y = f(t)
+\]
+
+The linearity of this equation implies:
+\[
+L(c_1y_1 + \cdots + c_my_m) = c_1L(y_1) + \cdots + c_mL(y_m)
+\]
+
+\textbf{Key Property:} If $Y_1(t)$ and $Y_2(t)$ are two solutions to $L(y) = f(t)$, then $Y_1(t) - Y_2(t)$ is a solution to the homogeneous ODE $L(y) = 0$.
+
+\textbf{Proof:}
+\[
+L(Y_1 - Y_2) = L(Y_1) - L(Y_2) = f(t) - f(t) = 0
+\]
+
+\textbf{Consequence:} If $Y_p(t)$ is a particular solution to $L(y) = f(t)$, then every solution to $L(y) = f(t)$ is of the form $Y_p(t) + y_H(t)$, where $y_H(t)$ is a solution to the homogeneous equation $L(y) = 0$.
+
+\textbf{Process for solving $L(y) = f(t)$:}
+\begin{enumerate}
+    \item Find the general solution $Y_H(t)$ of the associated homogeneous ODE $L(y) = 0$
+    \item Find any particular solution $Y_p(t)$ to $L(y) = f(t)$
+    \item The general solution to $L(y) = f(t)$ is $y = Y_H(t) + Y_p(t)$
+\end{enumerate}
+
+\textbf{Example:} Find the general solution to $y''+4y = t$, given that $y = \frac{t}{4}$ is one solution.
+
+\textbf{Solution:}
+\begin{enumerate}
+    \item Homogeneous solution $y_H(t)$:
+    \begin{align*}
+        z^2+4 &= 0 \\
+        z &= \pm 2i \\
+        y_H(t) &= c_1\cos(2t) + c_2\sin(2t)
+    \end{align*}
+
+    \item Particular solution: $y_p(t) = \frac{t}{4}$
+
+    \item General solution:
+    \[
+    y = c_1\cos(2t) + c_2\sin(2t) + \frac{t}{4}
+    \]
+\end{enumerate}
+
+Note: $Y_p(t) = \frac{t}{4} + 2\cos(2t)$ is also a valid particular solution.
+
+\subsection*{Solving Initial Value Problems (IVPs)}
+
+To solve an IVP for a nonhomogeneous linear ODE:
+\begin{enumerate}
+    \item Find the general solution to $L(y) = f(t)$
+    \item Use the initial conditions to solve for the constants $c_1, c_2, \ldots$
+\end{enumerate}
+
+\textbf{Example:} Solve the IVP $y''+4y = t$, with $y(0) = 3$ and $y'(0) = -1$
+
+\textbf{Solution:}
+\begin{enumerate}
+    \item General solution: $y = c_1\cos(2t) + c_2\sin(2t) + \frac{t}{4}$
+    \item Apply initial conditions:
+    \begin{align*}
+        y(0) &= 3: \quad c_1 = 3 \\
+        y'(t) &= -2c_1\sin(2t) + 2c_2\cos(2t) + \frac{1}{4} \\
+        y'(0) &= -1: \quad 2c_2 + \frac{1}{4} = -1 \implies c_2 = -\frac{5}{8}
+    \end{align*}
+\end{enumerate}
+
+Therefore, the solution to the IVP is:
+\[
+y = 3\cos(2t) - \frac{5}{8}\sin(2t) + \frac{t}{4}
+\]
+
+\subsection*{II.6: Nonhomogeneous Linear ODEs with Constant Coefficients}
+
+Consider the general form:
+\[
+L(y) = y^{(n)} + a_{n-1}y^{(n-1)} + \cdots + a_1y' + a_0y = f(t)
+\]
+
+where $f(t)$ is of the form:
+\[
+f(t) = (\alpha_dt^d + \cdots + \alpha_0) e^{rt} \cos(st) + (\beta_dt^d + \cdots + \beta_0) e^{rt} \sin(st)
+\]
+
+\textbf{Key terms:}
+\begin{itemize}
+    \item $d$: degree of $f(t)$
+    \item $r + si$: characteristic of $f(t)$
+    \item $m$: multiplicity of $r + si$ as a root of $p(z)$, where $p(z)$ is the characteristic polynomial of $L(y)$
+    \item Note: $m = 0$ if $p(r+si) \neq 0$
+\end{itemize}
+
+\subsection*{Method of Undetermined Coefficients}
+
+\textbf{General Approach:}
+\begin{enumerate}
+    \item Guess the form of $Y_p(t)$ based on $f(t)$
+    \item Calculate $Y_p', Y_p'', \ldots, Y_p^{(n)}$
+    \item Substitute into the ODE
+    \item Collect terms and equate coefficients
+    \item Solve for undetermined coefficients
+\end{enumerate}
+
+\textbf{Guessing $Y_p(t)$:}
+\begin{itemize}
+    \item If $f(t) = (\text{polynomial})e^{rt}$, guess $Y_p(t) = (\text{polynomial of same degree})t^m e^{rt}$
+    \item If $f(t) = \alpha e^{rt} \cos(st) + \beta e^{rt} \sin(st)$, guess $Y_p(t) = At^m e^{rt} \cos(st) + Bt^m e^{rt} \sin(st)$
+\end{itemize}
 
+\textbf{Example 1:} Find $Y_p(t)$ for $y'' + 2y' + 10y = 6e^{2t}$
 
+\textbf{Solution:}
+\begin{itemize}
+    \item $d = 0$, $r = 2$, $s = 0$
+    \item $p(z) = z^2 + 2z + 10$, roots: $z = -1 \pm 3i$
+    \item $m = 0$ (2 is not a root)
+    \item Guess: $Y_p(t) = Ae^{2t}$
+\end{itemize}
 
+Substituting into the ODE:
+\[
+(4A + 4A + 10A)e^{2t} = 6e^{2t} \implies 18A = 6 \implies A = \frac{1}{3}
+\]
 
+Therefore, $Y_p(t) = \frac{1}{3}e^{2t}$
 
+\textbf{Example 2:} Find $Y_p(t)$ for $y'' - 6y' + 9y = 4te^{3t}$
 
+\textbf{Solution:}
+\begin{itemize}
+    \item $d = 1$, $r = 3$, $s = 0$
+    \item $p(z) = z^2 - 6z + 9 = (z - 3)^2$
+    \item $m = 2$
+    \item Guess: $Y_p(t) = (At + B)t^2e^{3t} = (At^3 + Bt^2)e^{3t}$
+\end{itemize}
 
+Substituting into the ODE and equating coefficients:
+\[
+6A = 4, \quad 2B = 0 \implies A = \frac{2}{3}, \quad B = 0
+\]
 
+Therefore, $Y_p(t) = \frac{2}{3}t^3e^{3t}$
 
+\textbf{Example 3:} Find $Y_p(t)$ for $y'' + 2y' + 10y = \cos(2t)$
 
+\textbf{Solution:}
+\begin{itemize}
+    \item $d = 0$, $r = 0$, $s = 2$
+    \item $p(z) = z^2 + 2z + 10$, roots: $z = -1 \pm 3i$
+    \item $m = 0$
+    \item Guess: $Y_p(t) = A \cos(2t) + B \sin(2t)$
+\end{itemize}
 
+Substituting into the ODE and equating coefficients:
+\[
+\begin{cases}
+6A + 4B = 1 \\
+6B - 4A = 0
+\end{cases}
+\implies A = \frac{1}{13}, \quad B = \frac{3}{26}
+\]
 
+Therefore, $Y_p(t) = \frac{1}{13} \cos(2t) + \frac{3}{26} \sin(2t)$
 
+\section*{Lecture 14, Thursday 10/10/2024}
 
+\subsection*{II.6 Continued}
 
+\textbf{Example:} Solve $y''+2y'+10y = 5e^{-t}\sin(3t)$. Find a particular solution.
 
+\textbf{Solution:}
 
+Characteristic polynomial: $p(z) = z^2+2z+10$
+Roots: $-1 \pm 3i$
 
+For $f(t) = 5e^{-t}\sin(3t)$, we have $r + si = -1 + 3i$, $d = 0$, $m = 1$
 
+Guess: $Y_p(t) = At e^{-t}\sin(3t) + Bt e^{-t}\cos(3t)$
 
+Substituting $Y_p(t)$, $Y_p'(t)$, and $Y_p''(t)$ into the ODE and simplifying:
 
+\[6Be^{-t}\cos(3t) + 6Ae^{-t}\sin(3t) = 5e^{-t}\sin(3t)\]
 
+Equating coefficients:
+\begin{align*}
+6B &= 0 \\
+-6A &= 5
+\end{align*}
 
+Solving: $B = 0$, $A = -\frac{5}{6}$
 
+Therefore, $Y_p(t) = -\frac{5}{6}te^{-t}\sin(3t)$
 
+The general solution is $y = Y_H(t) + Y_p(t)$:
 
+\[y = c_1e^{-t}\cos(3t) + c_2e^{-t}\sin(3t) - \frac{5}{6}te^{-t}\sin(3t)\]
 
+\textbf{Example:} Find the form of a particular solution to $y''+4y = t\cos(2t)$. Do not solve for any constants.
 
+\textbf{Solution:} 
+Characteristic equation: $z^2+4 = 0$, roots: $z = \pm 2i$
 
+For $f(t) = t\cos(2t)$, we have $r + si = 0 + 2i$, $d = 1$, $m = 1$
 
+Guess: $Y_p(t) = (A_1t^2 + A_0t)\cos(2t) + (B_1t^2 + B_0t)\sin(2t)$
 
+\textbf{Example:} Solve $L(y) = f(t)$ where $f(t) = e^{2t}+9\cos(5t)$
 
+\textbf{Approach:} Find $Y_{p1}(t)$ for $L(y) = e^{2t}$ and $Y_{p2}(t)$ for $L(y) = 9\cos(5t)$ separately and add them together.
 
+Set $Y_p(t) = Y_{p1}(t) + Y_{p2}(t)$
 
+Because $L(Y_p(t)) = L(Y_{p1}(t)) + L(Y_{p2}(t))$, we have $L(Y_p(t)) = e^{2t} + 9\cos(5t)$
 
+\subsection*{Alternative Approach: Key Identities}
 
+Remember: $L(e^{zt}) = p(z)e^{zt}$
 
+Taking $\frac{d}{dz}$ of both sides:
 
+\begin{align*}
+\frac{d}{dz}(L(e^{zt})) &= \frac{d}{dz}(p(z)e^{zt}) = L(te^{zt}) \\
+\frac{d}{dz}(p(z)e^{zt}) &= p'(z)e^{zt}+p(z)te^{zt} \\
+L(te^{zt}) &= p'(z)e^{zt}+p(z)te^{zt}
+\end{align*}
 
+Continuing this process:
 
+\begin{align*}
+L(t^2e^{zt}) &= (2p'(z)+p(z)t)te^{zt}+(p'(z)+p(z)t)e^{zt} \\
+L(t^3e^{zt}) &= (6p'(z)+p(z)t)te^{zt}+(3p'(z)+p(z)t)e^{zt}
+\end{align*}
 
+\textbf{Example:} Solve $y'' - 6y' + 9y = 4te^{3t}$. Find $Y_p(t)$.
 
+\textbf{Solution:} 
+Characteristic polynomial: $z^2-6z+9 = (z-3)^2$
 
+$r + si = 3 + 0i$, $d = 1$, $m = 2$
 
+Guess: $Y_p(t) = (A_1t + A_0)t^2e^{3t}$
 
+Using the key identities:
 
+\begin{align*}
+L(e^{3t}) &= p(3)e^{3t} = (9-18+9)e^{3t} = 0 \\
+L(te^{3t}) &= (2p'(3)+p(3))e^{3t} = 0 \\
+L(t^2e^{3t}) &= (6p'(3)+p(3))e^{3t} = 2e^{3t} \\
+L(t^3e^{3t}) &= (24p'(3)+6p(3))e^{3t} = 6e^{3t}
+\end{align*}
 
+To get $f(t) = 4te^{3t}$:
 
+\[L(\frac{2}{3}t^3e^{3t}) = (\frac{24}{3}p'(3)+\frac{6}{3}p(3))e^{3t} = 4te^{3t}\]
 
+Therefore, $Y_p(t) = \frac{2}{3}t^3e^{3t}$
 
+\subsection*{Examples}
 
+\subsubsection*{Example 1: $y''+2y'+10y = 6e^{2t}$}
 
+\textbf{Solution:} 
+\begin{itemize}
+    \item Characteristic polynomial: $p(z) = z^2+2z+10$
+    \item Roots: $r+si = 2+0i$, $d = 0$, $m = 0$
+    \item $f(t) = 6e^{2t}$, $r = 2$
+\end{itemize}
 
+Using the key identity:
+\begin{align*}
+L(e^{2t}) &= p(2)e^{2t} = (4+4+10)e^{2t} = 18e^{2t}
+\end{align*}
 
+Hence, $L(\frac{1}{3}e^{2t}) = 6e^{2t}$
 
+Therefore, $Y_p(t) = \frac{1}{3}e^{2t}$
 
+\subsubsection*{Example 2: $y''+2y'+10y = 6te^{2t}$}
 
+\textbf{Solution:} 
+\begin{itemize}
+    \item Characteristic polynomial: $p(z) = z^2+2z+10$
+    \item Roots: $r+si = 2+0i$, $d = 1$, $m = 1$
+    \item $f(t) = 6te^{2t}$, $r = 2$
+\end{itemize}
 
+Using the key identities:
+\begin{align*}
+L(e^{2t}) &= p(2)e^{2t} = 18e^{2t} \\
+L(te^{2t}) &= (2p'(2)+p(2))e^{2t} = (6+18)e^{2t} = 24e^{2t} \\
+L(t^2e^{2t}) &= (6p'(2)+p(2))e^{2t} = 18e^{2t}
+\end{align*}
 
+We find that:
+\begin{align*}
+L(te^{2t}-\frac{1}{3}e^{2t}) &= 18te^{2t} \\
+\Rightarrow L(\frac{1}{3}(te^{2t}-\frac{1}{3}e^{2t})) &= 6te^{2t}
+\end{align*}
 
+Therefore, $Y_p(t) = \frac{1}{3}(te^{2t}-\frac{1}{3}e^{2t})$
 
+\subsubsection*{Example 3: $y''+2y'+10y = \cos(2t)$}
 
+\textbf{Solution:} 
+\begin{itemize}
+    \item Characteristic polynomial: $p(z) = z^2+2z+10$
+    \item Roots: $r+si = 0+2i$, $d = 0$, $m = 0$
+    \item $f(t) = \cos(2t)$, $r = 0$, $s = 2$
+\end{itemize}
 
+Using the key identity:
+\begin{align*}
+L(e^{2it}) &= p(2i)e^{2it} = (6+4i)(\cos(2t)+i\sin(2t)) \\
+           &= (6\cos(2t)-4\sin(2t)) + i(6\sin(2t)+4\cos(2t))
+\end{align*}
 
+Cancelling out $\sin(2t)$:
+\begin{align*}
+L(6\cos(2t)+4\sin(2t)) &= (36+16)\cos(2t) = 52\cos(2t)
+\end{align*}
 
+Therefore, $Y_p(t) = \frac{1}{52}(6\cos(2t)+4\sin(2t))$
 
+\subsection*{II.7: Variable Coefficients}
 
+\subsubsection*{Reduction of Order}
 
+Consider the equation: $y''+a_1(t)y'+a_0(t)y = 0$
+
+Given $y_1(t)$ is a solution, we guess another solution of the form $y = u(t)y_1(t)$
+
+Differentiating:
+\begin{align*}
+y' &= u'y_1+uy_1' \\
+y'' &= u''y_1+2u'y_1'+uy_1''
+\end{align*}
+
+Substituting into the ODE:
+\begin{align*}
+u''y_1+u'(2y_1'+a_1y_1)+u(y_1''+a_1y_1'+a_0y_1) &= 0
+\end{align*}
+
+Let $w = u'$, then:
+\begin{align*}
+w'y_1+w(2y_1'+a_1y_1)+u(y_1''+a_1y_1'+a_0y_1) &= 0
+\end{align*}
+
+This is a separable first-order ODE for $w$. Solve for $w$, then integrate to get $u$.
+
+\subsubsection*{Example: $t^2y-t(t+2)y'+(t+2)y = 0$}
+
+Given $y_1(t)$ is a solution for $t > 0$, find the general solution.
+
+\textbf{Solution:} 
+Guess $y = ut$, so $y' = u't+u$, $y'' = u''t+2u'$
+
+Substituting into the ODE:
+\begin{align*}
+t^3u''-t^3u' &= 0
+\end{align*}
+
+As $t > 0$, $u''-u' = 0$
+
+Let $w = u'$, then $w'-w = 0$ or $w' = w$
+We see that $w = ce^t$
+
+Therefore, $u' = ce^t$, so $u = ce^t+D$
+
+Our general solution is $y = ut = cte^t+Dt$
+
+\section*{Lecture 15, Tuesday 10/15/2024}
+
+\subsection*{II.7 Continued}
+
+\subsubsection*{Variation of Parameters}
+
+Consider the non-homogeneous equation:
+\[
+y'' + a_1(t)y' + a_0(t)y = f(t)
+\]
+
+Given that the general solution to the homogeneous equation is $y = c_1y_1 + c_2y_2$, we seek a particular solution $Y_p(t)$.
+
+We guess a solution of the form:
+\[
+Y_p(t) = u_1(t)y_1(t) + u_2(t)y_2(t)
+\]
+
+where $u_1(t)$ and $u_2(t)$ are functions to be determined.
+
+Differentiating:
+\begin{align*}
+Y_p' &= u_1'y_1 + u_1y_1' + u_2'y_2 + u_2y_2' \\
+Y_p'' &= u_1''y_1 + 2u_1'y_1' + u_1y_1'' + u_2''y_2 + 2u_2'y_2' + u_2y_2''
+\end{align*}
+
+We impose the condition:
+\[
+u_1'y_1 + u_2'y_2 = 0
+\]
+
+This simplifies our expressions to:
+\begin{align*}
+Y_p' &= u_1y_1' + u_2y_2' \\
+Y_p'' &= u_1y_1'' + u_2y_2''
+\end{align*}
+
+Substituting into the original ODE:
+\[
+u_1''y_1 + u_2''y_2 = f(t)
+\]
+
+Thus, $u_1$ and $u_2$ must satisfy:
+\begin{align*}
+u_1'y_1 + u_2'y_2 &= 0 \\
+u_1'y_1' + u_2'y_2' &= f(t)
+\end{align*}
+
+This system can be written in matrix form:
+\[
+\begin{pmatrix}
+y_1 & y_2 \\
+y_1' & y_2'
+\end{pmatrix}
+\begin{pmatrix}
+u_1' \\
+u_2'
+\end{pmatrix} =
+\begin{pmatrix}
+0 \\
+f(t)
+\end{pmatrix}
+\]
+
+The determinant of the coefficient matrix is the Wronskian $W(y_1, y_2) = y_1y_2' - y_1'y_2 \neq 0$, as $y_1$ and $y_2$ are linearly independent.
+
+Solving this system:
+\[
+\begin{pmatrix}
+u_1' \\
+u_2'
+\end{pmatrix} =
+\frac{1}{W(y_1, y_2)}
+\begin{pmatrix}
+y_2 & -y_1 \\
+-y_2' & y_1'
+\end{pmatrix}
+\begin{pmatrix}
+0 \\
+f(t)
+\end{pmatrix}
+\]
+
+Therefore:
+\[
+u_1' = \frac{f(t)y_2}{W}, \quad u_2' = -\frac{f(t)y_1}{W}
+\]
+
+Integrating gives us $u_1$ and $u_2$.
+
+\textbf{Example:} Find a general solution of $y'' + y = \sec(t)$
+
+\textbf{Solution:} 
+The homogeneous solution $Y_H$ comes from $p(z) = z^2 + 1$, with roots $z = \pm i$:
+\[
+Y_H = c_1\cos(t) + c_2\sin(t)
+\]
+
+We guess a particular solution of the form:
+\[
+Y_p = u_1\cos(t) + u_2\sin(t)
+\]
+
+Using variation of parameters:
+\begin{align*}
+\cos(t)u_1' + \sin(t)u_2' &= 0 \\
+-\sin(t)u_1' + \cos(t)u_2' &= \sec(t)
+\end{align*}
+
+Solving this system:
+\[
+\begin{pmatrix}
+u_1' \\
+u_2'
+\end{pmatrix} =
+\begin{pmatrix}
+-\tan(t) \\
+1
+\end{pmatrix}
+\]
+
+Integrating:
+\begin{align*}
+u_1 &= \ln|\cos(t)| + c_1 \\
+u_2 &= t + c_2
+\end{align*}
+
+Therefore, the particular solution is:
+\[
+Y_p = (\ln|\cos(t)| + c_1)\cos(t) + (t + c_2)\sin(t)
+\]
+
+The general solution is:
+\[
+Y = Y_H + Y_p = c_1\cos(t) + c_2\sin(t) + (\ln|\cos(t)| + c_3)\cos(t) + (t + c_4)\sin(t)
+\]
+
+where $c_1, c_2, c_3, c_4$ are arbitrary constants.
+
+\textbf{Example:} Consider the ODE $(1+t^2)y''-2ty'+2y = (1+t^2)^2e^t$
+
+Given that $\{t, t^2-1\}$ is a fundamental set of solutions for the homogeneous equation, find the general solution of the
+non-homogeneous equation, i.e., $Y_H(t) = c_1t + c_2(t^2-1)$. Find $Y_p(t)$.
+
+\textbf{Solution:} Put ODE in standard form:
+
+\[y'' - \frac{2t}{1+t^2}y' + \frac{2}{1+t^2}y = (1+t^2)e^t\]
+
+Guess $Y_p(t) = u_1(t)t + u_2(t)(t^2-1)$
+
+\[\begin{pmatrix}
+t & t^2-1 \\
+1 & 2t
+\end{pmatrix} 
+\begin{pmatrix}
+u_1' \\ u_2'
+\end{pmatrix} = 
+\begin{pmatrix}
+0 \\ (1+t^2)e^t
+\end{pmatrix}\]
+
+$\text{Wr}(t, t^2-1) = \det\begin{pmatrix}
+t & t^2-1 \\
+1 & 2t
+\end{pmatrix} = 2t^2-t^2-1 = t^2-1$
+
+\[\Rightarrow \begin{pmatrix}
+u_1' \\ u_2'
+\end{pmatrix} = 
+\frac{1}{t^2-1}\begin{pmatrix}
+2t & 1-t^2 \\
+-1 & t
+\end{pmatrix} 
+\begin{pmatrix}
+0 \\ (1+t^2)e^t
+\end{pmatrix}\]
+
+\[\Rightarrow \begin{pmatrix}
+u_1' \\ u_2'
+\end{pmatrix} = 
+\begin{pmatrix}
+(1-t^2)e^t \\ te^t
+\end{pmatrix}\]
+
+Integrate (by parts where necessary):
+
+\begin{align*}
+u_1 &= c_1 - (t-\frac{1}{3}t^3)e^t \\
+u_2 &= c_2 - (t-1)e^t
+\end{align*}
+
+So $Y_p(t) = u_1Y_1 + u_2Y_2 = -t(t-1)^2e^t + (t-1)(t^2-1)e^t$
+
+\[\Rightarrow \text{General solution is:}\]
+
+\[Y(t) = Y_H(t) + Y_p(t) = c_1t + c_2(t^2-1) + t(t-1)^2e^t - (t-1)(t^2-1)e^t\]
+
+For 3rd order ODE:
+
+$Y_H(t) = c_1Y_1 + c_2Y_2 + c_3Y_3$
+
+Guess $Y_p(t) = u_1(t)Y_1 + u_2(t)Y_2 + u_3(t)Y_3$
+
+and get:
+
+\[\begin{pmatrix}
+Y_1 & Y_2 & Y_3 \\
+Y_1' & Y_2' & Y_3' \\
+Y_1'' & Y_2'' & Y_3''
+\end{pmatrix} 
+\begin{pmatrix}
+u_1' \\ u_2' \\ u_3'
+\end{pmatrix} = 
+\begin{pmatrix}
+0 \\ 0 \\ f(t)
+\end{pmatrix}\]
 
 
 
