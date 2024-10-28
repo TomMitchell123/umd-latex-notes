@@ -3877,15 +3877,503 @@ The number of all straights is equal to $(4^5-4) \times$ number of options for t
 
     Note: It's often faster to use the CDF instead of computing integrals in this case.
 
+    \pagebreak
 
+    \section*{Lecture 17: Tuesday 10/22/2024}
+
+    \subsection*{Normal Distribution}
+
+    The random variable $X$ has a normal distribution with mean $\mu$ and variance $\sigma^2$ (denoted as $X \sim N(\mu, \sigma^2)$) if:
+    
+    X has a pdf given by:
+
+    \[
+    f_X(x) = \frac{1}{\sigma \sqrt{2\pi}} e^{-\frac{(x-\mu)^2}{2\sigma^2}} \text{ where } x \in \mathbb{R}
+    \]
     
 
-    
+    We begin by examining the standard normal distribution, where $\mu = 0$ and $\sigma^2 = 1$.
 
+    For $X \sim N(0, 1)$, the probability density function (pdf) is given by:
+
+    \[
+    f_X(x) = \frac{1}{\sqrt{2\pi}} e^{-\frac{x^2}{2}}, \quad x \in \mathbb{R}
+    \]
+
+    Since there is no straightforward antiderivative for this function, evaluating the integral directly poses challenges.
+
+    To overcome this issue, we utilize pre-calculated values (typically provided in tables) for $P(Z \leq z)$, where $Z \sim N(0, 1)$.
+
+    It is conventional to denote $P(Z \leq z)$ as $\Phi(z)$. In other words:
+
+    \[
+    \Phi(z) = P(Z \leq z) = F_Z(z) \quad \text{for } Z \sim N(0, 1)
+    \]
+
+    $\Phi(z)$ is referred to as the cumulative distribution function (cdf) of the standard normal distribution.
+
+    \textbf{Examples:}
+    \begin{itemize}
+        \item $P(Z \leq 1.19) = \Phi(1.19) = 0.8830$
+        
+        \item $P(-1.23 \leq Z \leq 1.43)$ 
+              \begin{align*}
+              &= P(Z \leq 1.43) - P(Z \leq -1.23) \\
+              &= \Phi(1.43) - \Phi(-1.23) \\
+              &= 0.9236 - 0.1093 \\
+              &= 0.8143
+              \end{align*}
+    \end{itemize}
+
+    \textbf{Important property:} The standard normal distribution is symmetric about 0, i.e., $f_X(x) = f_X(-x)$ for all $x$ so $f_X(x)$ is even.
+
+    \textbf{Handling Non-Standard Normal Distributions:}
+
+    For non-standard normal distributions, we use integration by substitution.
+
+    Let $Z = \frac{X - \mu}{\sigma}$, where $X \sim N(\mu, \sigma^2)$.
+
+    \textbf{Exercise:} Show that:
+
+    \[
+    \int_{a}^{b} \frac{1}{\sigma \sqrt{2\pi}} e^{-\frac{1}{2} (\frac{x-\mu}{\sigma})^2} dx = \int_{\frac{a-\mu}{\sigma}}^{\frac{b-\mu}{\sigma}} \frac{1}{\sqrt{2\pi}} e^{-\frac{1}{2} z^2} dz
+    \]
+    We compute probabilities for $X \sim N(\mu, \sigma^2)$ in terms of $Z \sim N(0, 1)$ using the integration substitution above.
+
+    If $X \sim N(\mu, \sigma^2)$, then $Z = \frac{X - \mu}{\sigma} \sim N(0, 1)$, and:
+
+    \[
+    P(a < X < b) = P\left(\frac{a - \mu}{\sigma} < Z < \frac{b - \mu}{\sigma}\right) = \Phi\left(\frac{b - \mu}{\sigma}\right) - \Phi\left(\frac{a - \mu}{\sigma}\right)
+    \]
+
+    \textbf{Example:} Suppose that the heights of females on a particular island can be modeled using a normal distribution with mean 150 cm and variance 25 cm$^2$.
+
+    What is the probability that a randomly selected female has a height that falls between 145 cm and 160 cm?
+
+    Given: $X \sim N(150, 25)$
+
+    We want to find: $P(145 < X < 160)$
+
+    Solution:
+    Let $Z = \frac{X - 150}{5}$, then:
+
+    \begin{align*}
+    P(145 < X < 160) &= P\left(\frac{145 - 150}{5} < Z < \frac{160 - 150}{5}\right) \\
+    &= P(-1 < Z < 2) \\
+    &= \Phi(2) - \Phi(-1)
+    \end{align*}
+
+    = plug in values from the table.
     
+    \textbf{Example:} Suppose $X \sim N(\mu, \sigma^2)$. What is the probability that observation falls within a standard deviation of the mean?
+
+    $X \sim N(\mu, \sigma^2)$
+
+    \begin{align*}
+    P(|X - \mu| < \sigma) &= P(-\sigma < X - \mu < \sigma) \\
+    &= P(\mu - \sigma < X < \mu + \sigma)
+    \end{align*}
+
+    Let $Z = \frac{X - \mu}{\sigma}$, then $Z \sim N(0, 1)$
+
+    \begin{align*}
+    P(|X - \mu| < \sigma) &= P\left(\frac{\mu - \sigma - \mu}{\sigma} < Z < \frac{\mu + \sigma - \mu}{\sigma}\right) \\
+    &= P(-1 < Z < 1) \\
+    &= \Phi(1) - \Phi(-1) \\
+    &= 0.8413 - 0.1587 \\
+    &= 0.6826
+    \end{align*}
+
+    \subsection*{Random Vectors / Joint Distributions}
+
+    A random vector $\underline{X} : \Omega \rightarrow \mathbb{R}^n$ is given by:
+
+    \[\underline{X} = \begin{pmatrix} X_1 \\ \vdots \\ X_n \end{pmatrix}\]
+
+    where $X_1, \ldots, X_n : \Omega \rightarrow \mathbb{R}$.
+
+    \textbf{Example:} Let $\Omega = \{\text{people in a particular hospital at a given fixed point in time}\}$.
+
+    \begin{itemize}
+        \item $X_1(\omega) = \text{blood pressure (systolic) of }\omega$
+        \item $X_2(\omega) = \text{weight of }\omega$
+        \item $X_3(\omega) = \text{height of }\omega$
+    \end{itemize}
+
+    Then, $\underline{X} = \begin{pmatrix} X_1 \\ X_2 \\ X_3 \end{pmatrix}$
+
+    \textbf{Example:} Cat pictures in machine learning algorithms
+
+    Let $\Omega = \{\text{set of cat pictures of a fixed type}\}$
+
+    For a black and white image with 32x32 pixels:
+    \begin{itemize}
+        \item Each pixel is represented by a random variable
+        \item Total number of random variables = $32 \times 32 = 1024$
+    \end{itemize}
+
+    Thus, we have a random vector $\underline{X} : \Omega \rightarrow \mathbb{R}^{1024}$
+
+    \begin{figure}[h]
+        \centering
+        \begin{tikzpicture}
+            \draw (0,0) grid[step=0.1875] (3,3);
+            \draw[ultra thick] (0,0) rectangle (3,3);
+            \fill[red] (1.125,1.875) rectangle (1.3125,2.0625);
+            \node at (1.21875,2.15) {$X_i$};
+            \node at (1.5,-0.5) {32x32 pixels};
+        \end{tikzpicture}
+        \caption{Representation of a 32x32 pixel image with highlighted pixel $X_i$}
+    \end{figure}
+
+    Let $\underline{X} = (X_1, X_2, \ldots, X_{1024})$ be a random vector where:
+
+    \begin{itemize}
+        \item $X_i(\omega)$ represents the brightness/darkness of the $i$-th pixel for picture $\omega$
+        \item $\omega$ denotes a specific picture in the sample space
+    \end{itemize}
+
+    In image classification algorithms, the goal is to compute $P(\text{label} \mid \text{picture})$. For example:
+
+    \begin{itemize}
+        \item label $\in \{\text{cat}, \text{not cat}\}$
+        \item picture is represented by the random vector $\underline{X}$
+    \end{itemize}
+
+    Thus, we can express this probability as:
+
+    \[P(\text{label} = \text{cat} \mid \text{picture}) = P(\text{label} = \text{cat} \mid \underline{X} = \underline{x})\]
+
+    \textbf{Key Ideas:}
+    \begin{itemize}
+        \item A single random variable is often insufficient to describe complex problems.
+        \item Many real-world applications require analyzing how multiple random variables interact when considered together.
+    \end{itemize}
+
+    \section*{Lecture 18: Thursday 10/24/2024}
+ 
+    \subsection*{Random Vectors}
+
+    In many situations, it is not sufficient to keep track of just one random quantity - we need to track several random quantities simultaneously. This leads us to the concept of random vectors.
+
+    \textbf{Definition:} A random vector is an ordered collection of random variables that maps from a sample space $\Omega$ to a multi-dimensional real space:
+
+    \begin{align*}
+        \text{Individual components:} \quad & X_1, \ldots, X_n : \Omega \rightarrow \mathbb{R} \\
+        \text{Vector notation:} \quad & \underline{X} = (X_1, \ldots, X_n)^T \\
+        \text{Overall mapping:} \quad & \underline{X} : \Omega \rightarrow \mathbb{R}^n
+    \end{align*}
+
+    \textbf{Computing Probabilities for Random Vectors}
+
+    To understand how to compute probabilities for random vectors, let's first review the simpler case of a single random variable:
+
+    For a single random variable $X$:
+    \begin{itemize}
+        \item $X$ maps from $\Omega$ to $\mathbb{R}$
+        \item For any subset $A \subseteq \mathbb{R}$
+        \item The probability is: $P(X \in A) = P(\{\omega \in \Omega : X(\omega) \in A\})$
+    \end{itemize}
+
+    This concept extends naturally to random vectors. For a two-dimensional random vector $\underline{X} = \begin{pmatrix} X \\ Y \end{pmatrix}$:
+    
+    \[ P(\underline{X} \in A) = P(\{\omega \in \Omega : \underline{X}(\omega) \in A\}) = P\left(\left\{\omega : \begin{pmatrix} X(\omega) \\ Y(\omega) \end{pmatrix} \in A\right\}\right) \]
+
+    where $A$ is now a subset of $\mathbb{R}^2$. For example, $A$ could be a circle, rectangle, or any other two-dimensional region:
+
+    \begin{center}
+    \begin{tikzpicture}
+        % Draw axes from origin
+        \draw[->] (-1,0) -- (4,0) node[right] {$x$};
+        \draw[->] (0,-1) -- (0,4) node[above] {$y$};
+        
+        % Draw circle centered at (2,2) with radius 1
+        \draw[fill=gray!20] (2,2) circle (1);
+        
+        % Label the region A
+        \node at (3.5,2.7) {$A \subseteq \mathbb{R}^2$};
+        
+        % Draw and label point (X(ω), Y(ω))
+        \draw[fill=red] (1.5,2) circle (0.05);
+        \node[right] at (1.6,2.1) {$(X(\omega), Y(\omega))$};
+        
+        % Add caption below
+        \node[below] at (3,-0.5) {Example: $A$ is a circle in $\mathbb{R}^2$ containing point $(X(\omega), Y(\omega))$};
+    \end{tikzpicture}
+    \end{center}
+
+    We would like to do the same thing with a random vector $\underline{X} = \begin{pmatrix} X \\ Y \end{pmatrix}$.
+
+    We introduce the notions of joint probability mass functions and joint probability density functions for this purpose.
+
+    \subsection*{Joint Probability Mass Function (PMF)}
+
+    The joint PMF for a random vector $\begin{pmatrix} X \\ Y \end{pmatrix}$ is the function $P_{X,Y}(x,y)$ such that:
+
+    \[
+        P_{X,Y}(x,y) = P(X = x, Y = y)
+    \]
+
+    Note: A discrete random vector is one that takes countably many values.
+
+    \textbf{Example:} Consider an experiment consisting of rolling two fair dice.
+    \begin{itemize}
+        \item Let $X_1$ be a random variable tracking the first die's outcome
+        \item Let $X_2$ be a random variable tracking the second die's outcome
+    \end{itemize}
+
+    The sample space is:
+    \[ \Omega = \{(i,j) : i,j \in \{1,2,3,4,5,6\}\} \]
+
+    And the random variables are defined as:
+    \begin{align*}
+        X_1(i,j) &= i \quad \text{(first die outcome)} \\
+        X_2(i,j) &= j \quad \text{(second die outcome)}
+    \end{align*}
+
+    The joint PMF of $X_1$ and $X_2$ is:
+    \[
+    P_{X_1,X_2}(x_1,x_2) = 
+    \begin{cases}
+        \frac{1}{36} & \text{if } x_1,x_2 \in \{1,2,3,4,5,6\} \\
+        0 & \text{otherwise}
+    \end{cases}
+    \]
+
+    This reflects that each possible outcome $(x_1,x_2)$ has equal probability $\frac{1}{36}$ since the dice are fair.
+
+    Let $\underline{X} = \begin{pmatrix} X_1 \\ X_2 \end{pmatrix}$ be our random vector.
+
+    We want to compute $P(\underline{X} \in [4,\infty) \times [5,\infty))$, which represents the probability that $X_1 \geq 4$ and $X_2 \geq 5$ simultaneously.
+
+    \begin{center}
+    \begin{tikzpicture}[scale=0.8]
+        % Axes
+        \draw[->] (0,0) -- (7,0) node[right] {$x_1$};
+        \draw[->] (0,0) -- (0,7) node[above] {$x_2$};
+        
+        % Grid
+        \foreach \x in {1,...,6} {
+            \draw[gray!30] (\x,0) -- (\x,6);
+            \draw[gray!30] (0,\x) -- (6,\x);
+        }
+        
+        % Region shading with gradient
+        \fill[left color=blue!20, right color=blue!5] (4,5) rectangle (6.8,6.8);
+        \fill[bottom color=blue!20, top color=blue!5] (4,5) rectangle (6.8,6.8);
+        
+        % Arrows indicating infinity
+        \draw[->, thick] (6.5,5.5) -- (7.2,5.5);
+        \draw[->, thick] (4.5,6.5) -- (4.5,7.2);
+        
+        % Labels
+        \node[below] at (4,0) {4};
+        \node[left] at (0,5) {5};
+        
+        % Region label
+        \node at (5,5.5) {$[4,\infty) \times [5,\infty)$};
+        
+        % Infinity symbols
+        \node at (7.5,5.5) {$\infty$};
+        \node at (4.5,7.5) {$\infty$};
+    \end{tikzpicture}
+    \end{center}
 
 
+    Key equation: 
+    \[
+    P(\underline{X} \in A) = \sum_{(\underline{x} \in A)} P_{\underline{X}}(\underline{x}) where P_{\underline{X}} > 0
+    \]
+
+
+    \begin{center}
+    \begin{tikzpicture}[scale=0.8]
+        % Axes
+        \draw[->] (0,0) -- (7,0) node[right] {$x_1$};
+        \draw[->] (0,0) -- (0,7) node[above] {$x_2$};
+        
+        % Grid
+        \foreach \x in {1,...,6} {
+            \draw[gray!30] (\x,0) -- (\x,6);
+            \draw[gray!30] (0,\x) -- (6,\x);
+        }
+        
+        % Region shading with gradient
+        \fill[left color=blue!20, right color=blue!5] (4,5) rectangle (6.8,6.8);
+        \fill[bottom color=blue!20, top color=blue!5] (4,5) rectangle (6.8,6.8);
+        
+        % Points in the region
+        \foreach \x in {4,5,6} {
+            \foreach \y in {5,6} {
+                \fill[red] (\x,\y) circle (2pt);
+            }
+        }
+        
+        % Highlight (6,6) point
+        \fill[red!80] (6,6) circle (3pt);
+        \node[above right] at (6,6) {$(6,6)$};
+        
+        % Arrows indicating infinity
+        \draw[->, thick] (6.5,5.5) -- (7.2,5.5);
+        \draw[->, thick] (4.5,6.5) -- (4.5,7.2);
+        
+        % Labels
+        \node[below] at (4,0) {4};
+        \node[left] at (0,5) {5};
+        
+        % Region label
+        \node at (5,5.5) {$[4,\infty) \times [5,\infty)$};
+        
+        % Infinity symbols
+        \node at (7.5,5.5) {$\infty$};
+        \node at (4.5,7.5) {$\infty$};
+    \end{tikzpicture}
+    \end{center}
+
+    \noindent
+    For region $A = [4,\infty) \times [5,\infty)$, we need to find the probability that our random variable falls in this region.
+    \[P(\underline{X} \in A) = \sum_{(\underline{x} \in A)} P_{\underline{X}}(\underline{x})\]
+
+    \noindent
+    Looking at the graph above, we can see that region $A$ contains these specific points:
+    \[\underline{X} \in \{(4,5), (4,6), (5,5), (5,6), (6,5), (6,6)\}\]
+
+    \noindent
+    Since we're rolling two fair dice, each possible outcome has an equal probability of $\frac{1}{36}$. Let's add up the probabilities:
+    \begin{align*}
+        P(\underline{X} \in A) &= \sum_{(x_1,x_2) \in A} P_{X_1,X_2}(x_1,x_2) \\[0.5em]
+        &= P_{X_1,X_2}(4,5) + P_{X_1,X_2}(4,6) + P_{X_1,X_2}(5,5) \\
+        &\quad + P_{X_1,X_2}(5,6) + P_{X_1,X_2}(6,5) + P_{X_1,X_2}(6,6) \\[0.5em]
+        &= \underbrace{\frac{1}{36} + \frac{1}{36} + \frac{1}{36} + \frac{1}{36} + \frac{1}{36} + \frac{1}{36}}_{\text{We have 6 points in region A, each with probability }\frac{1}{36}} \\[0.5em]
+        &= \frac{6}{36} = \frac{1}{6}
+    \end{align*}
+
+    \textbf{Important Notes:} 
+    \begin{itemize}
+        \item Just like with a regular probability mass function (PMF), we can find probabilities by adding up values from a joint PMF
+        \item For any joint PMF, all probabilities must be non-negative ($P_{X,Y}(x,y) \geq 0$) and sum to 1: $\sum_{(x, y) \in \mathbb{R}^2} P_{X,Y}(x,y) = 1$
+    \end{itemize}
+
+    \subsection*{Example: Coin Toss and Die Roll}
+    Let's work through a clear example. Consider this two-step experiment:
+    \begin{enumerate}
+        \item First, we toss a fair coin
+        \item Then, based on the coin result:
+            \begin{itemize}
+                \item If we get heads (H): We roll a regular fair 6-sided die
+                \item If we get tails (T): We roll a fair 4-sided die
+            \end{itemize}
+    \end{enumerate}
+
+    Let's define our variables:
+    \begin{itemize}
+        \item Let $X$ be the coin toss result (H or T)
+        \item Let $Y$ be the number we get from the die roll
+    \end{itemize}
+
+    All possible outcomes are:
+    \[ \Omega = \{(H,1), (H,2), (H,3), (H,4), (H,5), (H,6), (T,1), (T,2), (T,3), (T,4)\} \]
+
+    \textbf{Let's find the joint PMF $P_{X,Y}(x,y)$ step by step:}
+
+    To find this, we need two pieces:
+    \begin{itemize}
+        \item The probability of getting each coin result ($P_X(x)$)
+        \item The probability of getting each die roll given the coin result ($P_{Y|X}(y|x)$)
+    \end{itemize}
+
+    \textbf{Step 1: Probability of coin results ($P_X(x)$)}
+    Since we're using a fair coin:
+    \[ P_X(x) = \begin{cases}
+        \frac{1}{2} & \text{if } x \text{ is H or T} \\
+        0 & \text{for any other value}
+    \end{cases} \]
+
+    \textbf{Step 2: Probability of die rolls given coin result ($P_{Y|X}(y|x)$)}
+    \[ P_{Y|X}(y|x) = \begin{cases}
+        \frac{1}{6} & \text{if we got heads (H) and } y \text{ is 1,2,3,4,5, or 6} \\
+        \frac{1}{4} & \text{if we got tails (T) and } y \text{ is 1,2,3, or 4} \\
+        0 & \text{for any other combination}
+    \end{cases} \]
+
+    \textbf{Note:} This only becomes a proper PMF after you specify whether you got heads or tails.
+
+    \textbf{Step 3: Putting it together - The Joint PMF}
+    We multiply the probabilities from steps 1 and 2:
+    $P_{X,Y}(x,y) = P_X(x) \cdot P_{Y|X}(y|x)$
+    \[ P_{X,Y}(x,y) = \begin{cases}
+        \frac{1}{12} & \text{if we got heads (H) and } y \text{ is 1,2,3,4,5, or 6} \\
+        \frac{1}{8} & \text{if we got tails (T) and } y \text{ is 1,2,3, or 4} \\
+        0 & \text{for any other combination}
+    \end{cases} \]
+
+    \textbf{Let's verify this is correct:} 
+    All probabilities should sum to 1:
+    \[ \underbrace{6 \cdot \frac{1}{12}}_{\text{6 possible outcomes with H}} + \underbrace{4 \cdot \frac{1}{8}}_{\text{4 possible outcomes with T}} = \frac{1}{2} + \frac{1}{2} = 1 \]
+
+    \noindent
+    \textbf{Understanding Conditional Probabilities with Multiple Variables:}
     
+    When we have more than two variables, we can condition on multiple events:
+    \begin{itemize}
+        \item $P_{X_1|X_2,X_3}(x_1|x_2,x_3)$ means ``probability of $X_1$ given we know both $X_2$ and $X_3$"
+        \item $P_{X_1,X_3|X_2}(x_1,x_3|x_2)$ means ``joint probability of $X_1$ and $X_3$ given we know $X_2$"
+    \end{itemize}
+
+    \vspace{0.3cm}
+    \noindent
+    \textbf{Example: Finding the Probability of Rolling a 1}
+    Let's find $P_Y(1)$ (the probability of rolling a 1 regardless of the coin flip):
+    \begin{align*}
+        P_Y(y_0) &= \sum_{x} P_{X,Y}(x,y_0) \quad \text{(Add up probabilities for all possible coin results)} \\[0.2cm]
+        P_Y(1) &= \sum_{x} P_{X,Y}(x,1) \\[0.2cm]
+        &= P_{X,Y}(H,1) + P_{X,Y}(T,1) \quad \text{(Probability with heads + Probability with tails)} \\[0.2cm]
+        &= \frac{1}{12} + \frac{1}{8} = \frac{5}{24}
+    \end{align*}
+
+    \vspace{0.3cm}
+    \noindent
+    \pagebreak
+    \textbf{Understanding Independent Random Variables:}
+    
+    Two random variables $X$ and $Y$ are independent if knowing one tells us nothing about the other.
+    Mathematically, this means their joint PMF equals the product of their individual PMFs:
+    \[
+        P_{X,Y}(x,y) = P_X(x)P_Y(y)
+    \]
+
+    In our coin and die example, $X$ and $Y$ are NOT independent because:
+    \begin{itemize}
+        \item Knowing we got tails (X = T) tells us Y can't be 5 or 6
+        \item Knowing we got Y = 6 tells us we must have gotten heads
+    \end{itemize}
+
+    \section*{Lecture 19: Tuesday 10/29/2024}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
