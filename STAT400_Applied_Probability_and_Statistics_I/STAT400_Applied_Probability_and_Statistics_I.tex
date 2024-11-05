@@ -4350,6 +4350,1077 @@ The number of all straights is equal to $(4^5-4) \times$ number of options for t
 
     \section*{Lecture 19: Tuesday 10/29/2024}
 
+    \subsection*{Random Vectors}
+    
+    \noindent
+    \textbf{Question:} How do we assign probabilities for random vectors (those that take countably many values)?
+
+    \vspace{0.3cm}
+    \noindent
+    For discrete random vectors, we use the \textit{joint PMF}. \\
+    For continuous random vectors, we use the \textit{joint probability density function}.
+
+    \vspace{0.3cm}
+    \noindent
+    \textbf{Key Equations:}
+    
+    Let $P_{X,Y}(x,y)$ be the joint PMF for $x,y$, and let $\underline{x} = (x,y)$. Then:
+
+
+    \begin{align*}
+        P(\underline{x} \in A) &= \sum_{(\underline{x} \in A)} P_{X,Y}(\underline{x}) \quad \text{where } P_{X,Y}(\underline{x}) > 0 \\[0.3cm]
+        P_{X, Y}(x, y) &= P_{Y|X}(y|x)P(x) = P_{X|Y}(x|y)P(y)
+    \end{align*}
+
+    \noindent
+    For independent $X$ and $Y$:
+    \[
+        P_{X,Y}(x,y) = P_X(x)P_Y(y)
+    \]
+
+    \noindent
+    Law of Total Probability:
+    \[
+        P_X(x) = \sum_{y} P_{X,Y}(x,y) \quad \text{where } P_{X,Y}(x,y) > 0
+    \]
+
+
+    \vspace{0.3cm}
+    \noindent
+    \textbf{Joint Continuity:}
+    
+    Random variables $X,Y$ are jointly continuous if there exists a function $f_{X,Y}(x,y)$ (joint probability density function) such that:
+    \begin{itemize}
+        \item $f_{X,Y}(x,y) \geq 0$ for all $(x,y)$
+        \item $\displaystyle \int_A f_{X,Y}(x,y) \, d\mu = P((X,Y) \in A)$ for all ``nice" $A \subseteq \mathbb{R}^2$
+    \end{itemize}
+
+    \pagebreak
+
+
+        % Side by side plots
+        \begin{figure}[h]
+            \centering
+            \begin{minipage}{0.45\textwidth}
+                % 2D curve showing area under curve
+                \begin{tikzpicture}[scale=1.2]
+                    \draw[->] (0,0) -- (6,0) node[right] {$x$};
+                    \draw[->] (0,-0.5) -- (0,3) node[above] {$y$};
+                    \draw[thick, blue] plot[smooth] coordinates {
+                        (0,0.8) (1.5,1.2) (3,0.9) (4.5,1.5) (5,1.8)
+                    };
+                    \fill[blue!20] (0,0) -- plot[smooth] coordinates {
+                        (0,0.8) (1.5,1.2) (3,0.9) (4.5,1.5) (5,1.8)
+                    } -- (5,0) -- cycle;
+                    % Add rectangle
+                    \draw[red, fill=red!20, opacity=0.5] (2.5,0) rectangle (2.7,0.9);
+                    \node at (2.5,-0.3) {Area = $\int f(x)dx$};
+                \end{tikzpicture}
+            \end{minipage}
+            \hfill
+            \begin{minipage}{0.45\textwidth}
+                % 3D surface plot
+                \begin{tikzpicture}[scale=1.2]
+                    \begin{axis}[
+                        view={45}{30},
+                        xlabel=$x$,
+                        ylabel=$y$,
+                        zlabel={$z$},
+                        zlabel style={rotate=-90},
+                        zmin=0,
+                        grid=major,
+                        samples=20,
+                        xtick=\empty,
+                        ytick=\empty,
+                        ztick=\empty
+                    ]
+                    % Draw a smooth surface
+                    \addplot3[
+                        surf,
+                        domain=2:7,
+                        domain y=0:2,
+                        samples=20,
+                        colormap name=viridis,
+                        opacity=0.8
+                    ] 
+                    {exp(-((x-4.5)^2 + (y-1)^2)/8)};
+                    
+                    % Add base shading
+                    \addplot3[
+                        fill=blue!20,
+                        opacity=0.3,
+                        fill opacity=0.2
+                    ] coordinates {
+                        (2,0,0) (7,0,0) (7,2,0) (2,2,0) (2,0,0)
+                    };
+                    
+                    % Add dotted projection lines at corners up to surface
+                    \addplot3[dashed, black, opacity=0.3] coordinates {(2,0,0) (2,0,0.4)};
+                    \addplot3[dashed, black, opacity=0.3] coordinates {(7,0,0) (7,0,0.1)};
+                    \addplot3[dashed, black, opacity=0.3] coordinates {(2,2,0) (2,2,0.4)};
+                    \addplot3[dashed, black, opacity=0.3] coordinates {(7,2,0) (7,2,0.1)};
+                    
+                    % Draw region A in x-y plane behind surface
+                    \addplot3[
+                        fill=blue!10,
+                        opacity=0.2,
+                        z buffer=sort
+                    ] coordinates {
+                        (2,-0.5,0) (7,-0.5,0) (7,2.5,0) (2,2.5,0) (2,-0.5,0)
+                    };
+                    
+                    % Add smaller cuboid
+                    \addplot3[
+                        fill=red!20,
+                        opacity=0.5,
+                        draw=red,
+                    ] coordinates {
+                        (3.5,0.75,0) (3.8,0.75,0) (3.8,1.05,0) (3.5,1.05,0) (3.5,0.75,0)
+                        (3.5,0.75,0.5) (3.8,0.75,0.5) (3.8,1.05,0.5) (3.5,1.05,0.5) (3.5,0.75,0.5)
+                    };
+                    \addplot3[red, opacity=0.5] coordinates {(3.5,0.75,0) (3.5,0.75,0.5)};
+                    \addplot3[red, opacity=0.5] coordinates {(3.8,0.75,0) (3.8,0.75,0.5)};
+                    \addplot3[red, opacity=0.5] coordinates {(3.8,1.05,0) (3.8,1.05,0.5)};
+                    \addplot3[red, opacity=0.5] coordinates {(3.5,1.05,0) (3.5,1.05,0.5)};
+                    
+                    % Label region A and cuboid
+                    \node[text=black] at (axis cs: 3.2,1.7,0) {$A$};
+                    \node[right] at (axis cs: 6,-2,0.5) {Volume = $\int_A f(x,y)\,d\mu$};
+                    \node[text=red] at (axis cs: 3.65,0.9,0.7) {Cuboid};
+                    \end{axis}
+                \end{tikzpicture}
+            \end{minipage}
+            \caption{Comparison of single and double integrals: area under a curve (left) vs volume under a surface (right)}
+        \end{figure}
+    
+        This figure demonstrates the Riemann sum approach to finding the volume under a surface.
+        
+        While this approach is conceptually helpful, it temporarily prevents us from using the Fundamental 
+        Theorem of Calculus.
+        
+        To overcome this limitation, we can use iterated integrals. Iterated integrals allow us to compute 
+        the volume by adding up infinitesimally thin slices of the surface. To understand iterated integrals, consider slicing the volume vertically:
+
+        \begin{center}
+        \begin{tikzpicture}[scale=1.5]
+            \begin{axis}[
+                view={45}{30},
+                xlabel=$x$,
+                ylabel=$y$,
+                zlabel=$z$,
+                zlabel style={rotate=-90},
+                zmin=0,
+                grid=major,
+                samples=20,
+                xtick=\empty,
+                ytick=\empty,
+                ztick=\empty
+            ]
+            % Draw a smooth surface
+            \addplot3[
+                surf,
+                domain=2:7,
+                domain y=0:2,
+                samples=30,
+                colormap name=viridis,
+                opacity=0.8
+            ] 
+            {exp(-((x-4.5)^2 + (y-1)^2)/8)};
+            
+            % Add base shading
+            \addplot3[
+                fill=blue!20,
+                opacity=0.3,
+                fill opacity=0.2
+            ] coordinates {
+                (2,0,0) (7,0,0) (7,2,0) (2,2,0) (2,0,0)
+            };
+            
+            % Add dotted projection lines at corners up to surface
+            \addplot3[dashed, black, opacity=0.3] coordinates {(2,0,0) (2,0,0.4)};
+            \addplot3[dashed, black, opacity=0.3] coordinates {(7,0,0) (7,0,0.1)};
+            \addplot3[dashed, black, opacity=0.3] coordinates {(2,2,0) (2,2,0.4)};
+            \addplot3[dashed, black, opacity=0.3] coordinates {(7,2,0) (7,2,0.1)};
+            
+            % Draw region A in x-y plane behind surface
+            \addplot3[
+                fill=blue!10,
+                opacity=0.2,
+                z buffer=sort
+            ] coordinates {
+                (2,-0.5,0) (7,-0.5,0) (7,2.5,0) (2,2.5,0) (2,-0.5,0)
+            };
+            
+            % Add vertical slice along x=4 with correct depth matching surface
+            \addplot3[
+                fill=red!30,
+                opacity=0.6,
+                draw=red!70!black,
+                thick
+            ] coordinates {
+                (4,0,0)
+                (4,2,0)
+                (4,2,{exp(-((4-4.5)^2 + (2-1)^2)/8)})
+                (4,1.5,{exp(-((4-4.5)^2 + (1.5-1)^2)/8)})
+                (4,1,{exp(-((4-4.5)^2 + (1-1)^2)/8)})
+                (4,0.5,{exp(-((4-4.5)^2 + (0.5-1)^2)/8)})
+                (4,0,{exp(-((4-4.5)^2 + (0-1)^2)/8)})
+                (4,0,0)
+            };
+            
+            % Label region A and slice
+            \node[text=black, font=\large] at (axis cs: 3.2,1.7,0) {$A$};
+            \node[right, font=\normalsize] at (axis cs: 6.8,-2.1,0.5) {Volume = $\int_A f(x,y)\,d\mu$};
+            \node[text=red, font=\large] at (axis cs: 4,2.2,0.3) {Slice};
+            \end{axis}
+        \end{tikzpicture}
+        \end{center}
+        The volume of a single slice can be approximated by:
+        \[ \Delta x \int_{a(x)}^{b(x)} f(x,y) \, dy \]
+        
+        The total volume is approximately the sum of all slices:
+        \[ \sum_{i=1}^{n} \Delta x \int_{a(x)}^{b(x)} f(x,y) \, dy \]
+
+        Taking the limit as $\Delta x \to 0$, the exact volume is:
+        \[ \text{Volume} = \int_c^d \int_{a(x)}^{b(x)} f(x,y) \, dy \, dx \]
+
+        Alternatively, we could slice along the y-axis instead of the x-axis, yielding:
+        \[ \int_e^f \int_{g(y)}^{h(y)} f(x,y) \, dx \, dy \]
+
+        For all examples we will encounter in this class (and most examples in general), the order of integration 
+        will yield identical results.
+
+        \vspace{0.3cm}
+        \noindent
+        \textbf{Note:} The drawings above are not to scale nor perfect representations, but are meant to illustrate 
+        the general concept of integration over a region in 3D space.
+
+        \pagebreak
+        \textbf{Example:}
+        Suppose that $f_{X,Y}(x,y) = 
+        \begin{cases}
+            k & \text{for } (x,y) \in R \\
+            0 & \text{otherwise}
+        \end{cases}$
+
+        is a joint probability density function, where $R$ is the triangular region bounded by:
+        \[ 0 \leq x \leq 1, \quad 0 \leq y \leq 1-x \]
+
+        \begin{enumerate}
+            \item Compute the value of $k$
+            \item Compute $P(Y > X)$
+        \end{enumerate}
+
+        \begin{center}
+        \begin{tikzpicture}
+            \begin{axis}[
+                axis lines=center,
+                xlabel=$x$,
+                ylabel=$y$,
+                xmin=-0.2, xmax=1.2,
+                ymin=-0.2, ymax=1.2,
+                xtick={0,0.5,1},
+                ytick={0,0.5,1},
+                grid=major,
+                ]
+                
+                % Draw the triangular region R
+                \addplot[
+                    fill=blue!20,
+                    opacity=0.5,
+                ] coordinates {
+                    (0,0)
+                    (1,0)
+                    (0,1)
+                    (0,0)
+                };
+                
+                % Add line y = 1-x
+                \addplot[
+                    thick,
+                    blue,
+                    domain=0:1,
+                ] {1-x};
+                
+                % Label region R
+                \node[text=black, font=\large] at (40,40) {$R$};
+                \node[text=black, font=\large] at (100,100) {$S$};
+                
+                % Add labels for the line
+                \node[blue, right] at (50,100) {$y = 1-x$};
+                
+            \end{axis}
+        \end{tikzpicture}
+        \end{center}
+
+        For example what is $P\big((X,Y) \in [2,3] \times [5,6]\big)$
+
+        \begin{center}
+        \begin{tikzpicture}[scale=1.2, xshift=15cm]  % Added xshift to move left
+            \begin{axis}[
+                view={120}{25},  % Adjusted view angle for better perspective
+                axis lines=center,
+                xmin=-0.2, xmax=3.5,
+                ymin=-0.2, ymax=6.5,
+                zmin=0, zmax=3,
+                xtick={0,1,2,3},
+                ytick={0,1,5,6},
+                ztick={0,1,2,3},
+                grid=major,
+                grid style={line width=.1pt, draw=gray!20},  % Lighter grid
+                axis line style={thick},  % Bolder axes
+                xlabel={$x$},
+                ylabel={$y$},
+                zlabel={$z$},
+                xlabel style={at={(axis cs:3.5,0,0)}},
+                ylabel style={at={(axis cs:0,6.5,0)}},
+                zlabel style={at={(axis cs:0,0,3)}}
+            ]
+                
+            % Draw triangular prism faces in a slightly different order for better visibility
+            % Bottom face
+            \addplot3[fill=blue!10, opacity=0.3, draw=black] coordinates {
+                (0,0,0)
+                (1,0,0)
+                (0,1,0)
+                (0,0,0)
+            };
+            
+            % Side faces
+            \addplot3[fill=blue!15, opacity=0.4, draw=black] coordinates {
+                (0,0,0)
+                (0,0,3)
+                (1,0,3)
+                (1,0,0)
+                (0,0,0)
+            };
+            
+            \addplot3[fill=blue!20, opacity=0.4, draw=black] coordinates {
+                (0,0,0)
+                (0,0,3)
+                (0,1,3)
+                (0,1,0)
+                (0,0,0)
+            };
+            
+            \addplot3[fill=blue!25, opacity=0.4, draw=black] coordinates {
+                (0,1,0)
+                (0,1,3)
+                (1,0,3)
+                (1,0,0)
+                (0,1,0)
+            };
+            
+            % Top face
+            \addplot3[fill=blue!30, opacity=0.5, draw=black] coordinates {
+                (0,0,3)
+                (1,0,3)
+                (0,1,3)
+                (0,0,3)
+            };
+            
+            % Add the 2x3 5x6 rectangle
+            \addplot3[fill=red!20, opacity=0.5, draw=red, thick] coordinates {
+                (2,5,0)
+                (3,5,0)
+                (3,6,0)
+                (2,6,0)
+                (2,5,0)
+            };
+            
+            % Label regions
+            \node[text=black, font=\small] at (0.4,0.4,1.5) {$R \times [0,3]$};
+            \node[text=red, font=\small] at (200,400,0.2) {$[2,3] \times [5,6]$};
+            \node[text=black, font=\small] at (300,300,0.2) {$S$};
+            
+            \end{axis}
+        \end{tikzpicture}
+        \end{center}
+
+        $P\big((X,Y) \in [2,3] \times [5,6]\big) = 0$ because the region does not overlap with $R$.
+
+        The region $R$ for which $f(x,y)$ is non-zero contains the possible outcomes for $X$ and $Y$.
+        \pagebreak
+        Refer to the diagrams above for the following:
+        
+        i) Verify that $\int_{-\infty}^\infty \int_{-\infty}^\infty f(x,y) \, dx \, dy = 1$
+        
+        \begin{align*}
+            \text{Since $f(x,y)$ is a joint pdf:} \\
+            &\int_{-\infty}^\infty \int_{-\infty}^\infty f(x,y) \, dx \, dy = 1 \\[1em]
+            \text{Split into regions $R$ and complement $S$:} \\
+            &= \int_R f(x,y) \, dx \, dy + \int_S f(x,y) \, dx \, dy \\[1em]
+            \text{Since $f(x,y) = 0$ for all $(x,y) \in S$:} \\
+            &= \int_R f(x,y) \, dx \, dy + 0 \\[1em]
+            \text{Therefore:} \\
+            &= \int_R f(x,y) \, dx \, dy = 1
+        \end{align*}
+
+        Because we have dx, dy in the integrand, we can integrate with respect to x first, then y.
+       \begin{align*}
+           \int_{0}^{1} \int_{0}^{1-y} k \, dx \, dy &= 1 \\
+           k \int_{0}^{1} \int_{0}^{1-y} 1 \, dx \, dy &= 1 \\
+           k \int_{0}^{1} (1-y) \, dy &= 1 \\
+           k \left(\int_{0}^{1} 1 \, dy - \int_{0}^{1} y \, dy\right) &= 1 \\
+           k \left(\left[ y \right]_{0}^{1} - \left[ \frac{y^2}{2} \right]_{0}^{1}\right) &= 1 \\
+           k \left(1 - \frac{1}{2}\right) &= 1 \\
+           k \left(\frac{1}{2}\right) &= 1 \\
+           k &= 2
+       \end{align*}
+
+       \pagebreak
+
+       ii) Compute $P(Y > X)$
+
+       \begin{center}
+        \begin{tikzpicture}
+            \begin{axis}[
+                axis lines=center,
+                xlabel=$x$,
+                ylabel=$y$,
+                xmin=-0.2, xmax=1.2,
+                ymin=-0.2, ymax=1.2,
+                xtick={0,0.5,1},
+                ytick={0,0.5,1},
+                grid=major,
+                ]
+                
+               
+                
+                % Add line y = 1-x
+                \addplot[
+                    thick,
+                    blue,
+                    domain=0:1,
+                ] {1-x};
+                
+                % Add line y = x
+                \addplot[
+                    thick,
+                    red,
+                    domain=0:1,
+                ] {x};
+                
+                % Shade the region where y > x
+                \addplot[
+                    fill=red!20,
+                    opacity=0.5,
+                ] coordinates {
+                    (0,0)
+                    (0,1)
+                    (0.5,0.5)
+                    (0,0)
+                };
+                
+                % Label region R
+                \node[text=black, font=\large] at (40,60) {$R$};
+                \node[text=black, font=\large] at (100,80) {$S$};
+                
+                % Add labels for the lines
+                \node[blue, right] at (50,100) {$y = 1-x$};
+                \node[red, right] at (100,100) {$y = x$};
+                
+            \end{axis}
+        \end{tikzpicture}
+        \end{center}
+
+        \begin{align*}
+            y &= x \\
+            y &= 1-x \quad \text{where } x = \frac{1}{2}
+        \end{align*}
+
+        \text{Find } $P(Y > x)$:
+        \[ P(Y > x) = \int_{0}^{1/2} \int_{x}^{1-x} 2 \, dy \, dx \]
+
+        \begin{align*}
+            &= \int_{0}^{1/2} 2(1-x - x) \, dx \\
+            &= \int_{0}^{1/2} 2(1-2x) \, dx \\
+            &= 2 \left( \left[ x \right]_{0}^{\frac{1}{2}} - \left[ x^2 \right]_{0}^{\frac{1}{2}} \right) \\
+            &= 2 \left( \frac{1}{2} - \frac{1}{4} \right) \\
+            &= 2 \left( \frac{1}{4} \right) \\
+            &= \frac{1}{2}
+        \end{align*}
+
+        \pagebreak
+
+        \section*{Lecture 20: Thusday 10/31/2024}
+
+        \subsection*{Jointly Continuous Random Variables X and Y}
+
+        Let $f(x,y)$ be the joint probability density function (PDF) of X and Y:
+
+        \[
+        f(x,y) = 
+        \begin{cases}
+            k & \text{for } (x,y) \in R \\
+            0 & \text{otherwise}
+        \end{cases}
+        \]
+
+        \textbf{Important Properties:}
+        \begin{itemize}
+            \item $P(X=\frac{1}{2}, Y=\frac{1}{2}) = 0$
+            \item $P(0<X<\frac{1}{2}, 0<Y<\frac{1}{2}) > 0$
+            \item $P(X>1, Y>1) = 0$
+        \end{itemize}
+
+        \textbf{Key Calculations:}
+        \begin{enumerate}
+            \item Total probability: $\int_{-\infty}^\infty \int_{-\infty}^\infty f(x,y) \, dx \, dy = 1$
+            \item $P(Y > X)$ was calculated above
+            \item $P(X>\frac{1}{4} | Y>X) = \frac{P(X>\frac{1}{4}, Y>X)}{P(Y>X)}$
+        \end{enumerate}
+
+        \begin{center}
+        \begin{tikzpicture}
+            \begin{axis}[
+                axis lines=center,
+                xlabel=$x$,
+                ylabel=$y$,
+                xmin=-0.2, xmax=1.2,
+                ymin=-0.2, ymax=1.2,
+                xtick={0,0.25,0.5,1},
+                ytick={0,0.5,1},
+                grid=major
+            ]
+                
+            % Draw the region where y > x and x > 1/4
+            \addplot[
+                fill=blue!20,
+                opacity=0.5
+            ] coordinates {
+                (0.25,0.25)
+                (0.5,0.5)
+                (0.25,0.75)
+                (0.25,0.25)
+            };
+            
+            % Add line y = x
+            \addplot[
+                thick,
+                blue,
+                domain=0:1
+            ] {x};
+            
+            % Add line y = 1-x
+            \addplot[
+                thick,
+                red,
+                domain=0:1
+            ] {1-x};
+            
+            % Add labels for the lines
+            \node[blue, right] at (70,100) {$y = x$};
+            \node[red, right] at (70,30) {$y = 1-x$};
+            
+            % Add vertical line at x = 1/4
+            \addplot[
+                thick,
+                dashed,
+                green
+            ] coordinates {
+                (0.25,0)
+                (0.25,1)
+            };
+            \node[green, below] at (0.25,0) {$x = \frac{1}{4}$};
+            
+            \end{axis}
+        \end{tikzpicture}
+        \end{center}
+
+        The probability can be calculated as:
+        \[
+            P(X > \frac{1}{4} \mid Y > X) = \int_{\frac{1}{4}}^{\frac{1}{2}} \int_{x}^{1-x} 2 \, dy \, dx
+        \]
+
+        \begin{align*}
+            &= 2\int_{\frac{1}{4}}^{\frac{1}{2}} \left[ y \right]_{x}^{1-x} \, dx \\[0.5em]
+            &= 2\int_{\frac{1}{4}}^{\frac{1}{2}} [(1-x) - x] \, dx \\[0.5em]
+            &= 2\int_{\frac{1}{4}}^{\frac{1}{2}} (1-2x) \, dx \\[0.5em]
+            &= 2\left[x - x^2\right]_{\frac{1}{4}}^{\frac{1}{2}} \\[0.5em]
+            &= 2\left[\left(\frac{1}{2} - \frac{1}{4}\right) - \left(\frac{1}{4} - \frac{1}{16}\right)\right] \\[0.5em]
+            &= 2\left[\frac{1}{4} - \frac{3}{16}\right] \\[0.5em]
+            &= 2\left[\frac{4}{16} - \frac{3}{16}\right] \\[0.5em]
+            &= 2\left[\frac{1}{16}\right] \\[0.5em]
+            &= \frac{1}{8}
+        \end{align*}
+
+        Therefore:
+        \[
+            P(X > \frac{1}{4} \mid Y > X) = \frac{P(X > \frac{1}{4}, Y > X)}{P(Y > X)} = \frac{\frac{1}{8}}{\frac{1}{2}} = \frac{1}{4}
+        \]
+
+        iv) $P(X > \frac{1}{8} \mid Y = \frac{1}{2})$
+
+        The conditional probability $P(X > \frac{1}{8} \mid Y = \frac{1}{2})$ is undefined because:
+        \begin{enumerate}
+            \item $P(X > \frac{1}{8} \mid Y = \frac{1}{2}) = \frac{P(X > \frac{1}{8}, Y = \frac{1}{2})}{P(Y = \frac{1}{2})}$
+            \item $P(Y = \frac{1}{2}) = 0$
+            \item $P(X > \frac{1}{8}, Y = \frac{1}{2}) = 0$
+        \end{enumerate}
+
+        \begin{center}
+        \begin{tikzpicture}
+            \begin{axis}[
+                axis lines=center,
+                xlabel=$x$,
+                ylabel=$y$,
+                xmin=-0.2, xmax=1.2,
+                ymin=-0.2, ymax=1.2,
+                xtick={0,0.5,1},
+                ytick={0,0.5,1},
+                grid=major
+                ]
+                
+                % Draw the shaded region
+                \addplot[
+                    fill=blue!20,
+                    opacity=0.5
+                ] coordinates {
+                    (0.375,0.125)
+                    (0.625,0.125)
+                    (0.625,0.375)
+                    (0.375,0.625)
+                    (0.375,0.125)
+                };
+                
+                % Add the line y = 1-x
+                \addplot[
+                    thick,
+                    blue,
+                    domain=0:1
+                ] {1-x};
+                
+                % Add line y = 1/8
+                \addplot[
+                    thick,
+                    red,
+                    dashed,
+                    domain=0:1
+                ] {0.125};
+                
+                % Add vertical lines at x = 1/2 ± 1/8
+                \addplot[
+                    thick,
+                    dashed,
+                    green
+                ] coordinates {
+                    (0.375,0)
+                    (0.375,1)
+                };
+                
+                \addplot[
+                    thick,
+                    dashed,
+                    green
+                ] coordinates {
+                    (0.625,0)
+                    (0.625,1)
+                };
+                
+                % Label regions
+                \node[text=black] at (65,50) {$R$};
+                
+                % Add labels for the lines
+                \node[blue, right] at (85,65) {$y = 1-x$};
+                \node[red, right] at (20,40) {$y = \frac{1}{8}$};
+                \node[black, below] at (50,20) {$\frac{1}{2}-\delta$};
+                \node[black, below] at (90,20) {$\frac{1}{2}+\delta$};
+            \end{axis}
+        \end{tikzpicture}
+        \end{center}
+
+        \[
+            \lim_{\delta \to 0} P(X > \frac{1}{8} \mid Y = \frac{1}{2}) = \frac{P(X > \frac{1}{8}, Y = \frac{1}{2})}{P(Y = \frac{1}{2})}
+        \]
+
+        \[f_{x | y}(x | y) = \frac{f_{x,y}(x,y)}{f_y(y)}\]
+
+       
+        \[f_{x|y}(x|y)\] is the conditional probability density function of $X$ given $Y=y$
+        
+        
+        \[\frac{f_{x,y}(x,y)}{f_y(y)}\] represents the ratio of joint PDF to marginal PDF of $Y$
+        
+       
+        \[P(X > \frac{1}{8} | Y = \frac{1}{2}) = \int_{\frac{1}{2}-\delta}^{\frac{1}{2}+\delta} f_{x|y}(x|\frac{1}{2}) \, dx\]
+
+      
+        \begin{center}
+            \begin{tikzpicture}
+                \begin{axis}[
+                    axis lines=center,
+                    xlabel=$x$,
+                    ylabel=$y$,
+                    xmin=-0.2, xmax=1.2,
+                    ymin=-0.2, ymax=1.2,
+                    xtick={0,0.5,1},
+                    ytick={0,0.5,1}
+                    ]
+                    
+                    % Draw the shaded region as a rectangle
+                    \addplot[
+                        fill=blue!20,
+                        opacity=0.5
+                    ] coordinates {
+                        (0.125,0.5)
+                        (0.5,0.5)
+                        (0.5,0)
+                        (0.125,0)
+                        (0.125,0.5)
+                    };
+                    
+                    % Add the line y = 1-x
+                    \addplot[
+                        thick,
+                        blue,
+                        domain=0:1
+                    ] {1-x};
+                    
+                    % Add line y = 1/2
+                    \addplot[
+                        thick,
+                        red,
+                        dashed,
+                        domain=0:1
+                    ] {0.5};
+                    
+                    % Add vertical lines at x = 1/2 ± 1/8
+                    \addplot[
+                        thick,
+                        dashed,
+                        green
+                    ] coordinates {
+                        (0.125,0)
+                        (0.125,1)
+                    };
+                    
+                    \addplot[
+                        thick,
+                        dashed,
+                        green
+                    ] coordinates {
+                        (0.5,0)
+                        (0.5,1)
+                    };
+                    
+                    % Label regions
+                    \node[text=black] at (60,50) {$R$};
+                    
+                    % Add labels for the lines
+                    \node[blue, right] at (85,60) {$y = 1-x$};
+                    \node[red, right] at (35,78) {$y = \frac{1}{2}$};
+                    \node[black, below] at (30,20) {$\frac{1}{8}$};
+                \end{axis}
+            \end{tikzpicture}
+        \end{center}
+
+
+        \[P(X > \frac{1}{8} | Y = \frac{1}{2}) = \int_{\frac{1}{8}}^{\frac{1}{2}} f_{x|y}(x|\frac{1}{2}) \, dx\]
+
+
+        \[f_{x|y}(x|\frac{1}{2}) = \frac{f_{x,y}(x,\frac{1}{2})}{f_y(\frac{1}{2})}\]
+
+        Key equation:
+
+        \[f_y(y) = \int_{-\infty}^{\infty} f_{x,y}(x,y) \, dx\]
+
+        \begin{align*}
+            \int_{0}^{1-y} 2 \, dx &= 2(1-y) \quad \text{for } 0 \leq y \leq 1
+        \end{align*}
+
+        \begin{center}
+            \begin{tikzpicture}
+                \begin{axis}[
+                    axis lines=center,
+                    xlabel=$x$,
+                    ylabel=$y$,
+                    xmin=-0.2, xmax=1.2,
+                    ymin=-0.2, ymax=1.2,
+                    xtick={0,1},
+                    ytick={0,1}
+                    ]
+                    
+                    % Add the line y = 1-x
+                    \addplot[
+                        thick,
+                        blue,
+                        domain=0:1
+                    ] {1-x};
+                    
+                    % Add line y = 0.4
+                    \addplot[
+                        thick,
+                        red,
+                        dashed,
+                        domain=0:1
+                    ] {0.4};
+                    
+                    % Label regions
+                    \node[text=black] at (60,50) {$R$};
+                    
+                    % Add labels for the lines
+                    \node[blue, right] at (65,80) {$y = 1-x$};
+                    \node[red, right] at (10, 60) {$y$};
+                \end{axis}
+            \end{tikzpicture}
+        \end{center}
+
+
+        The marginal pdf of $Y$ is: $2(1-y)$
+
+        \textbf{Example:} Find $P(Y > \frac{1}{2})$
+        
+        \begin{align*}
+            P(Y > \frac{1}{2}) &= \int_{\frac{1}{2}}^{1} \int_{0}^{1-y} f_{x,y}(x,y) \, dx \, dy \\
+            &= \int_{\frac{1}{2}}^{1} f_y(y) \, dy
+        \end{align*}
+
+       \begin{center}
+            \begin{tikzpicture}
+                \begin{axis}[
+                    axis lines=center,
+                    xlabel=$x$,
+                    ylabel=$y$,
+                    xmin=-0.2, xmax=1.2,
+                    ymin=-0.2, ymax=1.2,
+                    xtick={0,0.5,1},
+                    ytick={0,0.5,1}
+                    ]
+                    
+                    % Add the line y = 1-x
+                    \addplot[
+                        thick,
+                        blue,
+                        domain=0:1
+                    ] {1-x};
+                    
+                    % Add line y = 1/2
+                    \addplot[
+                        thick,
+                        red,
+                        dashed,
+                        domain=0:1
+                    ] {0.5};
+                    
+                    % Shade the region where Y > 1/2
+                    \addplot[
+                        fill=blue!20,
+                        opacity=0.5
+                    ] coordinates {
+                        (0,0.5)
+                        (0,1)
+                        (0.5,0.5)
+                    } -- cycle;
+                    
+                    
+                    % Add labels
+                    \node[blue, right] at (50,90) {$y = 1-x$};
+                    \node[red, right] at (90,60) {$y = \frac{1}{2}$};
+                \end{axis}
+            \end{tikzpicture}
+        \end{center}
+
+       We can compute probabilities for expressions with just $y$ (or just $x$) by using 
+       the marginal PDF of $y$ (or $x$).
+       
+       \begin{align*}
+           P(X > \frac{1}{8} | y = \frac{1}{2}) &= \int_{\frac{1}{8}}^{\frac{1}{2}} \frac{f_{x,y}(x,\frac{1}{2})}{f_y(\frac{1}{2})} \, dx \\
+           &= \int_{\frac{1}{8}}^{\frac{1}{2}} \frac{2}{2(1-\frac{1}{2})} \, dx \\
+           &= \int_{\frac{1}{8}}^{\frac{1}{2}} 2 \, dx \\
+           &= 2\left[x\right]_{\frac{1}{8}}^{\frac{1}{2}} \\
+           &= 2\left[\frac{1}{2} - \frac{1}{8}\right] \\
+           &= 2\left[\frac{3}{8}\right] \\
+           &= \frac{3}{4}
+       \end{align*}
+
+
+       \subsection*{Testing Independence of X and Y}
+       
+       To determine if X and Y are independent, we use the key equation:
+       \[f_{x,y}(x,y) = f_x(x)f_y(y) \quad \text{if and only if X and Y are independent}\]
+       
+       We already know:
+       \begin{itemize}
+           \item $f_{x,y}(x,y) = 2$ for points in R
+           \item $f_y(y) = 2(1-y)$ for $0 \leq y \leq 1$
+       \end{itemize}
+       
+       Let's find $f_x(x)$:
+       \begin{align*}
+           f_x(x) &= \int_{-\infty}^{\infty} f_{x,y}(x,y) \, dy \\
+                  &= \int_{0}^{1-x} 2 \, dy \\
+                  &= 2(1-x) \quad \text{for } 0 \leq x \leq 1
+       \end{align*}
+
+       \begin{center}
+        \begin{tikzpicture}
+            \begin{axis}[
+                axis lines=center,
+                xlabel=$x$,
+                ylabel=$y$,
+                xmin=-0.2, xmax=1.2,
+                ymin=-0.2, ymax=1.2,
+                xtick={0,1},
+                ytick={0,1}
+                ]
+                
+                % Add the line y = 1-x
+                \addplot[
+                    thick,
+                    blue,
+                    domain=0:1
+                ] {1-x};
+                
+                % Add line y = 0.6
+                \addplot[
+                    thick,
+                    red,
+                    dashed,
+                    domain=0:0.4
+                ] {0.6};
+
+                % Add vertical line x = 0.4
+                \addplot[
+                    thick,
+                    red,
+                    dashed,
+                    domain=0:0.4
+                ] coordinates {(0.4,0) (0.4,0.6)};
+                
+                % Add labels for the lines
+                \node[blue, right] at (65,80) {$y = 1-x$};
+                \node[red, right] at (0, 80) {$1-x$};
+                \node[red, right] at (55, 10) {$x$};
+            \end{axis}
+        \end{tikzpicture}
+    \end{center}
+       
+    \textbf{Conclusion:} X and Y are not independent because:
+    \[f_{x,y}(x,y) \neq f_x(x)f_y(y)\]
+    \[2 \neq 2(1-x)2(1-y)\]
+
+
+    If we write the general expression for the conditional probability density function:
+    \[
+        f_{x|y}(x|y) = \frac{f_{x,y}(x,y)}{f_y(y)} = \frac{2}{2(1-y)} = \frac{1}{1-y}
+    \]
+    for $0 \leq x \leq 1-y$ and $0 \leq y \leq 1$
+
+    For the double integral:
+    \[
+        \int_{1}^{2} \int_{0}^{1-y} (x^2y+y^3) \, dx \, dy
+    \]
+    \[
+        = \int_{1}^{2} \left[\frac{x^3y}{3} + y^3x\right]_{0}^{1-y} \, dy
+    \]
+    \[
+        = \int_{1}^{2} \left(\frac{(1-y)^3y}{3} + y^3(1-y)\right) \, dy
+    \]
+    \[
+        = \int_{1}^{2} \left(\frac{y-3y^2+3y^3-y^4}{3} + y^3-y^4\right) \, dy
+    \]
+    \[
+        = \int_{1}^{2} \left(\frac{y-3y^2+3y^3-y^4+3y^3-3y^4}{3}\right) \, dy
+    \]
+    \[
+        = \int_{1}^{2} \left(\frac{y-3y^2+6y^3-4y^4}{3}\right) \, dy
+    \]
+    \[
+        = \left[\frac{y^2}{6}-\frac{y^3}{3}+\frac{3y^4}{6}-\frac{4y^5}{15}\right]_{1}^{2}
+    \]
+    \[
+        = \left(\frac{4}{6}-\frac{8}{3}+\frac{48}{6}-\frac{128}{15}\right) - \left(\frac{1}{6}-\frac{1}{3}+\frac{3}{6}-\frac{4}{15}\right)
+    \]
+    \[
+        = \left(\frac{4-16+48-\frac{128}{5}}{6}\right) - \left(\frac{1-2+3-\frac{4}{5}}{6}\right)
+    \]
+    \[
+        = \frac{36-\frac{128}{5}-2+\frac{4}{5}}{6} = \frac{180-128+4}{30} = \frac{56}{30} = \boxed{\frac{28}{15}}
+    \]
+    
+    \textbf{Expected Value of a Function of Two Random Variables:}
+    \[\mathbb{E}[g(X,Y)] = \begin{cases}
+        \displaystyle\sum_{x} \sum_{y} g(x,y)p_{x,y}(x,y) & \text{if } X \text{ and } Y \text{ are discrete} \\[2ex]
+        \displaystyle\int_{-\infty}^{\infty}\int_{-\infty}^{\infty} g(x,y)f_{x,y}(x,y) \, dx \, dy & \text{if } X \text{ and } Y \text{ are continuous}
+    \end{cases}\]
+
+    where $p_{x,y}(x,y)$ is the joint probability mass function for discrete random variables and $f_{x,y}(x,y)$ is the joint probability density function for continuous random variables.
+
+    Example: Let $f_{X,Y}(x,y)$ be the joint probability density function given by:
+    \[f_{X,Y}(x,y) = \begin{cases}
+        2 & \text{if } (x,y) \in R \\
+        0 & \text{otherwise}
+    \end{cases}\]
+    where $R$ is the region shown in the figure below.
+
+    Find:
+    \begin{enumerate}
+        \item $\mathbb{E}(XY)$
+        \item $\mathbb{E}(X^2Y)$
+    \end{enumerate}
+
+    \begin{center}
+        \begin{tikzpicture}
+            \begin{axis}[
+                axis lines=center,
+                xlabel=$x$,
+                ylabel=$y$,
+                xmin=-0.2, xmax=1.2,
+                ymin=-0.2, ymax=1.2,
+                xtick={0,1},
+                ytick={0,1},
+                grid=major,
+                ]
+                
+                % Draw the triangular region R
+                \addplot[
+                    fill=blue!20,
+                    opacity=0.5,
+                ] coordinates {
+                    (0,0)
+                    (1,0)
+                    (0,1)
+                    (0,0)
+                };
+                
+                % Add line y = 1-x
+                \addplot[
+                    thick,
+                    blue,
+                    domain=0:1,
+                ] {1-x};
+                
+                % Label region R
+                \node[text=black, font=\large] at (40,40) {$R$};
+                \node[text=black, font=\large] at (100,100) {$S$};
+                
+                % Add labels for the line
+                \node[blue, right] at (50,100) {$y = 1-x$};
+                
+            \end{axis}
+        \end{tikzpicture}
+    \end{center}
+
+   
+    \[\mathbb{E}(XY) = \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} xy f_{X,Y}(x,y) \, dx \, dy\]
+    \[= \int_{0}^{1} \int_{0}^{1-y} xy \cdot 2 \, dx \, dy\]
+    \[= \int_{0}^{1} \left[x^2y\right]_{0}^{1-y} \, dy\]
+    \[= \int_{0}^{1} y(1-y)^2 \, dy\] 
+    \[= \int_{0}^{1} (y-2y^2+y^3) \, dy\]
+    \[= \left[\frac{y^2}{2}-\frac{2y^3}{3}+\frac{y^4}{4}\right]_{0}^{1}\]
+    \[= \left(\frac{1}{2}-\frac{2}{3}+\frac{1}{4}\right) - (0) = \frac{12-16+6}{24} = \frac{2}{24} = \boxed{\frac{1}{12}}\]
+
+    \[\mathbb{E}(X^2Y) = \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} x^2y f_{X,Y}(x,y) \, dx \, dy\]
+    \[= \int_{0}^{1} \int_{0}^{1-y} x^2y \cdot 2 \, dx \, dy\]
+    \[= \int_{0}^{1} \left[\frac{x^3y}{3}\right]_{0}^{1-y} \, dy\]
+    \[= \int_{0}^{1} \frac{y(1-y)^3}{3} \, dy\]
+    \[= \int_{0}^{1} \frac{y-3y^2+3y^3-y^4}{3} \, dy\]
+    \[= \left[\frac{y^2}{6}-\frac{y^3}{3}+\frac{3y^4}{12}-\frac{y^5}{15}\right]_{0}^{1}\]
+    \[= \left(\frac{1}{6}-\frac{1}{3}+\frac{1}{4}-\frac{1}{15}\right) - (0)\]
+    \[= \frac{30-60+30-12}{120} = \boxed{\frac{1}{15}}\]
+
+    \pagebreak
 
 
 
@@ -4365,11 +5436,7 @@ The number of all straights is equal to $(4^5-4) \times$ number of options for t
 
 
 
-
-
-
-
-
+        
 
 
 
