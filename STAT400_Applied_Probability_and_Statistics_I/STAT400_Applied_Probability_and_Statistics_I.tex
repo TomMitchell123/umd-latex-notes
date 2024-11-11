@@ -5403,21 +5403,420 @@ The number of all straights is equal to $(4^5-4) \times$ number of options for t
 
     \pagebreak
 
+    \section*{Lecture 21: Tuesday 11/5/2024}
 
+    \subsection*{Expected Values for Functions of Random Vectors}
 
+    \[\mathbb{E}[g(x_1, x_2, \ldots, x_n)] = 
+    \begin{cases}
+        \displaystyle\int\limits_{-\infty}^{\infty} \cdots \int\limits_{-\infty}^{\infty} 
+        g(\underline{x}) f_{\underline{x}}(\underline{x}) \, dx_1 \cdots dx_n 
+        & \text{for continuous } \underline{x} \text{ with joint pdf } f_{\underline{x}}(\underline{x}) \\[2ex]
+        \displaystyle\sum_{x_1} \cdots \sum_{x_n} 
+        g(\underline{x}) p_{\underline{x}}(\underline{x})
+        & \text{for discrete } \underline{x} \text{ with joint pmf } p_{\underline{x}}(\underline{x})
+    \end{cases}
+    \]
 
+    Consider the example where we discussed an experiment that involves tossing a fair coin
+    followed by rolling a fair six or four sided die depending on the outcome of the coin toss.
 
+    Let X and Y be defined as in this example
 
+    Compute $\mathbb{E}(X)$ and $\mathbb{E}(Y)$
 
+    \[P_{X,Y}(x,y) = 
+    \begin{cases}
+        \frac{1}{12} & \text{if } x = 1, y \in \{1,2,\ldots,6\} \\
+        \frac{1}{8} & \text{if } x = 0, y \in \{1,2,\ldots,4\} \\
+        0 & \text{otherwise}
+    \end{cases}\]
 
+    \[\mathbb{E}(Y) = \sum_{y} \sum_{x} y P_{X,Y}(x,y)\]
+    
+    \[= \sum_{y} \left(yP_{X,Y}(1,y) + yP_{X,Y}(0,y)\right)\]
+    
+    \[= \sum_{y} y P_{X,Y}(0,y) + \sum_{y} y P_{X,Y}(1,y)\]
+    
+    \begin{align*}
+        &= \sum_{y=1}^4 y \cdot \frac{1}{8} + \sum_{y=1}^6 y \cdot \frac{1}{12} \\[1ex]
+        &= \frac{1}{8}(1 + 2 + 3 + 4) + \frac{1}{12}(1 + 2 + 3 + 4 + 5 + 6) \\[1ex]
+        &= \frac{10}{8} + \frac{21}{12} \\[1ex]
+        &= \frac{10}{8} + \frac{14}{8} \\[1ex]
+        &= \frac{24}{8} = \boxed{3}
+    \end{align*}
 
+    \[
+    \mathbb{E}(X) = \sum_{x} \sum_{y} x P_{X,Y}(x,y)
+    = \sum_{y} y P_{x, y} (1, y).
+    = \frac{1}{12}(1 + 2 + 3 + 4 + 5 + 6)
+    \]
+    
+    \[\mathbb{E}[g(x)] = \sum_{x} g(x) P_X(x)\]
 
+    Suppose $X, Y$ are jointly continuous with joint pdf $f_{X,Y}(x,y)$. Then:
 
+    \[\mathbb{E}[aX + bY] = \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} (ax + by) f_{X,Y}(x,y) \, dx \, dy\]
 
+    \[= a \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} x f_{X,Y}(x,y) \, dx \, dy + b \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} y f_{X,Y}(x,y) \, dx \, dy\]
 
+    \[= a\mathbb{E}[X] + b\mathbb{E}[Y]\]
 
+    Note:
+    \[\mathbb{E}[X] = \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} x f_{X,Y}(x,y) \, dx \, dy 
+    \]
+    \[\mathbb{E}[X] =  \int_{-\infty}^{\infty} x f_X(x) \, dx\]
 
+    Verify that these are the same.
+
+    If X and Y are independent, then:
+    \[f_{X,Y}(x,y) = f_X(x)f_Y(y)\]
+
+    \[\mathbb{E}[XY] = \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} xy f_{X,Y}(x,y) \, dx \, dy\]
+    \[= \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} xy f_X(x)f_Y(y) \, dx \, dy\]
+    \[= \left(\int_{-\infty}^{\infty} x f_X(x) \, dx\right) \left(\int_{-\infty}^{\infty} y f_Y(y) \, dy\right)\]
+    \[= \mathbb{E}[X]\mathbb{E}[Y]\]
+
+    \[\mathbb{E}[XY] = \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} xy f_{X,Y}(x,y) \, dx \, dy\]
+
+    \textbf{Key Fact:} For jointly continuous random variables $X$ and $Y$, they are independent if and only if 
+    their joint probability density function can be written as the product of their marginal densities:
+
+    \[f_{X,Y}(x,y) = f_X(x)f_Y(y)\]
+
+    \[= \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} xy f_X(x)f_Y(y) \, dx \, dy\]
+    \[= \left(\int_{-\infty}^{\infty} x f_X(x) \, dx\right) \left(\int_{-\infty}^{\infty} y f_Y(y) \, dy\right)\]
+    \[= \mathbb{E}[X]\mathbb{E}[Y]\]
+
+    \subsection*{Expected Value of Functions}
+    
+    \textbf{Why do we care about $\mathbb{E}[g(X)]$ and $\mathbb{E}[g(X,Y)]$?}
+    
+    These quantities are fundamental in statistics because:
+    \begin{itemize}
+        \item They appear in key theorems like the Strong Law of Large Numbers (SLLN) and Weak Law of Large Numbers (WLLN)
+        \item They allow us to work with weighted sums and transformations of random variables
+        \item Most importantly, they model real statistical scenarios
+    \end{itemize}
+
+    In practice, a sample is modeled as a collection of random variables (a random vector), and statistics are modeled as functions defined on this sample. For example:
+    
+    The sample mean can be written as:
+    \[\bar{X} = \frac{X_1 + X_2 + \cdots + X_n}{n}\]
+    where $X_i$ represents the $i$th observation in the sample.
+
+    \textbf{Example:} Consider the probability $P\left(\frac{X_1 + X_2 + \cdots + X_n}{n} > 165\right)$
+    
+    To understand statistics thoroughly, we need to understand functions of random variables.
+    We have taken the first step by learning how to compute $\mathbb{E}[g(X,Y)]$.
+    
+    This naturally leads to the question: Can we compute probability mass functions (PMF) or 
+    probability density functions (PDF) for functions of random variables?
+    
+    \textbf{Example Problem:} Consider an experiment consisting of:
+    \begin{itemize}
+        \item Tossing a fair coin
+        \item Rolling a fair die
+    \end{itemize}
+    
+    Let $X$ represent the coin toss outcome (0 for heads, 1 for tails) and $Y$ represent the die roll outcome.
+    
+    What is the PMF of $X + Y$?
+    
+    Note that:
+    \begin{itemize}
+        \item $X + Y$ is a discrete random variable (takes finitely many values)
+        \item $X$ and $Y$ are independent, so $P_{X,Y}(x,y) = P_X(x)P_Y(y)$
+    \end{itemize}
+    
+    The joint probability distribution $P_{X,Y}(x,y)$ can be represented in the following table:
+  
+
+    \begin{center}
+        \begin{tabular}{c|cccccc}
+            $X \backslash Y$ & 1 & 2 & 3 & 4 & 5 & 6 \\ \hline
+            0 & $p_{X,Y}(0,1)=\frac{1}{12}$ & $p_{X,Y}(0,2)=\frac{1}{12}$ & $p_{X,Y}(0,3)=\frac{1}{12}$ & $p_{X,Y}(0,4)=\frac{1}{12}$ & $p_{X,Y}(0,5)=\frac{1}{12}$ & $p_{X,Y}(0,6)=\frac{1}{12}$ \\
+            1 & $p_{X,Y}(1,1)=\frac{1}{12}$ & $p_{X,Y}(1,2)=\frac{1}{12}$ & $p_{X,Y}(1,3)=\frac{1}{12}$ & $p_{X,Y}(1,4)=\frac{1}{12}$ & $p_{X,Y}(1,5)=\frac{1}{12}$ & $p_{X,Y}(1,6)=\frac{1}{12}$ \\
+        \end{tabular}
+    \end{center}
+    Let $Z = X + Y$. The probability mass function of $Z$ is:
+
+    \[
+    P_Z(z) = \begin{cases}
+        \frac{1}{12} & \text{if } z = 1 \\
+        \frac{1}{6}  & \text{if } z = 2,3,4,5,6 \\
+        \frac{1}{12} & \text{if } z = 7 \\
+        0            & \text{otherwise}
+    \end{cases}
+    \]
+
+    \noindent
+    To verify this, let's compute $P_Z(1)$ as an example:
+    \begin{align*}
+        P_Z(1) &= P(Z = 1) \\
+               &= P(X = 0, Y = 1) \\
+               &= \frac{1}{12}
+    \end{align*}
+
+    \noindent
+    To verify this, let's compute $P_Z(2)$ as an example:
+    \begin{align*}
+        P_Z(2) &= P(Z = 2) \\
+               &= P(X = 0, Y = 2) + P(X = 1, Y = 1) \\
+               &= \frac{1}{12} + \frac{1}{12} = \frac{2}{12} = \frac{1}{6}
+    \end{align*}
+    
+
+    \noindent
+    \textbf{Key Features:}
+    \begin{itemize}
+        \item $X$ and $Y$ are independent random variables
+        \item We are working with their sum $Z = X + Y$
+    \end{itemize}
+
+    \vspace{0.5em}
+    \noindent
+    \textbf{Important Facts:}
+    \begin{enumerate}
+        \item \textbf{Linearity of Expectation:} 
+        \[E\left(\sum_{i=1}^n a_i X_i\right) = \sum_{i=1}^n a_iE(X_i)\]
         
+        \item \textbf{Variance of Independent Sum:}
+        \[V\left(\sum_{i=1}^n X_i\right) = \sum_{i=1}^n a_i^2 V(X_i) \quad \text{when } X_i \text{'s are independent}\]
+    \end{enumerate}
+
+    \section*{Lecture 22: Thursday 11/7/2024}
+
+    \subsection*{Random Vectors}
+
+    Many situations require keeping track of multiple quantities simultaneously. For example:
+
+    \begin{itemize}
+        \item Analyzing pictures (one random variable per pixel)
+        \item Tossing a coin twice:
+        \begin{itemize}
+            \item $X_1$ - first coin toss
+            \item $X_2$ - second coin toss 
+        \end{itemize}
+    \end{itemize}
+
+    We have learned how to do computations related to probabilities of random vectors.
+
+    \subsubsection*{Types of Random Vectors}
+
+    \begin{enumerate}
+        \item \textbf{Discrete Random Vectors}
+        \begin{itemize}
+            \item Joint PMF: quantities of interest are computed via sums
+        \end{itemize}
+
+        \item \textbf{Jointly Continuous Random Variables}
+        \begin{itemize}
+            \item Joint PDF: quantities of interest are computed via integrals
+        \end{itemize}
+    \end{enumerate}
+
+    We will consider functions of random vectors. Samples (before observations are made) and statistics can be modeled by random vectors and functions of random vectors.
+
+    \subsubsection*{Random Samples and Statistics}
+
+    \begin{itemize}
+        \item \textbf{Random Sample:} $X_1, \ldots, X_n$ with special properties where $X_i$ reflects the $i$th observation
+        \item \textbf{Statistics:} A function defined on the sample
+        \begin{itemize}
+            \item Example: Sample average = $\frac{X_1 + \cdots + X_n}{n}$
+        \end{itemize}
+    \end{itemize}
+    
+        
+    \textbf{Important Note:} Statistics are random variables too! This should be understood in the context discussed above.
+
+    \subsection*{Summary of What We've Learned}
+    We have learned how to compute averages for functions of random vectors:
+
+    \begin{itemize}
+        \item $E(XY)$, $E(X)$, $E(Y)$, $E(X^2Y)$, $E(X^3Y)$
+        \item $E(\sum_{i=1}^n a_i X_i) = \sum_{i=1}^n a_i E(X_i)$
+        \item If $X$ and $Y$ are independent, then $E(XY) = E(X)E(Y)$
+    \end{itemize}
+
+    \subsection*{Computing PMF for Functions of Random Vectors}
+
+    Consider $X_1$ and $X_2$ as independent identically distributed discrete random variables with PMF $p_{X_1}(x)$ and $p_{X_2}(x)$, where:
+
+    \[
+    P_X(x) = 
+    \begin{cases}
+        0.3, & x = 0 \\
+        0.35, & x = 1 \\
+        0.25, & x = 2 \\
+        0.1, & x = 3
+    \end{cases}
+    \]
+
+    \textbf{Problem:} Compute the PMF of $X_1 + X_2$
+
+    \textbf{Solution:} Since $X_1$ and $X_2$ are independent:
+    \[P_{X_1,X_2}(x_1,x_2) = P_{X_1}(x_1)P_{X_2}(x_2)\]
+
+    Let's compute the joint PMF using a table:
+    \begin{center}
+        \begin{tabular}{c|cccc}
+            $X_1 \backslash X_2$ & 0 & 1 & 2 & 3 \\ \hline
+            0 & 0.09 & 0.105 & 0.075 & 0.03 \\
+            1 & 0.105 & 0.1225 & 0.0875 & 0.035 \\
+            2 & 0.075 & 0.0875 & 0.0625 & 0.025 \\
+            3 & 0.03 & 0.035 & 0.025 & 0.01
+        \end{tabular}
+    \end{center}
+
+    Then $P_{X_1+X_2}(k) = \sum_{x_1+x_2=k} P_{X_1,X_2}(x_1,x_2)$
+    
+    \[
+    P_{X_1+X_2}(x) = 
+    \begin{cases}
+        0.09,  & x = 0 \\
+        0.21,  & x = 1 \\
+        0.285, & x = 2 \\
+        0.24,  & x = 3 \\
+        0.125, & x = 4 \\
+        0.04,  & x = 5 \\
+        0.01,  & x = 6
+    \end{cases}
+    \]
+
+    \noindent
+    For example:
+    \begin{align*}
+        P_{X_1+X_2}(0) &= P_{X_1,X_2}(0,0) = 0.09 \\
+        P_{X_1+X_2}(1) &= P_{X_1,X_2}(0,1) + P_{X_1,X_2}(1,0) \\
+                       &= 0.105 + 0.105 = 0.21
+    \end{align*}
+
+
+    \begin{align*}
+        E(X_1+X_2) &= \sum_{t = 0}^6 t P_{X_1+X_2}(t) \\[1em]
+        &= E(X_1) + E(X_2) \quad \text{(by linearity)} \\[0.5em]
+        &= 2E(X_1) \quad \text{(since $X_1,X_2$ are identically distributed)} \\[2em]
+        V(X_1+X_2) &= E((X_1+X_2-E(X_1+X_2))^2) \\[0.5em]
+        &= E((X_1-E(X_1)+(X_2-E(X_2)))^2) \\[0.5em]
+        &= E((X_1-E(X_1))^2) + E((X_2-E(X_2))^2) + 2E((X_1-E(X_1))(X_2-E(X_2))) \\[0.5em]
+        &= V(X_1) + V(X_2) + 2\text{Cov}(X_1,X_2)
+    \end{align*}
+    \subsection*{Covariance}
+
+    \noindent
+    \textbf{Definition:} For random variables $X_1$ and $X_2$, their covariance is:
+    \[
+    \text{Cov}(X_1, X_2) = E(X_1X_2) - E(X_1)E(X_2)
+    \]
+
+    \noindent
+    \textbf{Important Property:} If $X_1$ and $X_2$ are independent, then:
+    \[
+    E(X_1X_2) = E(X_1)E(X_2) \quad \text{and} \quad \text{Cov}(X_1, X_2) = 0
+    \]
+
+    \vspace{1em}
+    \noindent
+    \textbf{Properties of IID Random Variables:}
+    
+    Let $X_1, X_2, \ldots, X_n$ be independent identically distributed random variables with mean $\mu$ and variance $\sigma^2$. Then:
+
+    \begin{enumerate}
+        \item Mean of sum:
+        \[
+        E(X_1 + X_2 + \cdots + X_n) = n\mu
+        \]
+
+        \item Variance of sum:
+        \[
+        V(X_1 + X_2 + \cdots + X_n) = n\sigma^2
+        \]
+
+        \item Mean of sample mean:
+        \[
+        E\left(\frac{1}{n}\sum_{i=1}^n X_i\right) = \mu
+        \]
+
+        \item Variance of sample mean:
+        \[
+        V\left(\frac{1}{n}\sum_{i=1}^n X_i\right) = \frac{\sigma^2}{n}
+        \]
+    \end{enumerate}
+
+    \noindent
+    \textbf{Proof of Variance Properties:}
+
+    For independent random variables, the variance of their sum equals the sum of their variances:
+
+    \begin{align*}
+        V\left(\sum_{i=1}^n X_i\right) &= V(X_1) + V\left(\sum_{i=2}^n X_i\right) \\
+        &= \sigma^2 + V\left(\sum_{i=2}^n X_i\right)
+    \end{align*}
+
+    By induction, this gives us:
+    \[
+    V\left(\sum_{i=1}^n X_i\right) = \sum_{i=1}^n V(X_i) = n\sigma^2
+    \]
+
+    For the variance of the sample mean, we use the property that $V(aX) = a^2V(X)$:
+    \[
+    V\left(\frac{1}{n}\sum_{i=1}^n X_i\right) = \frac{1}{n^2}V\left(\sum_{i=1}^n X_i\right) = \frac{1}{n^2} \cdot n\sigma^2 = \frac{\sigma^2}{n}
+    \]
+
+    \noindent
+    \textbf{Central Limit Theorem:}
+    
+    Suppose that $X_1, \ldots, X_n$ are IID random variables with $E(X_1) = \mu$ and $V(X_1) = \sigma^2$.
+    
+    Let $S_n = \sum_{i=1}^n X_i$ and $\bar{X}_n = \frac{1}{n}\sum_{i=1}^n X_i$.
+    
+    Then as $n \to \infty$:
+    
+    \[
+    P\left(a < \frac{S_n - n\mu}{\sigma\sqrt{n}} < b\right) = \Phi(b) - \Phi(a)
+    \]
+    
+    for $-\infty \leq a \leq b \leq \infty$, where $\Phi$ is the standard normal CDF.
+    
+    Therefore, for large $n$:
+    
+    \[
+    P\left(a < \frac{S_n - n\mu}{\sigma\sqrt{n}} < b\right) \approx \Phi(b) - \Phi(a)
+    \]
+
+    \[
+        P\left(a < \frac{S_n - n\mu}{\sigma\sqrt{n}} < b\right) = P\left(a < \frac{\frac{1}{n}S_n - \mu}{\frac{\sqrt{n}}{n} \sigma} < b\right)
+    \]
+
+    \[
+    = P\left(a < \frac{\bar{X}_n - \mu}{\frac{\sigma}{\sqrt{n}}} < b\right)
+    \]
+    \noindent
+    Note: A common rule of thumb is that $n > 30$ is generally considered "large enough" for the Central Limit Theorem to apply.
+
+    \vspace{1em}
+    \noindent
+    \textbf{Example:} Suppose that a fair die is rolled 100 times. What is the approximate probability that the sum is between 340 and 360?
+
+    Let $X_i$ represent the outcome of the $i$th roll, where $X_i$ are IID random variables.
+
+    Let $S_{100} = \sum_{i=1}^{100} X_i$ be the sum of all rolls.
+
+    We want to find: $P(340 \leq S_{100} \leq 360)$
+
+    For a fair die:
+    \begin{align*}
+        E(X_i) &= 3.5 \\
+        V(X_i) &= 2.92
+    \end{align*}
+
+    By the Central Limit Theorem:
+    \[S_{100} \sim N(350, 100 \cdot 2.92)\]
+
+    Therefore:
+    \[P(340 \leq S_{100} \leq 360) = P\left(\frac{340 - 350}{\sqrt{292}} \leq Z \leq \frac{360 - 350}{\sqrt{292}}\right)\]
 
 
 
@@ -5425,6 +5824,28 @@ The number of all straights is equal to $(4^5-4) \times$ number of options for t
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
 
 
 \end{document}
