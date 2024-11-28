@@ -4930,7 +4930,7 @@ The number of all straights is equal to $(4^5-4) \times$ number of options for t
 
         The probability can be calculated as:
         \[
-            P(X > \frac{1}{4} \mid Y > X) = \int_{\frac{1}{4}}^{\frac{1}{2}} \int_{x}^{1-x} 2 \, dy \, dx
+            P(X > \frac{1}{4}, Y > X) = \int_{\frac{1}{4}}^{\frac{1}{2}} \int_{x}^{1-x} 2 \, dy \, dx
         \]
 
         \begin{align*}
@@ -5680,7 +5680,7 @@ The number of all straights is equal to $(4^5-4) \times$ number of options for t
         0.285, & x = 2 \\
         0.24,  & x = 3 \\
         0.125, & x = 4 \\
-        0.04,  & x = 5 \\
+        0.05,  & x = 5 \\
         0.01,  & x = 6
     \end{cases}
     \]
@@ -5819,29 +5819,490 @@ The number of all straights is equal to $(4^5-4) \times$ number of options for t
     \[P(340 \leq S_{100} \leq 360) = P\left(\frac{340 - 350}{\sqrt{292}} \leq Z \leq \frac{360 - 350}{\sqrt{292}}\right)\]
 
 
+    \section*{Lecture 23: Tuesday 11/12/2024}
+
+    (went over study guide for exam 2 $-$ I don't see a reason to put this here, but u can find the answers on canvas)
+
+    \section*{Lecture 24: Thursday 11/14/2024}
+
+    (Exam 2)
+
+    \section*{Lecture 25: Tuesday 11/19/2024}
+
+    \section*{Inferential Statistics}
+
+    \subsection*{Probability vs. Inferential Statistics}
+    \begin{itemize}
+        \item \textbf{Probability:} Given that data comes from a particular distribution, how likely is a particular collection of outcomes?
+        \item \textbf{Inferential Statistics:} Given observed data, what can we infer about the distribution or process that generated it?
+    \end{itemize}
+
+    \subsection*{Examples}
+    \begin{itemize}
+        \item A coin is flipped multiple times. Is it fair?
+        \item A company claims their batteries last 5 years. Is this claim reasonable based on sample data?
+    \end{itemize}
+
+    \subsection*{Key Concepts}
+    \begin{description}
+        \item[Sample] A subset drawn from the population (the entire collection under study)
+        \item[Statistic] A numerical summary calculated from the sample data
+    \end{description}
+
+    \begin{center}
+        \begin{tikzpicture}
+            \draw (0,0) rectangle (4,3);
+            \node at (-0.5,2.5) {$\Omega$};
+            \draw[fill=gray!20] (2,1.5) circle (0.75);
+            \node at (2.5,0.35) {Sample};
+        \end{tikzpicture}
+    \end{center}
+
+    A sample provides information about the underlying population through a subset of observations.
+
+    When we move from studying a population to analyzing a sample, we introduce uncertainty into our conclusions. This uncertainty is what allows us to apply probability theory to statistical inference.
+
+    \textbf{Definition:} A \emph{random sample} of size $n$ is a collection $x_1, x_2, \ldots, x_n$ of independent, identically distributed random variables (i.i.d. RVs).
+
+    \textbf{Note:} The term "sample" has multiple meanings:
+    \begin{itemize}
+        \item In everyday usage, it refers to a collection of actual observations
+        \item In statistics, it can refer to either the random variables or their observed values
+        \item When we need to be precise, we use "realization of a sample" or "realized sample" to refer specifically to the observed values
+    \end{itemize}
+
+    \textbf{Definition:} A \emph{statistic} is any function calculated from the sample data.
+
+    \textbf{Example:} Let $X_1, \ldots, X_n$ be a sample of size $n$.
+
+    \textbf{Sample Mean:} $\bar{X}_n = \frac{1}{n}\sum_{i=1}^n X_i = T(X_1, \ldots, X_n)$
+
+    \textbf{Sample Variance:} $S^2_n = \frac{1}{n-1}\sum_{i=1}^n (X_i - \bar{X}_n)^2 = U(X_1, \ldots, X_n)$
+
+    \textbf{General Statistic:} For any function $V$,
+    \[V(X_1, \ldots, X_n) = f(X_1, \ldots, X_n)\]
+
+    \textbf{Important Notes:}
+    \begin{enumerate}
+        \item A statistic is a random variable and thus has its own probability distribution.
+        \item The Central Limit Theorem describes the approximate distribution of $\bar{X}_n$ for large $n$.
+        \item For precise definitions:
+        \begin{itemize}
+            \item A sample must consist of observable quantities
+            \item A statistic must be calculable from the sample data
+        \end{itemize}
+    \end{enumerate}
+
+    \textbf{Observation:} Based on experience, we know that $\bar{X}$ and $S^2$ are useful statistics, while general functions $V(X_1,\ldots,X_n)$ may be less meaningful.
+
+    \textbf{Question:} What makes a statistic "good"? To answer this, we need to establish some terminology about estimation.
+
+    \subsection*{Point Estimators}
+    Let $\theta$ be some parameter associated with the population. This parameter is fixed but unknown.
+    Our goal is to use the data (realized sample/observations) to determine the value of $\theta$.
+
+    \textbf{Definition:} An \emph{estimator} for $\theta$, usually denoted by $\hat{\theta}$, is a statistic used to approximate $\theta$.
+
+    This naturally leads to the question:
+    \begin{center}
+        What makes $\hat{\theta}$ a good estimator for $\theta$?
+    \end{center}
+
+    \textbf{Example:} 
+    \begin{itemize}
+        \item $\bar{X}$ is a good estimator for $\mu$ but not for $\sigma^2$
+        \item $S^2$ is a good estimator for $\sigma^2$ but not for $\mu$
+    \end{itemize}
+
+    \textbf{Definition:} An estimator $\hat{\theta}$ for $\theta$ is said to be \emph{unbiased} if $E(\hat{\theta}) = \theta$ for all possible values of $\theta$.
+
+    \textbf{Example 1:} $\bar{X}$ is an unbiased estimator for $\mu$
+    \begin{align*}
+        E(\bar{X}) &= E\left(\frac{X_1 + X_2 + \cdots + X_n}{n}\right) \\
+        &= \frac{1}{n}[E(X_1) + E(X_2) + \cdots + E(X_n)] \\
+        &= \frac{1}{n}[n\mu] = \mu
+    \end{align*}
+
+    \textbf{Example 2:} $S^2$ is an unbiased estimator for $\sigma^2$
+    \begin{align*}
+        S^2 &= \frac{1}{n-1}\sum_{i=1}^n (X_i - \bar{X})^2 \\
+        E(S^2) &= \sigma^2
+    \end{align*}
+
+   \textbf{Example 3:} $\hat{\sigma}^2 = \frac{1}{n} \sum_{i=1}^n (X_i - \bar{X})^2$ is a biased estimator of $\sigma^2$
+
+   \textbf{Definition:} The bias of an estimator $\hat{\theta}$ for $\theta$ is given by $E(\hat{\theta}) - \theta$
+   \begin{itemize}
+       \item An estimator is unbiased if and only if its bias equals 0
+   \end{itemize}
+
+   \textbf{Computing the bias of $\hat{\sigma}^2$ as an estimator for $\sigma^2$:}
+   
+   We want to find $E(\hat{\sigma}^2) - \sigma^2$
+
+   Note that $\hat{\sigma}^2 = \frac{n-1}{n}S^2$
+
+   Therefore:
+   \begin{align*}
+       E(\hat{\sigma}^2) &= E\left(\frac{n-1}{n}S^2\right) \\
+       &= \frac{n-1}{n} E(S^2) \\
+       &= \frac{n-1}{n} \sigma^2
+   \end{align*}
+
+   Thus, the bias is:
+   \begin{align*}
+       \text{bias}(\hat{\sigma}^2) &= \frac{n-1}{n}\sigma^2 - \sigma^2 \\
+       &= -\frac{\sigma^2}{n}
+   \end{align*}
+
+   \textbf{Definition:} A sequence of estimators $\{\hat{\theta}_n\}$ for $\theta$ is said to be consistent if for every $\epsilon > 0$:
+   \[\lim_{n \to \infty} P(|\hat{\theta}_n - \theta| > \epsilon) = 0\]
+
+
+    \section*{Lecture 26: Thursday 11/21/2024}
+
+   \textbf{Review of Inferential Statistics}
+   
+   Inferential statistics allows us to make meaningful conclusions about a population based on a sample.
+   
+   \textbf{Key Concepts Covered:}
+   \begin{itemize}
+       \item Defined random samples and statistics in terms of random variables
+       \item Explored making inferences about $\mu$ based on $\bar{X}$
+       \item Studied making inferences about $\sigma^2$ based on $S^2$
+   \end{itemize}
+   
+   \textbf{Point Estimation}
+   
+   Point estimation involves finding our best guess for a population parameter $\theta$ (e.g., $\theta = \mu$ or $\theta = \sigma^2$) given a sample.
+   
+   Point estimation is one of three main components of statistical inference, alongside:
+   \begin{itemize}
+       \item Confidence intervals
+       \item Hypothesis testing
+   \end{itemize}
+   
+   \textbf{Properties of Estimators}
+   
+   An estimator $\hat{\theta}$ is unbiased if for all possible values of $\theta$:
+   \[E(\hat{\theta}) = \theta\]
+   
+   Examples:
+   \begin{itemize}
+       \item $\bar{X}$ is an unbiased estimator for $\mu$
+       \item $S^2$ is an unbiased estimator for $\sigma^2$
+       \item $\hat{\sigma}^2 = \frac{1}{n} \sum_{i=1}^n (X_i - \bar{X})^2$ is a biased estimator for $\sigma^2$
+   \end{itemize}
+   
+   
+   \textbf{Definition:} The bias of an estimator $\hat{\theta}$ is:
+   \[\text{bias}(\hat{\theta}) = E(\hat{\theta} - \theta) = E(\hat{\theta}) - \theta\]
+
+   \textbf{Example:} Let's find the bias of $\hat{\sigma}^2$:
+   \begin{align*}
+       \text{bias}(\hat{\sigma}^2) &= E(\hat{\sigma}^2 - \sigma^2) = E(\hat{\sigma}^2) - \sigma^2 \\
+       &= E(\frac{n-1}{n}S^2) - \sigma^2 \\
+       &= \frac{n-1}{n}E(S^2) - \sigma^2 \\
+       &= \frac{n-1}{n}\sigma^2 - \sigma^2 \\
+       &= -\frac{\sigma^2}{n}
+   \end{align*}
+
+   \textbf{Consistency} (Applies to a sequence of estimators)
+
+   \textbf{Definition:} A sequence of estimators $\{\hat{\theta}_n\}_{n \in \mathbb{N}}$ is said to be consistent if for all $\epsilon > 0$:
+   \[\lim_{n \to \infty} P(|\hat{\theta}_n - \theta| > \epsilon) = 0\]
+
+   \textbf{Example:} The sequence $(\bar{X}_n)_{n\in\mathbb{N}}$ is consistent for $\mu$. This is known as the Weak Law of Large Numbers.
+
+   \textbf{Exercise:} Suppose you have three estimators for $\mu$:
+   \begin{itemize}
+       \item $X_1$ 
+       \item $\bar{X}_n$ 
+       \item $\bar{X}^*_n = \frac{1}{n-2} \sum_{i=2}^{n-2} X_i$ 
+   \end{itemize}
+   Which estimator would you use if the sample $X_1, \ldots, X_n$ has $E(X_i) = \mu$ and $\operatorname{Var}(X_i) = \sigma^2$?
+
+   \textbf{Solution:}
+   Let's analyze each estimator's expected value:
+
+   \begin{itemize}
+       \item $E(X_1) = \mu$
+       \item $E(\bar{X}_n) = \mu$
+       \item $E(\bar{X}^*_n) = E\left(\frac{1}{n-2}\sum_{i=2}^{n-2} X_i\right) 
+           = \frac{1}{n-2} \sum_{i=2}^{n-2} E(X_i) 
+           = \frac{1}{n-2} \sum_{i=2}^{n-2} \mu 
+           = \mu$
+   \end{itemize}
+
+   So $X_1$, $\bar{X}_n$, and $\bar{X}^*_n$ are all unbiased estimators for $\mu$.
+
+   Unbiasedness by itself is not good enough to give us the best estimator, even if we agree that unbiased estimators are preferable, as we do in this class.
+
+   \textbf{Analyzing Consistency:}
+   \begin{itemize}
+       \item $X_1$ (where $\hat{\theta} = X_1$ for all $n$) is not consistent
+       \item $\bar{X}_n$ is consistent - this follows from the Weak Law of Large Numbers (WLLN)
+       \item $\bar{X}^*_n$ is consistent
+   \end{itemize}
+
+   \textbf{Definition:} Let $\hat{\theta}$ be an estimator. The Mean Square Error (MSE) of $\hat{\theta}$ is:
+   \[MSE(\hat{\theta}) = E((\hat{\theta} - \theta)^2)\]
+   This represents the average squared deviation from $\theta$.
+
+   \textbf{Comparing Estimators:} Given two estimators $\hat{\theta}_1$ and $\hat{\theta}_2$ for $\theta$, we say $\hat{\theta}_1$ is better than $\hat{\theta}_2$ if:
+   \[MSE(\hat{\theta}_1) < MSE(\hat{\theta}_2)\]
+
+   \textbf{Important Facts:}
+   \begin{itemize}
+       \item $MSE(\hat{\theta}) = (bias(\hat{\theta}))^2 + Var(\hat{\theta})$
+       \item For unbiased estimators, $MSE(\hat{\theta}) = Var(\hat{\theta})$ since $bias(\hat{\theta}) = 0$
+   \end{itemize}
+
+   When choosing between two unbiased estimators, we choose the one with lower variance (this is known as the Minimum Variance Unbiased Estimator principle, or MVUE).
+
+   \textbf{Variance Calculations:}
+   For $\bar{X}_n$:
+   \begin{align*}
+       Var(\bar{X}_n) &= Var\left(\frac{1}{n}\sum_{i=1}^n X_i\right) \\
+       &= \frac{1}{n^2} Var\left(\sum_{i=1}^n X_i\right) \\
+       &= \frac{1}{n^2}\sum_{i=1}^n Var(X_i) \text{ (since $X_i$'s are independent)} \\
+       &= \frac{\sigma^2}{n}
+   \end{align*}
+
+   Similarly, for $\bar{X}^*_n$:
+   \[Var(\bar{X}^*_n) = \frac{\sigma^2}{n-2}\]
+
+   Since $Var(\bar{X}_n) < Var(\bar{X}^*_n)$, and both estimators are unbiased, the MVUE principle tells us that $\bar{X}_n$ is the better estimator for $\mu$.
+
+   \textbf{Example:} Consider a coin that comes up heads with unknown probability $p$. How can we construct an estimator $\hat{p}$ for $p$?
+
+   \textbf{Solution:} 
+   \begin{itemize}
+       \item Toss the coin $n$ times
+       \item Let $\hat{p} = \frac{\text{number of heads}}{n}$
+   \end{itemize}
+   \textbf{General Question:} How do we construct estimators when we are not familiar with the parameter or there is no intuitive answer?
+   
+   The key is to construct estimators with desirable statistical properties such as:
+   \begin{itemize}
+       \item Maximum likelihood estimators (MLE)
+       \item Method of moments estimators (MME)
+   \end{itemize}
+
+   Let $X_1, \ldots, X_n$ be a random sample of size $n$ with $X_i \sim \text{Ber}(p)$,
+   where $0 < p < 1$ is fixed but unknown.
+
+   The sample proportion $\hat{p} = \frac{1}{n}\sum_{i=1}^n X_i$ is an estimator for $p$, noting that $E(X_1) = p$.
+
+   We can derive this same estimator using the maximum likelihood method:
+   
+   \begin{itemize}
+       \item Maximum likelihood works by finding the parameter value that maximizes the probability of observing the given sample
+       \item Let $f(x;\theta)$ be the pdf/pmf for the population distribution
+       \item The likelihood function is defined as:
+             \[L(\theta) = \prod_{i=1}^n f(X_i; \theta)\]
+       \item For a pmf, the likelihood represents the joint probability:
+             \[P(X_1 = x_1, \ldots, X_n = x_n) = \prod_{i=1}^n P(X_i = x_i; \theta)\]
+   \end{itemize}
+
+   Therefore, the likelihood function represents the joint probability mass/density viewed as a function of the parameter $\theta$.
+
+
+    \section*{Lecture 27: Tuesday 11/26/2024}
+
+   \textbf{Maximum Likelihood Estimators (MLE)}
+   
+   The goal is to find the parameter value $\theta$ that maximizes the likelihood of observing our sample data.
+   
+   \textbf{Definition:} The likelihood function is given by:
+   \[L(\theta) = \prod_{i=1}^n f(X_i; \theta)\]
+   where $f(X_i; \theta)$ is the joint pmf/pdf.
+   
+   \textbf{Steps to find MLE:}
+   \begin{enumerate}
+       \item Calculate the likelihood function $L(\theta)$
+       \item Find the value $\theta_0$ such that $L(\theta_0) \geq L(\theta)$ for all possible values of $\theta$
+   \end{enumerate}
+   
+   \textbf{Example:} Let $X_1, \ldots, X_n$ be a random sample where $X_i \sim \text{Ber}(p)$ with unknown fixed $p$.
+   
+   The pmf is given by:
+   \[f(x_i; p) = \begin{cases}
+       p^x(1-p)^{1-x} & \text{if } x = 0, 1 \\
+       0 & \text{otherwise}
+   \end{cases}\]
+   
+   Therefore, the likelihood function is:
+   \begin{align*}
+       L(p) &= \prod_{i=1}^n f(x_i; p) \\
+       &= \prod_{i=1}^n p^{x_i}(1-p)^{1-x_i} \\
+   \end{align*}
+   To maximize, we find critical points using calculus:
+   
+   Let $l(p) = \ln(L(p))$ be the log-likelihood function.
+   
+   \begin{align*}
+       l(p) &= \ln\left(\prod_{i=1}^{n}p^{x_i}(1-p)^{1-x_i}\right) \\
+       &= \sum_{i=1}^{n} \ln(p^{x_i}(1-p)^{1-x_i}) \\
+       &= \sum_{i=1}^{n} \left(x_i\ln(p) + (1-x_i)\ln(1-p)\right)
+   \end{align*}
+   
+   Taking the derivative:
+   \begin{align*}
+       l'(p) &= \sum_{i=1}^{n} \left(\frac{x_i}{p} - \frac{1-x_i}{1-p}\right) \\
+       &= \sum_{i=1}^{n} \frac{x_i-x_ip-p+x_ip}{p(1-p)} \\
+       &= \frac{1}{p(1-p)} \sum_{i=1}^{n} (x_i-p) \\
+       &= \frac{1}{p(1-p)} \left(\sum_{i=1}^{n} x_i - np\right)
+   \end{align*}
+   
+   Setting $l'(p) = 0$:
+   \[\frac{1}{p(1-p)} \left(\sum_{i=1}^{n} x_i - np\right) = 0\]
+   
+   Solving for $p$:
+   \[p = \frac{\sum_{i=1}^{n} x_i}{n}\]
+   
+   Therefore, the maximum likelihood estimator is:
+   \[\hat{p}_{MLE} = \frac{\sum_{i=1}^{n} x_i}{n}\]
+   \textbf{Example Application:} Maximum Likelihood Estimation for Bernoulli Trials
+   
+   We have already shown that:
+   \[\hat{p}_{MLE} = \frac{\sum_{i=1}^{n} x_i}{n}\]
+   
+   In practice, this means:
+   \begin{itemize}
+       \item Toss the coin $n$ times
+       \item Count the number of heads
+       \item Calculate $\hat{p}_{MLE} = \frac{\text{number of heads}}{n}$
+   \end{itemize}
+   
+   \textbf{Specific Example:}
+   Let $X_1, X_2, X_3$ be a sample of size 3 where $X_i \sim \text{Ber}(p)$ with unknown $p$.
+   
+   Then:
+   \[\hat{p}_{MLE} = \frac{\sum_{i=1}^{3}x_i}{3}\]
+   
+   For the realization $x_1 = 0, x_2 = 1, x_3 = 1$:
+   \[\hat{p}_{MLE} = \frac{0 + 1 + 1}{3} = \frac{2}{3}\]
+
+   \textbf{Example:} Let $f(x; \theta)$ be the exponential distribution with parameter $\theta$:
+   \[f(x; \theta) = 
+   \begin{cases}
+       \theta e^{-\theta x} & \text{if } x \geq 0 \\
+       0 & \text{otherwise}
+   \end{cases}\]
+
+   Let $\theta > 0$ be fixed but unknown. Given a random sample $X_1, \ldots, X_n$ of size $n$ where each $X_i$ has pdf $f(x; \theta)$, find $\hat{\theta}_{MLE}$.
+
+   \textbf{Solution:}
+   \begin{align*}
+       L(\theta) &= \prod_{i=1}^{n} f(x_i; \theta) \\
+       &= \prod_{i=1}^{n} \theta e^{-\theta x_i}
+   \end{align*}
+
+   Taking the natural logarithm:
+   \begin{align*}
+       l(\theta) &= \ln(L(\theta)) \\
+       &= \ln\left(\prod_{i=1}^{n} \theta e^{-\theta x_i}\right) \\
+       &= \sum_{i=1}^{n} \ln(\theta e^{-\theta x_i}) \\
+       &= \sum_{i=1}^{n} (\ln(\theta) - \theta x_i) \\
+       &= n\ln(\theta) - \theta\sum_{i=1}^{n} x_i
+   \end{align*}
+
+   Taking the derivative:
+   \[l'(\theta) = \frac{n}{\theta} - \sum_{i=1}^{n} x_i\]
+
+   Setting $l'(\theta) = 0$ and solving:
+   \[\frac{n}{\theta} - \sum_{i=1}^{n} x_i = 0\]
+   \[\theta = \frac{n}{\sum_{i=1}^{n} x_i}\]
+
+   Therefore:
+   \[\hat{\theta}_{MLE} = \frac{n}{\sum_{i=1}^{n} x_i}\]
+
+   To verify this is a maximum:
+   \[l''(\theta) = -\frac{n}{\theta^2} < 0\]
+
+   Since $l''(\theta) < 0$ for all $\theta > 0$, by the second derivative test, $l(\theta)$ achieves a maximum at $\hat{\theta}_{MLE}$.
+
+\textbf{Multiple Parameters:}
+
+What happens if we have two or more parameters? Let's look at an example with two parameters.
+
+\textbf{Example:} Let $X_1, \ldots, X_n$ be a random sample where $X_i \sim \mathcal{N}(\mu, \sigma^2)$ with both $\mu$ and $\sigma^2$ unknown.
+
+Can we use MLE? Yes! The process is similar, but we'll need to take partial derivatives.
+
+The pdf is:
+\[f(x; \mu, \sigma) = \frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{(x-\mu)^2}{2\sigma^2}}\]
+
+The likelihood function:
+\[L(\mu, \sigma) = \prod_{i=1}^{n} \frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{(x_i-\mu)^2}{2\sigma^2}}\]
+
+Taking the natural logarithm:
+\begin{align*}
+    l(\mu, \sigma) &= \ln\left(\prod_{i=1}^{n} \frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{(x_i-\mu)^2}{2\sigma^2}}\right) \\
+    &= \sum_{i=1}^{n}\ln\left(\frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{(x_i-\mu)^2}{2\sigma^2}}\right) \\
+    &= \sum_{i=1}^{n}\left(-\ln(\sqrt{2\pi}) - \ln(\sigma) - \frac{(x_i-\mu)^2}{2\sigma^2}\right) \\
+    &= -\frac{n}{2}\ln(2\pi) - n\ln(\sigma) - \frac{1}{2\sigma^2}\sum_{i=1}^{n}(x_i-\mu)^2
+\end{align*}
+
+To find the maximum likelihood estimators, we need to find the critical points by setting both partial derivatives of $f(x, y) = x^2 + y^2$ equal to zero:
+\[\frac{\partial l}{\partial \mu} = 0 \quad \text{and} \quad \frac{\partial l}{\partial \sigma} = 0\]
+
+\begin{figure}[h]
+    \centering
+    % Make sure TikZ and pgfplots packages are included in preamble
+    \begin{tikzpicture}
+        \begin{axis}[
+            view={45}{45},
+            xlabel=$x$,
+            ylabel=$y$,
+            zlabel=$z$,
+            domain=-2:2,
+            domain y=-2:2,
+            samples=30,
+            samples y=30,
+            colormap/viridis,
+        ]
+            \addplot3[
+                surf,
+                faceted color=black,
+            ] {x^2 + y^2};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{3D surface plot of $f(x,y)=x^2+y^2$}
+\end{figure}
 
 
 
+Taking the partial derivatives:
 
+% First partial derivative with respect to μ
+\begin{align*}
+    \frac{\partial l}{\partial \mu} &= \frac{\partial}{\partial \mu}\left(-\frac{1}{2\sigma^2} \sum_{i=1}^{n}(x_i-\mu)^2\right) \\
+    &= -\frac{1}{2\sigma^2} \sum_{i=1}^{n} \frac{\partial}{\partial \mu}(x_i-\mu)^2 \\
+    &= -\frac{1}{2\sigma^2} \sum_{i=1}^{n} 2(x_i-\mu)(-1) \\
+    &= \frac{1}{\sigma^2} \sum_{i=1}^{n}(x_i-\mu)
+\end{align*}
 
+Setting $\frac{\partial l}{\partial \mu} = 0$:
+\begin{align*}
+    \frac{1}{\sigma^2} \sum_{i=1}^{n} (x_i - \mu) &= 0 \\
+    \sum_{i=1}^{n} x_i - n\mu &= 0 \\
+    \hat{\mu}_{MLE} &= \frac{1}{n}\sum_{i=1}^{n}x_i
+\end{align*}
 
+% Second partial derivative with respect to σ
+\begin{align*}
+    \frac{\partial l}{\partial \sigma} &= -\frac{n}{\sigma} + \frac{1}{\sigma^3}\sum_{i=1}^{n}(x_i-\mu)^2
+\end{align*}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Setting $\frac{\partial l}{\partial \sigma} = 0$:
+\begin{align*}
+    -\frac{n}{\sigma} + \frac{1}{\sigma^3}\sum_{i=1}^{n}(x_i - \mu)^2 &= 0 \\
+    \sigma^2 &= \frac{1}{n}\sum_{i=1}^{n}(x_i - \mu)^2 \\
+    \sigma^2 &= \frac{1}{n}\sum_{i=1}^{n}(x_i - \bar{X})^2 \\
+    \hat{\sigma}_{MLE} &= \sqrt{\frac{1}{n}\sum_{i=1}^{n}(x_i - \bar{X})^2}
+\end{align*}
 
 
 
