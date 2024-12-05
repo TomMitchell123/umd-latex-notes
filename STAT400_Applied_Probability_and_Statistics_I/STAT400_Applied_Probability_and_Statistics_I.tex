@@ -6304,9 +6304,106 @@ Setting $\frac{\partial l}{\partial \sigma} = 0$:
     \hat{\sigma}_{MLE} &= \sqrt{\frac{1}{n}\sum_{i=1}^{n}(x_i - \bar{X})^2}
 \end{align*}
 
+\pagebreak
+\section*{Lecture 28: Thursday 12/3/2024}
+\subsection*{Point Estimators}
+
+Given a parameter $\theta$ of interest and data points $x_1, x_2, \ldots, x_n$, our goal is to provide the best possible estimate for the value of $\theta$.
+
+\subsubsection*{Properties of Good Estimators}
+
+\begin{itemize}
+    \item \textbf{Unbiasedness:} An estimator $\hat{\theta}$ is unbiased if $E[\hat{\theta}] = \theta$ for all possible values of $\theta$
+    \item \textbf{Consistency:} An estimator $\hat{\theta}_n$ is consistent if it converges in probability to the true parameter value as sample size increases
+    \item \textbf{Mean Squared Error (MSE):} A measure of estimator quality where lower is better
+        \[ MSE(\hat{\theta}) = E[(\hat{\theta} - \theta)^2] = V(\hat{\theta}) + (Bias(\hat{\theta}))^2 \]
+\end{itemize}
+
+\subsubsection*{Constructing Good Estimators}
+
+\textbf{Maximum Likelihood Estimation (MLE):}
+\begin{enumerate}
+    \item Compute the likelihood function:
+        \[ L(\theta) = \prod_{i=1}^n f(x_i; \theta) \]
+    \item Find $\hat{\theta}$ that maximizes $L(\theta)$
+    \item Take the natural logarithm to get the log-likelihood function:
+        \[ l(\theta) = \ln(L(\theta)) \]
+    \item Use calculus to find critical points of $l(\theta)$ where $L(\theta)$ is maximized
+\end{enumerate}
 
 
-    
+Let $X_1, X_2, \ldots, X_n$ be a sample of size $n$, with $X_i \sim N(\mu, \sigma^2)$
+where $\mu$ and $\sigma^2$ are both unknown. Find the MLEs for $\mu$ and $\sigma$.
+
+The probability density function is:
+\[ f(x; \mu, \sigma) = \frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{(x-\mu)^2}{2\sigma^2}}, \quad -\infty < x < \infty \]
+
+The likelihood function is:
+\[ L(\mu, \sigma) = \prod_{i=1}^{n} f(x_i; \mu, \sigma) = \prod_{i=1}^n \frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{(x_i-\mu)^2}{2\sigma^2}} \]
+
+\[ l(\mu, \sigma) = \ln(L(\mu, \sigma)) = \ln\left(\prod_{i=1}^n \frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{(x_i-\mu)^2}{2\sigma^2}}\right) = \sum_{i=1}^n \ln\left(\frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{(x_i-\mu)^2}{2\sigma^2}}\right) \]
+\[ = \sum_{i=1}^n \left(-\ln(\sqrt{2\pi}) - \ln(\sigma) - \frac{(x_i-\mu)^2}{2\sigma^2}\right) \]
+\[ = -n\ln(\sqrt{2\pi}) - n\ln(\sigma) - \frac{1}{2\sigma^2}\sum_{i=1}^n(x_i-\mu)^2 \]
+
+\[
+\frac{\partial l}{\partial \mu} = 0 \quad \text{and} \quad \frac{\partial l}{\partial \sigma} = 0
+\]
+
+\begin{center}
+   Continue in lecture 27...
+\end{center}
+
+
+\subsubsection*{Properties of Maximum Likelihood Estimators}
+
+Under certain mild technical assumptions:
+
+\begin{itemize}
+    \item MLE is consistent
+    \item MLE is asymptotically unbiased (bias becomes negligible as $n \to \infty$)
+        \[ \hat{\sigma}^2_{MLE} = \frac{1}{n}\sum_{i=1}^n(x_i - \bar{X})^2 \]
+    \item Asymptotic normality: Similar to CLT
+        \[ \frac{\hat{\theta}_{MLE} - \theta}{SE(\hat{\theta}_{MLE})} \stackrel{d}{\to} N(0,1) \]
+        where $SE(\hat{\theta}_{MLE}) = \sqrt{V(\hat{\theta}_{MLE})}$
+\end{itemize}
+
+\subsubsection*{Method of Moments Estimator (MoM)}
+
+Strategy based on the Law of Large Numbers:
+\[ \frac{1}{n}\sum_{i=1}^n X_i^k \xrightarrow{p} E(X_i^k) \quad \text{as } n \to \infty \]
+for the $k$th moment. Parameters are related to moments.
+
+\textbf{Example 1:} Let $X_1, X_2, \ldots, X_n$ be a sample of size $n$ with $X_i \sim U(0,\theta)$ where $\theta > 0$ is unknown.
+
+To find MoM estimator for $\theta$:
+\begin{enumerate}
+    \item Calculate $E(X) = \frac{\theta}{2}$
+    \item By LLN: $E(X) \approx \frac{1}{n}\sum_{i=1}^n x_i$
+    \item Therefore: $\frac{\theta}{2} \approx \frac{1}{n}\sum_{i=1}^n x_i$
+    \item Solving: $\hat{\theta}_{MoM} = 2\cdot\frac{1}{n}\sum_{i=1}^n x_i$
+\end{enumerate}
+
+\textbf{Example 2:} Let $X_1, \ldots, X_n$ be a sample with density:
+\[ f(x;\theta) = \begin{cases}
+    \theta e^{-\theta x} & x \geq 0 \\
+    0 & x < 0
+\end{cases} \]
+
+Note: $X_i \sim \text{Exp}(\theta)$
+
+To find MoM estimator for $\theta$:
+\begin{enumerate}
+    \item Calculate $E(X) = \frac{1}{\theta}$
+    \item By LLN: $E(X) \approx \frac{1}{n}\sum_{i=1}^n x_i$
+    \item Therefore: $\frac{1}{\theta} \approx \frac{1}{n}\sum_{i=1}^n x_i$
+    \item Solving: $\hat{\theta}_{MoM} = \frac{n}{\sum_{i=1}^n x_i}$
+\end{enumerate}
+
+\textbf{Key Observation:} In this example, $\hat{\theta}_{MoM} = \hat{\theta}_{MLE}$. However, MLE and MoM estimators do not always coincide. MoM estimators are typically variants of sample averages.
+
+
+
+
 
 
 \end{document}
